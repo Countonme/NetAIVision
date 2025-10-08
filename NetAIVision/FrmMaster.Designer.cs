@@ -63,7 +63,7 @@
             this.二维码读取QToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.参考线NToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.目标ROI显示DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ℹ关于AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbDeviceList = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -96,6 +96,9 @@
             this.uiMarkLabel2 = new Sunny.UI.UIMarkLabel();
             this.flowLayoutPanel1 = new Sunny.UI.UIFlowLayoutPanel();
             this.importImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.taintAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -105,10 +108,7 @@
             this.QRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveTempToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.taintAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -149,7 +149,7 @@
             this.stopToolStripMenuItem,
             this.保存图像ToolStripMenuItem,
             this.功能ToolStripMenuItem,
-            this.ℹ关于AToolStripMenuItem});
+            this.aboutAToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 35);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 0);
@@ -201,7 +201,7 @@
             // viewlogToolStripMenuItem
             // 
             this.viewlogToolStripMenuItem.Name = "viewlogToolStripMenuItem";
-            this.viewlogToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.viewlogToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
             this.viewlogToolStripMenuItem.Text = "📄 Log";
             // 
             // refreshToolStripMenuItem
@@ -246,25 +246,25 @@
             // SavebmpToolStripMenuItem
             // 
             this.SavebmpToolStripMenuItem.Name = "SavebmpToolStripMenuItem";
-            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavebmpToolStripMenuItem.Text = "🖼️ *.Bmp";
             // 
             // SavejPGToolStripMenuItem
             // 
             this.SavejPGToolStripMenuItem.Name = "SavejPGToolStripMenuItem";
-            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavejPGToolStripMenuItem.Text = "🖼️ *.JPG";
             // 
             // SavepNGToolStripMenuItem
             // 
             this.SavepNGToolStripMenuItem.Name = "SavepNGToolStripMenuItem";
-            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavepNGToolStripMenuItem.Text = "🖼️ *.PNG";
             // 
             // SavetIFFToolStripMenuItem
             // 
             this.SavetIFFToolStripMenuItem.Name = "SavetIFFToolStripMenuItem";
-            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavetIFFToolStripMenuItem.Text = "🖼️ *.TIFF";
             // 
             // 功能ToolStripMenuItem
@@ -387,12 +387,12 @@
             this.目标ROI显示DToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
             this.目标ROI显示DToolStripMenuItem.Text = "🔲 目标ROI显示(&D)";
             // 
-            // ℹ关于AToolStripMenuItem
+            // aboutAToolStripMenuItem
             // 
-            this.ℹ关于AToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.ℹ关于AToolStripMenuItem.Name = "ℹ关于AToolStripMenuItem";
-            this.ℹ关于AToolStripMenuItem.Size = new System.Drawing.Size(109, 25);
-            this.ℹ关于AToolStripMenuItem.Text = "ℹ️ 关于(&A)...";
+            this.aboutAToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
+            this.aboutAToolStripMenuItem.Name = "aboutAToolStripMenuItem";
+            this.aboutAToolStripMenuItem.Size = new System.Drawing.Size(109, 25);
+            this.aboutAToolStripMenuItem.Text = "ℹ️ 关于(&A)...";
             // 
             // cbDeviceList
             // 
@@ -811,6 +811,24 @@
             this.importImageToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
             this.importImageToolStripMenuItem.Text = "🖼️ Import Image";
             // 
+            // importScriptToolStripMenuItem
+            // 
+            this.importScriptToolStripMenuItem.Name = "importScriptToolStripMenuItem";
+            this.importScriptToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.importScriptToolStripMenuItem.Text = "📄 Import Script";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.exitToolStripMenuItem.Text = "❌ Exit";
+            // 
+            // taintAnalysisToolStripMenuItem
+            // 
+            this.taintAnalysisToolStripMenuItem.Name = "taintAnalysisToolStripMenuItem";
+            this.taintAnalysisToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.taintAnalysisToolStripMenuItem.Text = "Taint analysis";
+            // 
             // uiGifAvatar1
             // 
             this.uiGifAvatar1.AvatarSize = 60;
@@ -855,68 +873,50 @@
             // 
             this.RenameROIToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.rename;
             this.RenameROIToolStripMenuItem.Name = "RenameROIToolStripMenuItem";
-            this.RenameROIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.RenameROIToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.RenameROIToolStripMenuItem.Text = "Rename ROI";
             // 
             // removeROIToolStripMenuItem
             // 
             this.removeROIToolStripMenuItem.Image = global::NetAIVision.Properties.Resources._33_删除;
             this.removeROIToolStripMenuItem.Name = "removeROIToolStripMenuItem";
-            this.removeROIToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.removeROIToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.removeROIToolStripMenuItem.Text = "Remove ROI";
             // 
             // oCRToolStripMenuItem
             // 
             this.oCRToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.OCR识别管理;
             this.oCRToolStripMenuItem.Name = "oCRToolStripMenuItem";
-            this.oCRToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.oCRToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.oCRToolStripMenuItem.Text = "OCR";
             // 
             // QRCodeToolStripMenuItem
             // 
             this.QRCodeToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.qrcode;
             this.QRCodeToolStripMenuItem.Name = "QRCodeToolStripMenuItem";
-            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.QRCodeToolStripMenuItem.Text = "QR Code";
             // 
             // saveTempToolStripMenuItem
             // 
             this.saveTempToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.Image;
             this.saveTempToolStripMenuItem.Name = "saveTempToolStripMenuItem";
-            this.saveTempToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.saveTempToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.saveTempToolStripMenuItem.Text = "Save Temp";
             // 
             // viewScriptToolStripMenuItem
             // 
             this.viewScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.ic_more_rename;
             this.viewScriptToolStripMenuItem.Name = "viewScriptToolStripMenuItem";
-            this.viewScriptToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.viewScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.viewScriptToolStripMenuItem.Text = "View Script";
-            // 
-            // importScriptToolStripMenuItem
-            // 
-            this.importScriptToolStripMenuItem.Name = "importScriptToolStripMenuItem";
-            this.importScriptToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
-            this.importScriptToolStripMenuItem.Text = "📄 Import Script";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
-            this.exitToolStripMenuItem.Text = "❌ Exit";
             // 
             // runScriptToolStripMenuItem
             // 
             this.runScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.bofang;
             this.runScriptToolStripMenuItem.Name = "runScriptToolStripMenuItem";
-            this.runScriptToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.runScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.runScriptToolStripMenuItem.Text = "Run Script";
-            // 
-            // taintAnalysisToolStripMenuItem
-            // 
-            this.taintAnalysisToolStripMenuItem.Name = "taintAnalysisToolStripMenuItem";
-            this.taintAnalysisToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.taintAnalysisToolStripMenuItem.Text = "Taint analysis";
             // 
             // FrmMaster
             // 
@@ -997,7 +997,7 @@
         private System.Windows.Forms.ToolStripMenuItem 二维码读取QToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 参考线NToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 目标ROI显示DToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ℹ关于AToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutAToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private Sunny.UI.UIGroupBox uiGroupBox1;
         private Sunny.UI.UIGroupBox grouplogs;

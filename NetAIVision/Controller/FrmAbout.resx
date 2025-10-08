@@ -117,7 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="textBoxDescription.Text" xml:space="preserve">
+    <value>欢迎使用我们的定制软件开发服务
+在当今快速发展的科技时代，每个企业或个人都有其独特的业务流程和需求。标准的软件解决方案往往无法完全满足这些特定需求。因此，我们提供专业的定制软件开发服务，旨在为客户提供量身定做的解决方案，帮助您提升工作效率、优化业务流程并实现更高的商业价值。
+
+定制开发，请联系我们
+无论您的需求多么独特，我们的专业团队都能为您提供从概念设计到最终交付的全方位服务。请随时联系我们，让我们了解您的具体需求，并为您打造专属的软件解决方案。
+
+服务概述
+我们的定制软件开发服务涵盖但不限于以下几个方面：
+
+需求分析与咨询：深入了解您的业务需求，提供专业的技术咨询和建议。
+系统设计与架构规划：基于需求分析结果，设计出高效、可扩展的系统架构。
+开发与测试：采用敏捷开发模式，确保项目按时交付且质量上乘；通过严格的测试流程保证软件的稳定性和安全性。
+部署与维护：协助完成软件的上线部署工作，并提供后续的技术支持和维护服务。
+培训和支持：为用户提供全面的操作培训和技术文档，确保用户能够顺利使用新系统。
+技术栈
+我们精通多种编程语言和技术框架，可以根据项目的具体要求选择最适合的技术栈，包括但不限于：
+
+前端技术：HTML5, CSS3, JavaScript (React.js, Vue.js)
+后端技术：C#, Java, Python (Django, Flask), Node.js
+数据库管理：MySQL, PostgreSQL, MongoDB
+移动开发：iOS (Swift), Android (Kotlin)
+云计算与DevOps：AWS, Azure, Docker, Kubernetes
+成功案例
+我们已经成功为多个行业的客户提供了优质的定制软件开发服务，包括但不限于金融、医疗、教育、零售等领域。每一个成功的案例都是对我们专业能力和创新能力的最佳证明。
+
+联系方式
+如果您对我们的服务感兴趣或者有任何疑问，欢迎随时通过以下方式联系我们：
+邮箱: [yysvent@163.com]
+
+期待与您的合作，共同开启数字化转型之旅！
+</value>
+  </data>
 </root>

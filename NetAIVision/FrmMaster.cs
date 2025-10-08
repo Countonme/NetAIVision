@@ -84,6 +84,8 @@ namespace NetAIVision
             InitializeComponent();
 
             this.Load += FrmMaster_Load;
+            //About
+            this.aboutAToolStripMenuItem.Click += AboutAToolStripMenuItem_Click;
             // Open
             this.openToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
             this.openImagesToolStripMenuItem.Click += OpenImagesToolStripMenuItem_Click;
@@ -137,6 +139,11 @@ namespace NetAIVision
             this.FormClosing += FrmMaster_FormClosing;
             //污点检查
             this.taintAnalysisToolStripMenuItem.Click += TaintAnalysisToolStripMenuItem_Click;
+        }
+
+        private void AboutAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FrmAbout().ShowDialog();
         }
 
         private void TaintAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
