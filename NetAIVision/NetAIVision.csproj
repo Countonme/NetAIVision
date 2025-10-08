@@ -115,6 +115,7 @@
     <Compile Include="Model\ROI\ROI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ConsoleStyleLogHelper.cs" />
     <Compile Include="Services\HikMVS\MyCamera.cs" />
     <Compile Include="Services\MES\MES_Service.cs" />
     <EmbeddedResource Include="Controller\FrmQRCode.resx">

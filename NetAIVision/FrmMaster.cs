@@ -2,14 +2,17 @@
 using NetAIVision.Controller;
 using NetAIVision.Model.FrmResult;
 using NetAIVision.Model.ROI;
+using NetAIVision.Services;
 using NetAIVision.Services.MES;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -49,6 +52,9 @@ namespace NetAIVision
 
         private IntPtr displayHandle = IntPtr.Zero;
 
+        // 初始化日志控件
+        private ConsoleStyleLogHelper logHelper;
+
         #region roi
 
         private List<ROI> rois = new List<ROI>(); // 保存ROI的列表
@@ -64,8 +70,13 @@ namespace NetAIVision
             InitializeComponent();
 
             this.Load += FrmMaster_Load;
+            // Open
             this.openToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
+            this.openImagesToolStripMenuItem.Click += OpenImagesToolStripMenuItem_Click;
+            this.openLogsToolStripMenuItem.Click += OpenLogsToolStripMenuItem_Click;
+
             this.closeToolStripMenuItem.Click += CloseToolStripMenuItem_Click;
+            this.stopToolStripMenuItem.Click += StopToolStripMenuItem_Click;
             this.pictureBox1.MouseDown += PictureBox1_MouseDown;
             this.pictureBox1.MouseMove += PictureBox1_MouseMove;
             this.pictureBox1.MouseUp += PictureBox1_MouseUp;
@@ -78,6 +89,175 @@ namespace NetAIVision
 
             this.RadioDebugMode.Click += RadioDebugMode_Click;
             this.RadioBtnProductionMode.Click += RadioBtnProductionMode_Click;
+
+            //--Save Image——————————————————————————————————————————————————
+            this.SavebmpToolStripMenuItem.Click += SaveBmpToolStripMenuItem_Click;
+            this.SavejPGToolStripMenuItem.Click += SaveJpgToolStripMenuItem_Click;
+            this.SavetIFFToolStripMenuItem.Click += SaveTiffToolStripMenuItem_Click;
+            this.SavepNGToolStripMenuItem.Click += SavePNGToolStripMenuItem_Click;
+            logHelper = new ConsoleStyleLogHelper(richboxLogs, 100);
+        }
+
+        #region 图片保存
+
+        /// <summary>
+        /// PNG 保存
+        /// </summary>
+        private void SavePNGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImage(MyCamera.MV_SAVE_IAMGE_TYPE.MV_Image_Png, "PNG", "png", 8);
+        }
+
+        /// <summary>
+        /// TIFF 保存
+        /// </summary>
+        private void SaveTiffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImage(MyCamera.MV_SAVE_IAMGE_TYPE.MV_Image_Tif, "TIFF", "tif");
+        }
+
+        /// <summary>
+        /// JPG 保存
+        /// </summary>
+        private void SaveJpgToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImage(MyCamera.MV_SAVE_IAMGE_TYPE.MV_Image_Jpeg, "JPG", "jpg", 80);
+        }
+
+        /// <summary>
+        /// BMP 保存
+        /// </summary>
+        private void SaveBmpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImage(MyCamera.MV_SAVE_IAMGE_TYPE.MV_Image_Bmp, "Bmp", "bmp");
+        }
+
+        /// <summary>
+        /// Math.Clamp 是 .NET Core / .NET 5+ 才有， .NET Framework（WinForms 很多项目还是 4.x）， Math.Clamp 。
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        private uint Clamp(int value, int min, int max)
+        {
+            if (value < min) return (uint)min;
+            if (value > max) return (uint)max;
+            return (uint)value;
+        }
+
+        /// <summary>
+        /// 通用图像保存方法
+        /// </summary>
+        /// <param name="imageType">图片类型</param>
+        /// <param name="folderName">保存文件夹名称</param>
+        /// <param name="extension">文件扩展名</param>
+        /// <param name="quality">保存质量，默认 -1 不设置</param>
+        private void SaveImage(MyCamera.MV_SAVE_IAMGE_TYPE imageType, string folderName, string extension, int quality = 0)
+        {
+            if (!m_bGrabbing)
+            {
+                ShowErrorMsg("Not Start Grabbing", 0);
+                logHelper.AppendLog("WARN: Not Start Grabbing");
+                return;
+            }
+
+            lock (BufForDriverLock)
+            {
+                if (m_stFrameInfo.nFrameLen == 0)
+                {
+                    ShowErrorMsg($"Save {extension.ToUpper()} Fail!", 0);
+                    logHelper.AppendLog("WARN: Save {extension.ToUpper()} Fail!");
+                    return;
+                }
+
+                MyCamera.MV_SAVE_IMG_TO_FILE_PARAM stSaveFileParam = new MyCamera.MV_SAVE_IMG_TO_FILE_PARAM
+                {
+                    enImageType = imageType,
+                    enPixelType = m_stFrameInfo.enPixelType,
+                    pData = m_BufForDriver,
+                    nDataLen = m_stFrameInfo.nFrameLen,
+                    nHeight = m_stFrameInfo.nHeight,
+                    nWidth = m_stFrameInfo.nWidth,
+                    iMethodValue = 2
+                };
+                switch (imageType)
+                {
+                    case MyCamera.MV_SAVE_IAMGE_TYPE.MV_Image_Jpeg:
+                        stSaveFileParam.nQuality = Clamp(quality > 0 ? quality : 80, 1, 100);
+                        break;
+
+                    case MyCamera.MV_SAVE_IAMGE_TYPE.MV_Image_Png:
+                        stSaveFileParam.nQuality = Clamp(quality >= 0 ? quality : 8, 0, 9);
+                        break;
+
+                    default:
+                        stSaveFileParam.nQuality = 0; // BMP、TIFF 不设置
+                        break;
+                }
+
+                string folderPath = Path.Combine(Application.StartupPath, "Images", folderName);
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                stSaveFileParam.pImagePath = Path.Combine(folderPath,
+                    $"{stSaveFileParam.nWidth}_h{stSaveFileParam.nHeight}_fn{m_stFrameInfo.nFrameNum}.{extension}");
+
+                int nRet = m_MyCamera.MV_CC_SaveImageToFile_NET(ref stSaveFileParam);
+                if (MyCamera.MV_OK != nRet)
+                {
+                    ShowErrorMsg($"Save {extension.ToUpper()} Fail!", nRet);
+                    logHelper.AppendLog($"WARN: Save {extension.ToUpper()} Fail!");
+                    return;
+                }
+            }
+
+            this.ShowSuccessNotifier("Save Succeed!");
+        }
+
+        #endregion 图片保存
+
+        /// <summary>
+        /// 打开系统日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Path.Combine(Application.StartupPath, "Logs");
+            OpenSystemFolder(path);
+        }
+
+        /// <summary>
+        /// 打开图像日志文件夹
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Path.Combine(Application.StartupPath, "Images");
+            OpenSystemFolder(path);
+        }
+
+        /// <summary>
+        /// 停止采集
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // ch:标志位设为false | en:Set flag bit false
+            m_bGrabbing = false;
+            m_hReceiveThread.Join();
+
+            // ch:停止采集 | en:Stop Grabbing
+            int nRet = m_MyCamera.MV_CC_StopGrabbing_NET();
+            if (nRet != MyCamera.MV_OK)
+            {
+                ShowErrorMsg("Stop Grabbing Fail!", nRet);
+            }
         }
 
         /// <summary>
@@ -138,7 +318,8 @@ namespace NetAIVision
                 if (string.IsNullOrEmpty(message))
                 {
                     //ShowSystemLogs("MES", "MesConnect");
-                    this.ShowErrorNotifier(message);
+                    this.ShowSuccessNotifier("MES Connection ...");
+                    logHelper.AppendLog($"info: MES Connection ... Start ");
                     MES_Service.MesConnect();
                 }
                 else
@@ -146,6 +327,7 @@ namespace NetAIVision
                     //ShowSystemLogs("MES", $"MES连接失败 {message}");
                     switchMES.Active = false;
                     this.ShowErrorNotifier(message);
+                    logHelper.AppendLog($"ERROR: {message} ");
                     return;
                 }
             }
@@ -173,6 +355,7 @@ namespace NetAIVision
             groupSetting.Height = this.Height - groupSetting.Height - 16;
             groupSetting.Width = this.Width - pictureBox1.Width - 10;
             uiLine2.Width = groupSetting.Width - 10;
+            logHelper.AppendLog("INFO: 程序启动");
         }
 
         /// <summary>
@@ -306,7 +489,7 @@ namespace NetAIVision
             m_stFrameInfo.nFrameLen = 0;//取流之前先清除帧长度
             m_stFrameInfo.enPixelType = MyCamera.MvGvspPixelType.PixelType_Gvsp_Undefined;
 
-            m_hReceiveThread = new Thread(ReceiveThreadProcess);
+            m_hReceiveThread = new Thread(HikCaremaReceiveThreadProcess);
             m_hReceiveThread.Start();
 
             // ch:开始采集 | en:Start Grabbing
@@ -323,7 +506,7 @@ namespace NetAIVision
         /// <summary>
         /// 相机像素格式转换及显示线程
         /// </summary>
-        public void ReceiveThreadProcess()
+        public void HikCaremaReceiveThreadProcess()
         {
             MyCamera.MV_FRAME_OUT stFrameInfo = new MyCamera.MV_FRAME_OUT();
             MyCamera.MV_DISPLAY_FRAME_INFO stDisplayInfo = new MyCamera.MV_DISPLAY_FRAME_INFO();
@@ -364,21 +547,6 @@ namespace NetAIVision
                         stConvertInfo.nSrcDataLen = stFrameInfo.stFrameInfo.nFrameLen;
                         stConvertInfo.pDstBuffer = m_ConvertDstBuf;
                         stConvertInfo.nDstBufferSize = m_nConvertDstBufLen;
-                        //if (PixelFormat.Format8bppIndexed == m_bitmap.PixelFormat)
-                        //{
-                        //    stConvertInfo.enDstPixelType = MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8;
-                        //    m_MyCamera.MV_CC_ConvertPixelType_NET(ref stConvertInfo);
-                        //}
-                        //else
-                        //{
-                        //    stConvertInfo.enDstPixelType = MyCamera.MvGvspPixelType.PixelType_Gvsp_BGR8_Packed;
-                        //    m_MyCamera.MV_CC_ConvertPixelType_NET(ref stConvertInfo);
-                        //}
-
-                        //// ch:保存Bitmap数据 | en:Save Bitmap Data
-                        //BitmapData bitmapData = m_bitmap.LockBits(new Rectangle(0, 0, stConvertInfo.nWidth, stConvertInfo.nHeight), ImageLockMode.ReadWrite, m_bitmap.PixelFormat);
-                        //CopyMemory(bitmapData.Scan0, stConvertInfo.pDstBuffer, (UInt32)(bitmapData.Stride * m_bitmap.Height));
-                        //m_bitmap.UnlockBits(bitmapData);
                     }
 
                     stDisplayInfo.hWnd = displayHandle;
@@ -388,13 +556,11 @@ namespace NetAIVision
                     stDisplayInfo.nHeight = stFrameInfo.stFrameInfo.nHeight;
                     stDisplayInfo.enPixelType = stFrameInfo.stFrameInfo.enPixelType;
                     m_MyCamera.MV_CC_DisplayOneFrame_NET(ref stDisplayInfo);
-
                     m_MyCamera.MV_CC_FreeImageBuffer_NET(ref stFrameInfo);
                 }
             }
         }
 
-        /// <summary>
         /// windows 加载事件
         /// </summary>
         /// <param name="sender"></param>
@@ -681,6 +847,24 @@ namespace NetAIVision
                     g.DrawRectangle(Pens.Red, currentROI.Rect);
                 }
             }
+        }
+
+        /// <summary>
+        /// 打开系统文件夹
+        /// </summary>
+        /// <param name="path"></param>
+        public void OpenSystemFolder(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            // 使用系统关联的程序打开路径
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = path,
+                UseShellExecute = true
+            });
         }
     }
 }
