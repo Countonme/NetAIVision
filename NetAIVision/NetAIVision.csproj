@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MvCameraControl.Net, Version=4.5.0.2, Culture=neutral, PublicKeyToken=a3c7c5e3a730cd12, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\software_install\MVS\MVS\Development\DotNet\AnyCpu\MvCameraControl.Net.dll</HintPath>
@@ -78,6 +79,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tesseract">
+      <HintPath>..\..\..\..\Software_Devlopment\Software_Devlopment\NET\api.com\api.com\bin\Debug\net8.0\Tesseract.dll</HintPath>
+    </Reference>
     <Reference Include="zxing, Version=0.16.10.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.10\lib\net48\zxing.dll</HintPath>
     </Reference>
@@ -169,6 +173,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\opred.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\33.删除.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1dataOCR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OCR识别管理.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qrcode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_more_rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />

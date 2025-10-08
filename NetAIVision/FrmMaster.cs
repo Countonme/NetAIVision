@@ -1,9 +1,13 @@
-﻿using MvCamCtrl.NET;
+﻿using Microsoft.VisualBasic;
+using MvCamCtrl.NET;
 using NetAIVision.Controller;
+using NetAIVision.Model;
 using NetAIVision.Model.FrmResult;
 using NetAIVision.Model.ROI;
 using NetAIVision.Services;
 using NetAIVision.Services.MES;
+using OpenCvSharp;
+using OpenCvSharp.Internal.Vectors;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
@@ -20,6 +24,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tesseract;
+using ZXing;
+using ZXing.Common;
+using static MvCamCtrl.NET.MyCamera;
 
 namespace NetAIVision
 {
@@ -60,10 +68,16 @@ namespace NetAIVision
         private List<ROI> rois = new List<ROI>(); // 保存ROI的列表
         private ROI currentROI = null;            // 当前正在绘制的ROI
         private bool isDrawing = false;           // 是否正在绘制
-        private Point startPoint;                 // 起点
+        private System.Drawing.Point startPoint;                 // 起点
         private int roiCounter = 1;               // ROI编号计数
+        private ROI selectedRoi;
 
         #endregion roi
+
+        //OCR
+        private readonly string _lang = "chi_sim"; // 可改为 eng, chi_tra 等
+
+        private readonly string _tessDataPath;
 
         public FrmMaster()
         {
@@ -74,7 +88,7 @@ namespace NetAIVision
             this.openToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
             this.openImagesToolStripMenuItem.Click += OpenImagesToolStripMenuItem_Click;
             this.openLogsToolStripMenuItem.Click += OpenLogsToolStripMenuItem_Click;
-
+            this.importImageToolStripMenuItem.Click += ImportImageToolStripMenuItem_Click;
             this.closeToolStripMenuItem.Click += CloseToolStripMenuItem_Click;
             this.stopToolStripMenuItem.Click += StopToolStripMenuItem_Click;
             this.pictureBox1.MouseDown += PictureBox1_MouseDown;
@@ -95,7 +109,445 @@ namespace NetAIVision
             this.SavejPGToolStripMenuItem.Click += SaveJpgToolStripMenuItem_Click;
             this.SavetIFFToolStripMenuItem.Click += SaveTiffToolStripMenuItem_Click;
             this.SavepNGToolStripMenuItem.Click += SavePNGToolStripMenuItem_Click;
+            this.saveTempToolStripMenuItem.Click += SaveTempToolStripMenuItem_Click;
             logHelper = new ConsoleStyleLogHelper(richboxLogs, 100);
+
+            //Remove ROI
+            this.removeROIToolStripMenuItem.Click += RemoveROIToolStripMenuItem_Click;
+            this.QRCodeToolStripMenuItem.Click += QRCodeToolStripMenuItem_Click;
+            this.RenameROIToolStripMenuItem.Click += RenameROIToolStripMenuItem_Click;
+
+            //OCR
+            // 假设 tessdata 文件夹在项目根目录下
+            this._tessDataPath = Path.Combine(Directory.GetCurrentDirectory(), "tessdata");
+            // 获取当前工作目录（即启动目录）
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            // 构建 tessdata 路径（放在启动目录下）
+            this._tessDataPath = Path.Combine(baseDirectory, "tessdata");
+
+            // 检查 tessdata 文件夹是否存在
+            if (!Directory.Exists(this._tessDataPath))
+            {
+                Directory.CreateDirectory(this._tessDataPath);
+            }
+            this.oCRToolStripMenuItem.Click += OCRToolStripMenuItem_Click;
+            //Exit
+            this.exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
+            this.FormClosing += FrmMaster_FormClosing;
+            //污点检查
+            this.taintAnalysisToolStripMenuItem.Click += TaintAnalysisToolStripMenuItem_Click;
+        }
+
+        private void TaintAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Rectangle roiRect = selectedRoi.Rect;
+
+            // 确保 ROI 在图像范围内
+            if (roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 1. 创建 ROI 区域的位图
+            Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+            using (Graphics g = Graphics.FromImage(templateImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+
+            try
+            {
+                // 2. 将 Bitmap 转为 Mat（使用 OpenCvSharp.Extensions）
+                using (Mat src = BitmapToMat(templateImage))
+                using (Mat resultMat = src.Clone())
+                {
+                    // 3. 执行脏污检测
+                    var dirtAreas = DetectDirt(src, thresholdValue: 50, minArea: 50);
+
+                    if (dirtAreas.Count > 0)
+                    {
+                        // 对每一个检测到的脏污区域画矩形框
+                        foreach (var area in dirtAreas)
+                        {
+                            // area 是 System.Drawing.Rectangle
+                            // 需要转换为 OpenCvSharp.Rect
+                            OpenCvSharp.Rect roiRects = new OpenCvSharp.Rect(area.X, area.Y, area.Width, area.Height);
+                            Cv2.Rectangle(resultMat, roiRects, Scalar.Red, 2);
+                        }
+                    }
+
+                    // 5. 将结果 Mat 转回 Bitmap
+                    Bitmap resultBitmap = MatToBitmap(resultMat);
+
+                    // 6. 显示在 pictureBox2 或新窗体中
+                    //pictureBox1.Image?.Dispose(); // 释放旧图像
+                    //pictureBox1.Image = resultBitmap;
+
+                    // 7. 提示结果
+                    if (dirtAreas.Count > 0)
+                    {
+                        MessageBox.Show($"在ROI区域内发现 {dirtAreas.Count} 处脏污。", "检测结果",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("ROI区域干净，未发现明显脏污。", "检测结果",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"脏污分析失败：{ex.Message}", "错误",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // 释放临时图像
+                templateImage.Dispose();
+            }
+        }
+
+        public static Bitmap MatToBitmap(Mat mat)
+        {
+            if (mat == null)
+                throw new ArgumentException("Mat 为空或无效");
+
+            // ✅ 正确调用旧版 ImEncode
+            bool success = Cv2.ImEncode(".png", mat, out byte[] encodedBytes);
+
+            if (!success)
+                throw new Exception("图像编码失败：ImEncode 返回 false");
+
+            using (var ms = new MemoryStream(encodedBytes))
+            {
+                return new Bitmap(ms);
+            }
+        }
+
+        public static Mat BitmapToMat(Bitmap bitmap)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                ms.Position = 0;
+                return Cv2.ImDecode(ms.ToArray(), ImreadModes.Color);
+            }
+        }
+
+        /// <summary>
+        /// 退出系统
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmMaster_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.ShowAskDialog("您確定要退出系統嗎?"))
+            {
+                MES_Service.MesDisConnect();
+                // DisConnectionHardwareDevice();
+                Environment.Exit(0);
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        /// <summary>
+        /// 退出系统
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.ShowAskDialog("您確定要退出系統嗎?"))
+            {
+                MES_Service.MesDisConnect();
+                // DisConnectionHardwareDevice();
+                Environment.Exit(0);
+            }
+        }
+
+        /// <summary>
+        /// OCR 识别
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OCRToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            Rectangle roiRect = selectedRoi.Rect;
+
+            // 确保 ROI 在图像范围内
+            if (roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域超出图像范围，无法保存。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 1. 创建 ROI 区域的位图
+            Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+            using (Graphics g = Graphics.FromImage(templateImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+            // 使用 Tesseract 进行 OCR 识别
+            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
+            // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
+            var ms = new MemoryStream();
+            templateImage.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
+            ms.Position = 0;
+
+            var img = Pix.LoadFromMemory(ms.ToArray());
+            var page = engine.Process(img);
+            string text = page.GetText();
+            logHelper.AppendLog($"OCR Data:{text}");
+        }
+
+        /// <summary>
+        /// 保存ROI 图片Temp 模板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveTempToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Rectangle roiRect = selectedRoi.Rect;
+
+            if (pictureBox1.Image == null)
+            {
+                MessageBox.Show("当前没有加载图像，无法保存模板。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 确保 ROI 在图像范围内
+            if (roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域超出图像范围，无法保存。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 1. 创建 ROI 区域的位图
+            Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+            using (Graphics g = Graphics.FromImage(templateImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+
+            // 2. 定义保存路径：程序根目录
+            string rootPath = AppDomain.CurrentDomain.BaseDirectory; // 程序运行目录
+            string fileName = $"模板_{selectedRoi.Name}.png";
+            string path = Path.Combine(rootPath, "Images", "Temp");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filePath = Path.Combine(rootPath, "Images", "Temp", fileName);
+
+            try
+            {
+                // 3. 保存图像
+                templateImage.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+
+                // 4. 释放资源
+                templateImage.Dispose();
+
+                // 5. 提示用户
+                MessageBox.Show($"模板已保存：\n{filePath}", "保存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // 可选：打开文件所在目录
+                // System.Diagnostics.Process.Start("explorer.exe", "/select," + filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"保存失败：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// 重命名ROI 区域名称
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RenameROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // 弹出输入框
+            string newName = Interaction.InputBox(
+                "请输入新的名称：",
+                "重命名ROI",
+                selectedRoi.Name,  // 默认显示当前名称
+                -1, -1);           // 居中显示
+
+            // 如果用户点击取消或输入为空，则不操作
+            if (string.IsNullOrWhiteSpace(newName))
+                return;
+
+            // 更新名称
+            selectedRoi.Name = newName;
+
+            // 刷新图像显示（确保 Name 被重绘）
+            pictureBox1.Invalidate();
+        }
+
+        /// <summary>
+        /// 二维码解析
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void QRCodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // 获取 ROI 矩形
+            Rectangle roiRect = selectedRoi.Rect;
+
+            // 确保 ROI 在图像范围内
+            if (pictureBox1.Image == null ||
+                roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域无效或超出图像范围。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 1. 创建一个位图来保存截取的区域
+            Bitmap roiImage = new Bitmap(roiRect.Width, roiRect.Height);
+
+            // 2. 使用 Graphics 从 pictureBox1.Image 中拷贝 ROI 区域
+            using (Graphics g = Graphics.FromImage(roiImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+            // 3. 使用 ZXing 识别二维码
+            var barcodeReader = new ZXing.BarcodeReader()
+            {
+                AutoRotate = true,
+                TryInverted = true,
+                Options = new DecodingOptions
+                {
+                    TryHarder = true,
+                    PossibleFormats = new List<BarcodeFormat> {
+                        BarcodeFormat.QR_CODE,
+                        ZXing.BarcodeFormat.DATA_MATRIX,
+                        ZXing.BarcodeFormat.AZTEC,
+                        ZXing.BarcodeFormat.PDF_417
+                    }
+                }
+            };
+            var result = barcodeReader.Decode(roiImage);
+
+            // 4. 显示结果
+            if (result != null)
+            {
+                logHelper.AppendLog($"INFO:{selectedRoi.Name} 识别成功：{result.Text}");
+                //MessageBox.Show($"识别成功：\n{result.Text}", "二维码内容", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                logHelper.AppendLog($"ERROR:{selectedRoi.Name} 未识别到二维码，请确保该区域包含清晰的二维码");
+                //MessageBox.Show("未识别到二维码，请确保该区域包含清晰的二维码。", "识别失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            // 可选：释放资源
+            roiImage.Dispose();
+        }
+
+        /// <summary>
+        /// 手动导入图片
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void ImportImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "图片文件|*.jpg;*.jpeg;*.png;*.bmp";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    Bitmap bmps = new Bitmap(dlg.FileName);
+                    Bitmap bmp = new Bitmap(bmps, pictureBox1.Size);
+
+                    pictureBox1.Image = bmp;
+
+                    //var (text, points) = QRCodeHelper.ReturnBarcodeCoordinates(bmp);
+
+                    //if (!string.IsNullOrEmpty(text))
+                    //{
+                    //    // 绘制二维码框
+                    //    var imgWithBox = QRCodeHelper.DrawQRCodeBox(new Bitmap(bmp), points);
+                    //    pictureBox1.Image = imgWithBox;
+                    //    MessageBox.Show($"识别成功：{text}");
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("未识别到二维码");
+                    //}
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除ROI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi != null)
+            {
+                rois.Remove(selectedRoi);
+                selectedRoi = null; // 清空引用
+                pictureBox1.Invalidate(); // 触发重绘
+            }
         }
 
         #region 图片保存
@@ -157,8 +609,8 @@ namespace NetAIVision
         {
             if (!m_bGrabbing)
             {
-                ShowErrorMsg("Not Start Grabbing", 0);
                 logHelper.AppendLog("WARN: Not Start Grabbing");
+                ShowErrorMsg("Not Start Grabbing", 0);
                 return;
             }
 
@@ -166,8 +618,8 @@ namespace NetAIVision
             {
                 if (m_stFrameInfo.nFrameLen == 0)
                 {
-                    ShowErrorMsg($"Save {extension.ToUpper()} Fail!", 0);
                     logHelper.AppendLog("WARN: Save {extension.ToUpper()} Fail!");
+                    ShowErrorMsg($"Save {extension.ToUpper()} Fail!", 0);
                     return;
                 }
 
@@ -208,8 +660,8 @@ namespace NetAIVision
                 int nRet = m_MyCamera.MV_CC_SaveImageToFile_NET(ref stSaveFileParam);
                 if (MyCamera.MV_OK != nRet)
                 {
-                    ShowErrorMsg($"Save {extension.ToUpper()} Fail!", nRet);
                     logHelper.AppendLog($"WARN: Save {extension.ToUpper()} Fail!");
+                    ShowErrorMsg($"Save {extension.ToUpper()} Fail!", nRet);
                     return;
                 }
             }
@@ -256,8 +708,10 @@ namespace NetAIVision
             int nRet = m_MyCamera.MV_CC_StopGrabbing_NET();
             if (nRet != MyCamera.MV_OK)
             {
+                logHelper.AppendLog($"WARN: Stop Grabbing Fail! ");
                 ShowErrorMsg("Stop Grabbing Fail!", nRet);
             }
+            logHelper.AppendLog($"INFO: Stop Grabbing Collection... ");
         }
 
         /// <summary>
@@ -279,6 +733,7 @@ namespace NetAIVision
                 if (string.IsNullOrEmpty(mlabEmp.Text))
                 {
                     RadioDebugMode.Checked = true;
+                    logHelper.AppendLog($"WARN: 没有输入人员工号,非法登录 无法连接MES ");
                     this.ShowErrorDialog("没有输入人员工号");
 
                     return;
@@ -288,9 +743,11 @@ namespace NetAIVision
                 if (!checkFlag)
                 {
                     RadioDebugMode.Checked = true;
+                    logHelper.AppendLog($"WARN: {message} ");
                     this.ShowErrorDialog($"{message}");
                     return;
                 }
+                logHelper.AppendLog($"SUCCESS: 登录成功 {mlabEmp.Text} ");
                 this.ShowSuccessNotifier($"登录成功 {mlabEmp.Text}");
             }
         }
@@ -347,12 +804,12 @@ namespace NetAIVision
         /// <param name="e"></param>
         private void FrmMaster_Shown(object sender, EventArgs e)
         {
-            pictureBox1.Size = new Size(1024, 768);
-            pictureBox1.Location = new Point(this.Width - 1028, 100);
+            pictureBox1.Size = new System.Drawing.Size(1024, 768);
+            pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 100);
             cbDeviceList.Width = 1024;
-            cbDeviceList.Location = new Point(this.Width - 1028, 70);
+            cbDeviceList.Location = new System.Drawing.Point(this.Width - 1028, 70);
             grouplogs.Height = this.Height - pictureBox1.Height - 100;
-            groupSetting.Height = this.Height - groupSetting.Height - 16;
+            groupSetting.Height = this.Height - groupSetting.Height + 42;
             groupSetting.Width = this.Width - pictureBox1.Width - 10;
             uiLine2.Width = groupSetting.Width - 10;
             logHelper.AppendLog("INFO: 程序启动");
@@ -467,11 +924,13 @@ namespace NetAIVision
                     nRet = m_MyCamera.MV_CC_SetIntValueEx_NET("GevSCPSPacketSize", nPacketSize);
                     if (nRet != MyCamera.MV_OK)
                     {
+                        logHelper.AppendLog($"WARN: Set Packet Size failed! ");
                         ShowErrorMsg("Set Packet Size failed!", nRet);
                     }
                 }
                 else
                 {
+                    logHelper.AppendLog($"WARN: Get Packet Size failed! ");
                     ShowErrorMsg("Get Packet Size failed!", nPacketSize);
                 }
             }
@@ -480,7 +939,11 @@ namespace NetAIVision
             m_MyCamera.MV_CC_SetEnumValue_NET("AcquisitionMode", (uint)MyCamera.MV_CAM_ACQUISITION_MODE.MV_ACQ_MODE_CONTINUOUS);
             m_MyCamera.MV_CC_SetEnumValue_NET("TriggerMode", (uint)MyCamera.MV_CAM_TRIGGER_MODE.MV_TRIGGER_MODE_OFF);
             // ch:前置配置 | en:pre-operation
-
+            nRet = NecessaryOperBeforeGrab();
+            if (MyCamera.MV_OK != nRet)
+            {
+                return;
+            }
             displayHandle = pictureBox1.Handle;
 
             // ch:标志位置true | en:Set position bit true
@@ -494,12 +957,137 @@ namespace NetAIVision
 
             // ch:开始采集 | en:Start Grabbing
             nRet = m_MyCamera.MV_CC_StartGrabbing_NET();
+
             if (MyCamera.MV_OK != nRet)
             {
                 m_bGrabbing = false;
                 m_hReceiveThread.Join();
+                logHelper.AppendLog($"WARN: Start Grabbing Fail! ");
                 ShowErrorMsg("Start Grabbing Fail!", nRet);
                 return;
+            }
+            logHelper.AppendLog($"SUCCESS: 相机连接成功,采集开始 ");
+        }
+
+        // ch:取图前的必要操作步骤 | en:Necessary operation before grab
+        private Int32 NecessaryOperBeforeGrab()
+        {
+            // ch:取图像宽 | en:Get Iamge Width
+            MyCamera.MVCC_INTVALUE_EX stWidth = new MyCamera.MVCC_INTVALUE_EX();
+            int nRet = m_MyCamera.MV_CC_GetIntValueEx_NET("Width", ref stWidth);
+            if (MyCamera.MV_OK != nRet)
+            {
+                ShowErrorMsg("Get Width Info Fail!", nRet);
+                return nRet;
+            }
+            // ch:取图像高 | en:Get Iamge Height
+            MyCamera.MVCC_INTVALUE_EX stHeight = new MyCamera.MVCC_INTVALUE_EX();
+            nRet = m_MyCamera.MV_CC_GetIntValueEx_NET("Height", ref stHeight);
+            if (MyCamera.MV_OK != nRet)
+            {
+                ShowErrorMsg("Get Height Info Fail!", nRet);
+                return nRet;
+            }
+            // ch:取像素格式 | en:Get Pixel Format
+            MyCamera.MVCC_ENUMVALUE stPixelFormat = new MyCamera.MVCC_ENUMVALUE();
+            nRet = m_MyCamera.MV_CC_GetEnumValue_NET("PixelFormat", ref stPixelFormat);
+            if (MyCamera.MV_OK != nRet)
+            {
+                ShowErrorMsg("Get Pixel Format Fail!", nRet);
+                return nRet;
+            }
+
+            // ch:设置bitmap像素格式，申请相应大小内存 | en:Set Bitmap Pixel Format, alloc memory
+            if ((Int32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Undefined == (Int32)stPixelFormat.nCurValue)
+            {
+                ShowErrorMsg("Unknown Pixel Format!", MyCamera.MV_E_UNKNOW);
+                return MyCamera.MV_E_UNKNOW;
+            }
+            else if (IsMono(stPixelFormat.nCurValue))
+            {
+                m_bitmapPixelFormat = PixelFormat.Format8bppIndexed;
+
+                if (IntPtr.Zero != m_ConvertDstBuf)
+                {
+                    Marshal.Release(m_ConvertDstBuf);
+                    m_ConvertDstBuf = IntPtr.Zero;
+                }
+
+                // Mono8为单通道
+                m_nConvertDstBufLen = (UInt32)(stWidth.nCurValue * stHeight.nCurValue);
+                m_ConvertDstBuf = Marshal.AllocHGlobal((Int32)m_nConvertDstBufLen);
+                if (IntPtr.Zero == m_ConvertDstBuf)
+                {
+                    ShowErrorMsg("Malloc Memory Fail!", MyCamera.MV_E_RESOURCE);
+                    return MyCamera.MV_E_RESOURCE;
+                }
+            }
+            else
+            {
+                m_bitmapPixelFormat = PixelFormat.Format24bppRgb;
+
+                if (IntPtr.Zero != m_ConvertDstBuf)
+                {
+                    Marshal.FreeHGlobal(m_ConvertDstBuf);
+                    m_ConvertDstBuf = IntPtr.Zero;
+                }
+
+                // RGB为三通道
+                m_nConvertDstBufLen = (UInt32)(3 * stWidth.nCurValue * stHeight.nCurValue);
+                m_ConvertDstBuf = Marshal.AllocHGlobal((Int32)m_nConvertDstBufLen);
+                if (IntPtr.Zero == m_ConvertDstBuf)
+                {
+                    ShowErrorMsg("Malloc Memory Fail!", MyCamera.MV_E_RESOURCE);
+                    return MyCamera.MV_E_RESOURCE;
+                }
+            }
+
+            // 确保释放保存了旧图像数据的bitmap实例，用新图像宽高等信息new一个新的bitmap实例
+            if (null != m_bitmap)
+            {
+                m_bitmap.Dispose();
+                m_bitmap = null;
+            }
+            m_bitmap = new Bitmap((Int32)stWidth.nCurValue, (Int32)stHeight.nCurValue, m_bitmapPixelFormat);
+
+            // ch:Mono8格式，设置为标准调色板 | en:Set Standard Palette in Mono8 Format
+            if (PixelFormat.Format8bppIndexed == m_bitmapPixelFormat)
+            {
+                ColorPalette palette = m_bitmap.Palette;
+                for (int i = 0; i < palette.Entries.Length; i++)
+                {
+                    palette.Entries[i] = Color.FromArgb(i, i, i);
+                }
+                m_bitmap.Palette = palette;
+            }
+
+            return MyCamera.MV_OK;
+        }
+
+        /// <summary>
+        /// ch:像素类型是否为Mono格式 | en:If Pixel Type is Mono
+        /// </summary>
+        /// <param name="enPixelType"></param>
+        /// <returns></returns>
+        private Boolean IsMono(UInt32 enPixelType)
+        {
+            switch (enPixelType)
+            {
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono1p:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono2p:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono4p:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8_Signed:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono10:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono10_Packed:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono12:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono12_Packed:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono14:
+                case (UInt32)MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono16:
+                    return true;
+
+                default:
+                    return false;
             }
         }
 
@@ -547,16 +1135,130 @@ namespace NetAIVision
                         stConvertInfo.nSrcDataLen = stFrameInfo.stFrameInfo.nFrameLen;
                         stConvertInfo.pDstBuffer = m_ConvertDstBuf;
                         stConvertInfo.nDstBufferSize = m_nConvertDstBufLen;
+                        if (PixelFormat.Format8bppIndexed == m_bitmap.PixelFormat)
+                        {
+                            stConvertInfo.enDstPixelType = MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8;
+                            m_MyCamera.MV_CC_ConvertPixelType_NET(ref stConvertInfo);
+                        }
+                        else
+                        {
+                            stConvertInfo.enDstPixelType = MyCamera.MvGvspPixelType.PixelType_Gvsp_BGR8_Packed;
+                            m_MyCamera.MV_CC_ConvertPixelType_NET(ref stConvertInfo);
+                        }
+
+                        // ch:保存Bitmap数据 | en:Save Bitmap Data
+                        BitmapData bitmapData = m_bitmap.LockBits(new Rectangle(0, 0, stConvertInfo.nWidth, stConvertInfo.nHeight), ImageLockMode.ReadWrite, m_bitmap.PixelFormat);
+                        CopyMemory(bitmapData.Scan0, stConvertInfo.pDstBuffer, (UInt32)(bitmapData.Stride * m_bitmap.Height));
+                        m_bitmap.UnlockBits(bitmapData);
+                        // 在 Bitmap 上绘制参考线
+                        using (Graphics g = Graphics.FromImage(m_bitmap))
+                        {
+                            int w = m_bitmap.Width;
+                            int h = m_bitmap.Height;
+
+                            // 设置抗锯齿绘图参数
+                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                            // 定义画笔
+                            using (Pen pen = new Pen(Color.Lime, 2))
+                            {
+                                // 绘制中心十字线
+                                g.DrawLine(pen, w / 2, 0, w / 2, h);
+                                g.DrawLine(pen, 0, h / 2, w, h / 2);
+
+                                // 例如可以再画外边框
+                                g.DrawRectangle(pen, 0, 0, w - 1, h - 1);
+                            }
+                        }
+                        // === 如需显示处理结果，可通过 Invoke 设置 UI ===
+                        this.Invoke(new Action(() =>
+                        {
+                            if (m_bitmap != null)
+                            {
+                                // ✅ 关键：生成安全副本（与 SDK 内存分离）  适应 PictureBox 大小
+                                Bitmap safeBitmap = new Bitmap(m_bitmap, pictureBox1.Size);
+
+                                // 清理旧图像，防止内存泄漏
+                                if (pictureBox1.Image != null)
+                                    pictureBox1.Image.Dispose();
+
+                                pictureBox1.Image = safeBitmap;
+                            }
+                        }));
                     }
 
-                    stDisplayInfo.hWnd = displayHandle;
-                    stDisplayInfo.pData = stFrameInfo.pBufAddr;
-                    stDisplayInfo.nDataLen = stFrameInfo.stFrameInfo.nFrameLen;
-                    stDisplayInfo.nWidth = stFrameInfo.stFrameInfo.nWidth;
-                    stDisplayInfo.nHeight = stFrameInfo.stFrameInfo.nHeight;
-                    stDisplayInfo.enPixelType = stFrameInfo.stFrameInfo.enPixelType;
-                    m_MyCamera.MV_CC_DisplayOneFrame_NET(ref stDisplayInfo);
+                    //stDisplayInfo.hWnd = displayHandle;
+                    //stDisplayInfo.pData = stFrameInfo.pBufAddr;
+                    //stDisplayInfo.nDataLen = stFrameInfo.stFrameInfo.nFrameLen;
+                    //stDisplayInfo.nWidth = stFrameInfo.stFrameInfo.nWidth;
+                    //stDisplayInfo.nHeight = stFrameInfo.stFrameInfo.nHeight;
+                    //stDisplayInfo.enPixelType = stFrameInfo.stFrameInfo.enPixelType;
+                    //m_MyCamera.MV_CC_DisplayOneFrame_NET(ref stDisplayInfo);
+
                     m_MyCamera.MV_CC_FreeImageBuffer_NET(ref stFrameInfo);
+                    //if (rois.Count > 0)
+                    //{
+                    //    this.BeginInvoke(new Action(() => ShowAllROIs()));
+                    //}
+                }
+                else
+                {
+                }
+            }
+        }
+
+        // 在缓冲上画十字参考线，直接用整数判断像素类型
+        // 修改绘制函数，直接接受枚举类型
+        private void DrawCrossLine(IntPtr pBuf, int width, int height, MvGvspPixelType pixelType)
+        {
+            if (pBuf == IntPtr.Zero || width <= 0 || height <= 0)
+                return;
+
+            unsafe
+            {
+                byte* ptr = (byte*)pBuf.ToPointer();
+                int centerX = width / 2;
+                int centerY = height / 2;
+
+                // 灰度图 Mono8
+                if (pixelType == MvGvspPixelType.PixelType_Gvsp_HB_Mono8)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        int idx = centerY * width + x;
+                        if (idx < width * height) // 防越界
+                            ptr[idx] = 255;
+                    }
+                    for (int y = 0; y < height; y++)
+                    {
+                        int idx = y * width + centerX;
+                        if (idx < width * height)
+                            ptr[idx] = 255;
+                    }
+                }
+                // 彩色 RGB24
+                else if (pixelType == MvGvspPixelType.PixelType_Gvsp_BayerRG8)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        int idx = (centerY * width + x) * 3;
+                        if (idx + 2 < width * height * 3)
+                        {
+                            ptr[idx + 0] = 0;
+                            ptr[idx + 1] = 0;
+                            ptr[idx + 2] = 255;
+                        }
+                    }
+                    for (int y = 0; y < height; y++)
+                    {
+                        int idx = (y * width + centerX) * 3;
+                        if (idx + 2 < width * height * 3)
+                        {
+                            ptr[idx + 0] = 0;
+                            ptr[idx + 1] = 0;
+                            ptr[idx + 2] = 255;
+                        }
+                    }
                 }
             }
         }
@@ -816,11 +1518,9 @@ namespace NetAIVision
                 var roi = rois.FirstOrDefault(r => r.Rect.Contains(e.Location));
                 if (roi != null)
                 {
-                    if (MessageBox.Show($"删除 {roi.Name} ?", "删除ROI", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        rois.Remove(roi);
-                        pictureBox1.Invalidate();
-                    }
+                    // 将 StepMenuStrip 作为上下文菜单，在鼠标位置显示
+                    selectedRoi = roi;
+                    StepMenuStrip.Show(pictureBox1, e.Location);
                 }
             }
         }
@@ -835,7 +1535,7 @@ namespace NetAIVision
                 // 绘制所有已存在的ROI
                 foreach (var roi in rois)
                 {
-                    g.FillRectangle(semiTransBrush, roi.Rect);
+                    //  g.FillRectangle(semiTransBrush, roi.Rect);
                     g.DrawRectangle(pen, roi.Rect);
                     g.DrawString(roi.Name, font, Brushes.Yellow, roi.Rect.Location);
                 }
@@ -866,5 +1566,97 @@ namespace NetAIVision
                 UseShellExecute = true
             });
         }
+
+        /// <summary>
+        /// 图片污点检查
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="thresholdValue"></param>
+        /// <param name="minArea"></param>
+        /// <returns></returns>
+        public List<OpenCvSharp.Rect> DetectDirt(Mat image, int thresholdValue = 60, int minArea = 100)
+        {
+            // 转换为灰度图像
+            Mat gray = new Mat();
+            Cv2.CvtColor(image, gray, ColorConversionCodes.BGR2GRAY);
+
+            // 使用高斯模糊降噪
+            Mat blurred = new Mat();
+            Cv2.GaussianBlur(gray, blurred, new OpenCvSharp.Size(5, 5), 0);
+
+            // 应用阈值处理
+            Mat thresh = new Mat();
+            Cv2.Threshold(blurred, thresh, thresholdValue, 255, ThresholdTypes.BinaryInv);
+
+            // 查找轮廓
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchy;
+            Cv2.FindContours(thresh, out contours, out hierarchy, RetrievalModes.List, ContourApproximationModes.ApproxSimple);
+
+            var dirtRegions = new List<OpenCvSharp.Rect>();
+
+            for (int i = 0; i < contours.Length; i++)
+            {
+                double area = Cv2.ContourArea(contours[i]);
+                if (area > minArea) // 过滤掉太小的区域
+                {
+                    OpenCvSharp.Rect rect = Cv2.BoundingRect(contours[i]);
+                    dirtRegions.Add(rect);
+                }
+            }
+
+            return dirtRegions;
+        }
+
+        /// <summary>
+        /// 模板比对函数 图片比对函数
+        /// </summary>
+        /// <param name="imagePath1"></param>
+        /// <param name="imagePath2"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public double CompareImageSimilarity(string imagePath1, string imagePath2)
+        {
+            using (Mat img1 = Cv2.ImRead(imagePath1, ImreadModes.Color))
+            using (Mat img2 = Cv2.ImRead(imagePath2, ImreadModes.Color))
+            {
+                if (img1.Empty() || img2.Empty())
+                {
+                    throw new Exception("图像加载失败，请检查路径");
+                }
+
+                // 调整大小为相同尺寸（可选）
+                Cv2.Resize(img1, img1, new OpenCvSharp.Size(500, 500));
+                Cv2.Resize(img2, img2, new OpenCvSharp.Size(500, 500));
+
+                // 转为 HSV 色彩空间（对光照变化更鲁棒）
+                using (Mat hsv1 = new Mat())
+                using (Mat hsv2 = new Mat())
+                {
+                    Cv2.CvtColor(img1, hsv1, ColorConversionCodes.BGR2HSV);
+                    Cv2.CvtColor(img2, hsv2, ColorConversionCodes.BGR2HSV);
+
+                    // 计算直方图
+                    int[] channels = { 0, 1 }; // H 和 S 通道
+                    int[] histSize = { 50, 60 }; // H:50 bins, S:60 bins
+                    Rangef[] ranges = { new Rangef(0, 180), new Rangef(0, 256) };
+
+                    using (Mat hist1 = new Mat())
+                    using (Mat hist2 = new Mat())
+                    {
+                        Cv2.CalcHist(new[] { hsv1 }, channels, null, hist1, 2, histSize, ranges);
+                        Cv2.CalcHist(new[] { hsv2 }, channels, null, hist2, 2, histSize, ranges);
+
+                        // 归一化
+                        Cv2.Normalize(hist1, hist1, 0, 1, NormTypes.MinMax);
+                        Cv2.Normalize(hist2, hist2, 0, 1, NormTypes.MinMax);
+
+                        // 比较直方图（方法 0: Correlation，值越接近 1 越相似）
+                        double similarity = Cv2.CompareHist(hist1, hist2, HistCompMethods.Correl);
+
+                        return similarity; // 返回 0.0 ~ 1.0，1 表示完全相同
+                    }
+                }
+            }
+        }
     }
-}
