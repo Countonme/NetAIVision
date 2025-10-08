@@ -2,6 +2,7 @@
 using NetAIVision.Controller;
 using NetAIVision.Model.FrmResult;
 using NetAIVision.Model.ROI;
+using NetAIVision.Services.MES;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
@@ -72,8 +73,113 @@ namespace NetAIVision
             this.pictureBox1.Paint += PictureBox1_Paint;
             this.refreshToolStripMenuItem.Click += RefreshToolStripMenuItem_Click;
             this.Text += $" Version:{Application.ProductVersion}";
+            this.Shown += FrmMaster_Shown;
+            this.switchMES.Click += SwitchMES_Click;
+
+            this.RadioDebugMode.Click += RadioDebugMode_Click;
+            this.RadioBtnProductionMode.Click += RadioBtnProductionMode_Click;
         }
 
+        /// <summary>
+        /// Handles the click event for a radio button that toggles production mode.
+        /// </summary>
+        /// <param name="sender">Represents the source of the click event.</param>
+        /// <param name="e">Contains the event data associated with the click action.</param>
+        private void RadioBtnProductionMode_Click(object sender, EventArgs e)
+        {
+            if (RadioBtnProductionMode.Checked)
+            {
+                //if (string.IsNullOrEmpty(txtModelName.Text))
+                //{
+                //    RadioDebugMode.Checked = true;
+                //    this.ShowErrorDialog("没有选择配置文件");
+                //    return;
+                //}
+
+                if (string.IsNullOrEmpty(mlabEmp.Text))
+                {
+                    RadioDebugMode.Checked = true;
+                    this.ShowErrorDialog("没有输入人员工号");
+
+                    return;
+                }
+                string message = string.Empty;
+                bool checkFlag = MES_Service.CommandCheckUser(mlabEmp.Text, ref message);
+                if (!checkFlag)
+                {
+                    RadioDebugMode.Checked = true;
+                    this.ShowErrorDialog($"{message}");
+                    return;
+                }
+                this.ShowSuccessNotifier($"登录成功 {mlabEmp.Text}");
+            }
+        }
+
+        /// <summary>
+        /// Handles the click event for enabling or disabling radio debug mode.
+        /// </summary>
+        /// <param name="sender">Represents the source of the click event.</param>
+        /// <param name="e">Contains the event data associated with the click action.</param>
+        private void RadioDebugMode_Click(object sender, EventArgs e)
+        {
+            // flagProductionModel = false;
+        }
+
+        /// <summary>
+        /// MES 开关按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SwitchMES_Click(object sender, EventArgs e)
+        {
+            if (switchMES.Active)
+            {
+                var message = MES_Service.CheckLib();
+                if (string.IsNullOrEmpty(message))
+                {
+                    //ShowSystemLogs("MES", "MesConnect");
+                    this.ShowErrorNotifier(message);
+                    MES_Service.MesConnect();
+                }
+                else
+                {
+                    //ShowSystemLogs("MES", $"MES连接失败 {message}");
+                    switchMES.Active = false;
+                    this.ShowErrorNotifier(message);
+                    return;
+                }
+            }
+            else
+            {
+                // ShowSystemLogs("MES", "MesDisConnect");
+                MES_Service.MesDisConnect();
+                //切换Debug模式
+                RadioDebugMode.Checked = true;
+            }
+        }
+
+        /// <summary>
+        /// 控件加载完成后 调整布局
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmMaster_Shown(object sender, EventArgs e)
+        {
+            pictureBox1.Size = new Size(1024, 768);
+            pictureBox1.Location = new Point(this.Width - 1028, 100);
+            cbDeviceList.Width = 1024;
+            cbDeviceList.Location = new Point(this.Width - 1028, 70);
+            grouplogs.Height = this.Height - pictureBox1.Height - 100;
+            groupSetting.Height = this.Height - groupSetting.Height - 16;
+            groupSetting.Width = this.Width - pictureBox1.Width - 10;
+            uiLine2.Width = groupSetting.Width - 10;
+        }
+
+        /// <summary>
+        /// 刷新相机设备
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.ShowWaitForm("正在刷新设备列表...");
@@ -81,6 +187,11 @@ namespace NetAIVision
             this.HideWaitForm();
         }
 
+        /// <summary>
+        /// 断开相机连接
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ch:取流标志位清零 | en:Reset flow flag bit
@@ -103,6 +214,11 @@ namespace NetAIVision
             }
         }
 
+        /// <summary>
+        /// 连接相机
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_stDeviceList.nDeviceNum == 0 || cbDeviceList.SelectedIndex == -1)
@@ -204,6 +320,9 @@ namespace NetAIVision
             }
         }
 
+        /// <summary>
+        /// 相机像素格式转换及显示线程
+        /// </summary>
         public void ReceiveThreadProcess()
         {
             MyCamera.MV_FRAME_OUT stFrameInfo = new MyCamera.MV_FRAME_OUT();
@@ -275,6 +394,11 @@ namespace NetAIVision
             }
         }
 
+        /// <summary>
+        /// windows 加载事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void FrmMaster_Load(object sender, EventArgs e)
         {
             //var frm = new FrmResult(ResultEnum.Fail, 3); // 3 秒后关闭
@@ -287,6 +411,9 @@ namespace NetAIVision
             DeviceListAcq();
         }
 
+        /// <summary>
+        /// 相机设备列表查询
+        /// </summary>
         private void DeviceListAcq()
         {
             // ch:创建设备列表 | en:Create Device List
@@ -421,6 +548,11 @@ namespace NetAIVision
             }
         }
 
+        /// <summary>
+        /// 删除字符串尾部的无效字符
+        /// </summary>
+        /// <param name="strUserDefinedName"></param>
+        /// <returns></returns>
         private string DeleteTail(string strUserDefinedName)
         {
             strUserDefinedName = Regex.Unescape(strUserDefinedName);
@@ -433,7 +565,11 @@ namespace NetAIVision
             return strUserDefinedName;
         }
 
-        // ch:显示错误信息 | en:Show error message
+        /// <summary>
+        /// ch:显示错误信息 | en:Show error message
+        /// </summary>
+        /// <param name="csMessage"></param>
+        /// <param name="nErrorNum"></param>
         private void ShowErrorMsg(string csMessage, int nErrorNum)
         {
             string errorMsg;
@@ -466,7 +602,7 @@ namespace NetAIVision
                 case MyCamera.MV_E_NETER: errorMsg += " Network error "; break;
             }
 
-            MessageBox.Show(errorMsg, "PROMPT");
+            this.ShowErrorDialog("PROMPT", errorMsg);
         }
 
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e)

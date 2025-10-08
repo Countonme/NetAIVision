@@ -43,14 +43,6 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cbDeviceList = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbFrameRate = new System.Windows.Forms.TextBox();
-            this.tbGain = new System.Windows.Forms.TextBox();
-            this.tbExposure = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.原圖OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.灰度GToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,8 +61,44 @@
             this.参考线NToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.目标ROI显示DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ℹ关于AToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbDeviceList = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbFrameRate = new System.Windows.Forms.TextBox();
+            this.tbGain = new System.Windows.Forms.TextBox();
+            this.tbExposure = new System.Windows.Forms.TextBox();
+            this.uiGroupBox1 = new Sunny.UI.UIGroupBox();
+            this.grouplogs = new Sunny.UI.UIGroupBox();
+            this.groupSetting = new Sunny.UI.UIGroupBox();
+            this.edtName = new Sunny.UI.UITextBox();
+            this.uiLabel2 = new Sunny.UI.UILabel();
+            this.uiTextBox1 = new Sunny.UI.UITextBox();
+            this.uiLabel1 = new Sunny.UI.UILabel();
+            this.uiTextBox2 = new Sunny.UI.UITextBox();
+            this.uiLabel3 = new Sunny.UI.UILabel();
+            this.uiTextBox3 = new Sunny.UI.UITextBox();
+            this.uiLabel4 = new Sunny.UI.UILabel();
+            this.uiLine1 = new Sunny.UI.UILine();
+            this.uiGroupBox2 = new Sunny.UI.UIGroupBox();
+            this.RadioDebugMode = new Sunny.UI.UIRadioButton();
+            this.RadioBtnProductionMode = new Sunny.UI.UIRadioButton();
+            this.uiLabel7 = new Sunny.UI.UILabel();
+            this.switchMES = new Sunny.UI.UISwitch();
+            this.uiLine2 = new Sunny.UI.UILine();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.mlabEmp = new Sunny.UI.UIMarkLabel();
+            this.uiMarkLabel2 = new Sunny.UI.UIMarkLabel();
+            this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
+            this.uiTextBox4 = new Sunny.UI.UITextBox();
+            this.uiLabel5 = new Sunny.UI.UILabel();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.uiGroupBox1.SuspendLayout();
+            this.groupSetting.SuspendLayout();
+            this.uiGroupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,7 +154,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 35);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 0);
-            this.menuStrip1.Size = new System.Drawing.Size(1404, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1377, 25);
             this.menuStrip1.TabIndex = 28;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -137,8 +165,8 @@
             this.openLogsToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(64, 23);
-            this.fileToolStripMenuItem.Text = "📁 File";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(72, 23);
+            this.fileToolStripMenuItem.Text = "📁 文件";
             // 
             // openScriptToolStripMenuItem
             // 
@@ -158,8 +186,8 @@
             this.logToolStripMenuItem});
             this.viewToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(73, 23);
-            this.viewToolStripMenuItem.Text = "👁️ View";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(72, 23);
+            this.viewToolStripMenuItem.Text = "👁️ 视图";
             // 
             // logToolStripMenuItem
             // 
@@ -171,95 +199,23 @@
             // 
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(114, 23);
-            this.openToolStripMenuItem.Text = "✅ Connection";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(100, 23);
+            this.openToolStripMenuItem.Text = "✅ 连接相机";
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(145, 23);
-            this.closeToolStripMenuItem.Text = "🔌❌Disconnection";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(115, 23);
+            this.closeToolStripMenuItem.Text = "🔌❌断开相机";
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Emoji", 10.25F);
             this.refreshToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(89, 23);
-            this.refreshToolStripMenuItem.Text = "🔄 Refresh";
-            // 
-            // cbDeviceList
-            // 
-            this.cbDeviceList.FormattingEnabled = true;
-            this.cbDeviceList.Location = new System.Drawing.Point(3, 88);
-            this.cbDeviceList.Name = "cbDeviceList";
-            this.cbDeviceList.Size = new System.Drawing.Size(523, 24);
-            this.cbDeviceList.TabIndex = 30;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(1036, 190);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 16);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "帧率";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(1036, 159);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 16);
-            this.label2.TabIndex = 35;
-            this.label2.Text = "增益";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(1036, 128);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 16);
-            this.label1.TabIndex = 34;
-            this.label1.Text = "曝光";
-            // 
-            // tbFrameRate
-            // 
-            this.tbFrameRate.Enabled = false;
-            this.tbFrameRate.Location = new System.Drawing.Point(1081, 185);
-            this.tbFrameRate.Name = "tbFrameRate";
-            this.tbFrameRate.Size = new System.Drawing.Size(93, 26);
-            this.tbFrameRate.TabIndex = 33;
-            // 
-            // tbGain
-            // 
-            this.tbGain.Enabled = false;
-            this.tbGain.Location = new System.Drawing.Point(1081, 154);
-            this.tbGain.Name = "tbGain";
-            this.tbGain.Size = new System.Drawing.Size(93, 26);
-            this.tbGain.TabIndex = 32;
-            // 
-            // tbExposure
-            // 
-            this.tbExposure.Enabled = false;
-            this.tbExposure.Location = new System.Drawing.Point(1081, 123);
-            this.tbExposure.Name = "tbExposure";
-            this.tbExposure.Size = new System.Drawing.Size(93, 26);
-            this.tbExposure.TabIndex = 31;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.pictureBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 128);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1027, 768);
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(72, 23);
+            this.refreshToolStripMenuItem.Text = "🔄 刷新";
             // 
             // 功能ToolStripMenuItem
             // 
@@ -388,16 +344,441 @@
             this.ℹ关于AToolStripMenuItem.Size = new System.Drawing.Size(98, 23);
             this.ℹ关于AToolStripMenuItem.Text = "ℹ️ 关于(&A)...";
             // 
+            // cbDeviceList
+            // 
+            this.cbDeviceList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbDeviceList.FormattingEnabled = true;
+            this.cbDeviceList.Location = new System.Drawing.Point(757, 166);
+            this.cbDeviceList.Name = "cbDeviceList";
+            this.cbDeviceList.Size = new System.Drawing.Size(536, 24);
+            this.cbDeviceList.TabIndex = 30;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label3.Location = new System.Drawing.Point(13, 103);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(39, 16);
+            this.label3.TabIndex = 36;
+            this.label3.Text = "帧率";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(13, 72);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(39, 16);
+            this.label2.TabIndex = 35;
+            this.label2.Text = "增益";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label1.Location = new System.Drawing.Point(13, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 16);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "曝光";
+            // 
+            // tbFrameRate
+            // 
+            this.tbFrameRate.Enabled = false;
+            this.tbFrameRate.Location = new System.Drawing.Point(58, 98);
+            this.tbFrameRate.Name = "tbFrameRate";
+            this.tbFrameRate.Size = new System.Drawing.Size(93, 27);
+            this.tbFrameRate.TabIndex = 33;
+            // 
+            // tbGain
+            // 
+            this.tbGain.Enabled = false;
+            this.tbGain.Location = new System.Drawing.Point(58, 67);
+            this.tbGain.Name = "tbGain";
+            this.tbGain.Size = new System.Drawing.Size(93, 27);
+            this.tbGain.TabIndex = 32;
+            // 
+            // tbExposure
+            // 
+            this.tbExposure.Enabled = false;
+            this.tbExposure.Location = new System.Drawing.Point(58, 36);
+            this.tbExposure.Name = "tbExposure";
+            this.tbExposure.Size = new System.Drawing.Size(93, 27);
+            this.tbExposure.TabIndex = 31;
+            // 
+            // uiGroupBox1
+            // 
+            this.uiGroupBox1.Controls.Add(this.label1);
+            this.uiGroupBox1.Controls.Add(this.tbExposure);
+            this.uiGroupBox1.Controls.Add(this.label3);
+            this.uiGroupBox1.Controls.Add(this.tbGain);
+            this.uiGroupBox1.Controls.Add(this.label2);
+            this.uiGroupBox1.Controls.Add(this.tbFrameRate);
+            this.uiGroupBox1.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.uiGroupBox1.Location = new System.Drawing.Point(449, 335);
+            this.uiGroupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiGroupBox1.MinimumSize = new System.Drawing.Size(1, 1);
+            this.uiGroupBox1.Name = "uiGroupBox1";
+            this.uiGroupBox1.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
+            this.uiGroupBox1.Size = new System.Drawing.Size(230, 186);
+            this.uiGroupBox1.TabIndex = 37;
+            this.uiGroupBox1.Text = "相机参数";
+            this.uiGroupBox1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // grouplogs
+            // 
+            this.grouplogs.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.grouplogs.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.grouplogs.Location = new System.Drawing.Point(0, 773);
+            this.grouplogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grouplogs.MinimumSize = new System.Drawing.Size(1, 1);
+            this.grouplogs.Name = "grouplogs";
+            this.grouplogs.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
+            this.grouplogs.Size = new System.Drawing.Size(1377, 77);
+            this.grouplogs.TabIndex = 38;
+            this.grouplogs.Text = "Logs";
+            this.grouplogs.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // groupSetting
+            // 
+            this.groupSetting.Controls.Add(this.uiTextBox4);
+            this.groupSetting.Controls.Add(this.uiLabel5);
+            this.groupSetting.Controls.Add(this.uiGroupBox2);
+            this.groupSetting.Controls.Add(this.pictureBox2);
+            this.groupSetting.Controls.Add(this.uiLine1);
+            this.groupSetting.Controls.Add(this.uiGroupBox1);
+            this.groupSetting.Controls.Add(this.uiTextBox3);
+            this.groupSetting.Controls.Add(this.uiLabel4);
+            this.groupSetting.Controls.Add(this.uiTextBox2);
+            this.groupSetting.Controls.Add(this.uiLabel3);
+            this.groupSetting.Controls.Add(this.uiTextBox1);
+            this.groupSetting.Controls.Add(this.uiLabel1);
+            this.groupSetting.Controls.Add(this.edtName);
+            this.groupSetting.Controls.Add(this.uiLabel2);
+            this.groupSetting.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.groupSetting.Location = new System.Drawing.Point(4, 170);
+            this.groupSetting.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupSetting.MinimumSize = new System.Drawing.Size(1, 1);
+            this.groupSetting.Name = "groupSetting";
+            this.groupSetting.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
+            this.groupSetting.Size = new System.Drawing.Size(683, 542);
+            this.groupSetting.TabIndex = 39;
+            this.groupSetting.Text = "系统参数";
+            this.groupSetting.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // edtName
+            // 
+            this.edtName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.edtName.EnterAsTab = true;
+            this.edtName.Font = new System.Drawing.Font("SimSun", 12F);
+            this.edtName.Location = new System.Drawing.Point(100, 149);
+            this.edtName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.edtName.MinimumSize = new System.Drawing.Size(1, 16);
+            this.edtName.Name = "edtName";
+            this.edtName.Padding = new System.Windows.Forms.Padding(5);
+            this.edtName.ReadOnly = true;
+            this.edtName.ShowText = false;
+            this.edtName.Size = new System.Drawing.Size(340, 29);
+            this.edtName.TabIndex = 5;
+            this.edtName.Text = "LITEON_ASI_Q_Model Version:10.0.1  ";
+            this.edtName.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.edtName.Watermark = "";
+            // 
+            // uiLabel2
+            // 
+            this.uiLabel2.AutoSize = true;
+            this.uiLabel2.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel2.Location = new System.Drawing.Point(26, 155);
+            this.uiLabel2.Name = "uiLabel2";
+            this.uiLabel2.Size = new System.Drawing.Size(71, 16);
+            this.uiLabel2.TabIndex = 6;
+            this.uiLabel2.Text = "AI Model";
+            this.uiLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiTextBox1
+            // 
+            this.uiTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox1.EnterAsTab = true;
+            this.uiTextBox1.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiTextBox1.Location = new System.Drawing.Point(100, 190);
+            this.uiTextBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox1.MinimumSize = new System.Drawing.Size(1, 16);
+            this.uiTextBox1.Name = "uiTextBox1";
+            this.uiTextBox1.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox1.ReadOnly = true;
+            this.uiTextBox1.ShowText = false;
+            this.uiTextBox1.Size = new System.Drawing.Size(340, 29);
+            this.uiTextBox1.TabIndex = 7;
+            this.uiTextBox1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiTextBox1.Watermark = "";
+            // 
+            // uiLabel1
+            // 
+            this.uiLabel1.AutoSize = true;
+            this.uiLabel1.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel1.Location = new System.Drawing.Point(26, 196);
+            this.uiLabel1.Name = "uiLabel1";
+            this.uiLabel1.Size = new System.Drawing.Size(71, 16);
+            this.uiLabel1.TabIndex = 8;
+            this.uiLabel1.Text = "条码内容";
+            this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiTextBox2
+            // 
+            this.uiTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox2.EnterAsTab = true;
+            this.uiTextBox2.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiTextBox2.Location = new System.Drawing.Point(100, 231);
+            this.uiTextBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox2.MinimumSize = new System.Drawing.Size(1, 16);
+            this.uiTextBox2.Name = "uiTextBox2";
+            this.uiTextBox2.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox2.ReadOnly = true;
+            this.uiTextBox2.ShowText = false;
+            this.uiTextBox2.Size = new System.Drawing.Size(340, 29);
+            this.uiTextBox2.TabIndex = 9;
+            this.uiTextBox2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiTextBox2.Watermark = "";
+            // 
+            // uiLabel3
+            // 
+            this.uiLabel3.AutoSize = true;
+            this.uiLabel3.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel3.Location = new System.Drawing.Point(26, 237);
+            this.uiLabel3.Name = "uiLabel3";
+            this.uiLabel3.Size = new System.Drawing.Size(71, 16);
+            this.uiLabel3.TabIndex = 10;
+            this.uiLabel3.Text = "机种名称";
+            this.uiLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiTextBox3
+            // 
+            this.uiTextBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox3.EnterAsTab = true;
+            this.uiTextBox3.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiTextBox3.Location = new System.Drawing.Point(100, 272);
+            this.uiTextBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox3.MinimumSize = new System.Drawing.Size(1, 16);
+            this.uiTextBox3.Name = "uiTextBox3";
+            this.uiTextBox3.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox3.ReadOnly = true;
+            this.uiTextBox3.ShowText = false;
+            this.uiTextBox3.Size = new System.Drawing.Size(340, 29);
+            this.uiTextBox3.TabIndex = 11;
+            this.uiTextBox3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiTextBox3.Watermark = "";
+            // 
+            // uiLabel4
+            // 
+            this.uiLabel4.AutoSize = true;
+            this.uiLabel4.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel4.Location = new System.Drawing.Point(26, 278);
+            this.uiLabel4.Name = "uiLabel4";
+            this.uiLabel4.Size = new System.Drawing.Size(71, 16);
+            this.uiLabel4.TabIndex = 12;
+            this.uiLabel4.Text = "检查耗时";
+            this.uiLabel4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiLine1
+            // 
+            this.uiLine1.BackColor = System.Drawing.Color.Transparent;
+            this.uiLine1.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLine1.Location = new System.Drawing.Point(23, 317);
+            this.uiLine1.MinimumSize = new System.Drawing.Size(16, 16);
+            this.uiLine1.Name = "uiLine1";
+            this.uiLine1.Size = new System.Drawing.Size(419, 20);
+            this.uiLine1.TabIndex = 48;
+            this.uiLine1.Text = "检查结果";
+            this.uiLine1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiGroupBox2
+            // 
+            this.uiGroupBox2.Controls.Add(this.uiLabel7);
+            this.uiGroupBox2.Controls.Add(this.switchMES);
+            this.uiGroupBox2.Controls.Add(this.RadioDebugMode);
+            this.uiGroupBox2.Controls.Add(this.RadioBtnProductionMode);
+            this.uiGroupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.uiGroupBox2.Location = new System.Drawing.Point(23, 28);
+            this.uiGroupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiGroupBox2.MinimumSize = new System.Drawing.Size(1, 1);
+            this.uiGroupBox2.Name = "uiGroupBox2";
+            this.uiGroupBox2.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
+            this.uiGroupBox2.Size = new System.Drawing.Size(417, 69);
+            this.uiGroupBox2.TabIndex = 49;
+            this.uiGroupBox2.Text = "作业模式";
+            this.uiGroupBox2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // RadioDebugMode
+            // 
+            this.RadioDebugMode.Checked = true;
+            this.RadioDebugMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RadioDebugMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.RadioDebugMode.Location = new System.Drawing.Point(116, 31);
+            this.RadioDebugMode.MinimumSize = new System.Drawing.Size(1, 1);
+            this.RadioDebugMode.Name = "RadioDebugMode";
+            this.RadioDebugMode.Size = new System.Drawing.Size(105, 29);
+            this.RadioDebugMode.TabIndex = 3;
+            this.RadioDebugMode.Text = "调试模式";
+            // 
+            // RadioBtnProductionMode
+            // 
+            this.RadioBtnProductionMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RadioBtnProductionMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.RadioBtnProductionMode.Location = new System.Drawing.Point(3, 31);
+            this.RadioBtnProductionMode.MinimumSize = new System.Drawing.Size(1, 1);
+            this.RadioBtnProductionMode.Name = "RadioBtnProductionMode";
+            this.RadioBtnProductionMode.Size = new System.Drawing.Size(105, 29);
+            this.RadioBtnProductionMode.TabIndex = 2;
+            this.RadioBtnProductionMode.Text = "生产模式";
+            // 
+            // uiLabel7
+            // 
+            this.uiLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.uiLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel7.Location = new System.Drawing.Point(224, 31);
+            this.uiLabel7.Name = "uiLabel7";
+            this.uiLabel7.Size = new System.Drawing.Size(64, 32);
+            this.uiLabel7.TabIndex = 101;
+            this.uiLabel7.Text = "MES：";
+            this.uiLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // switchMES
+            // 
+            this.switchMES.ActiveColor = System.Drawing.Color.Blue;
+            this.switchMES.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.switchMES.InActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.switchMES.Location = new System.Drawing.Point(294, 31);
+            this.switchMES.MinimumSize = new System.Drawing.Size(1, 1);
+            this.switchMES.Name = "switchMES";
+            this.switchMES.Size = new System.Drawing.Size(117, 29);
+            this.switchMES.SwitchShape = Sunny.UI.UISwitch.UISwitchShape.Square;
+            this.switchMES.TabIndex = 100;
+            this.switchMES.Text = "MES 开关";
+            // 
+            // uiLine2
+            // 
+            this.uiLine2.BackColor = System.Drawing.Color.Transparent;
+            this.uiLine2.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLine2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLine2.Location = new System.Drawing.Point(7, 69);
+            this.uiLine2.MinimumSize = new System.Drawing.Size(16, 16);
+            this.uiLine2.Name = "uiLine2";
+            this.uiLine2.Size = new System.Drawing.Size(680, 20);
+            this.uiLine2.TabIndex = 40;
+            this.uiLine2.Text = "用户信息";
+            this.uiLine2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.pictureBox2.Image = global::NetAIVision.Properties.Resources.fail;
+            this.pictureBox2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.pictureBox2.InitialImage = global::NetAIVision.Properties.Resources.fail;
+            this.pictureBox2.Location = new System.Drawing.Point(23, 347);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(419, 174);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 40;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.pictureBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.pictureBox1.Location = new System.Drawing.Point(757, 202);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(536, 312);
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
+            // 
+            // mlabEmp
+            // 
+            this.mlabEmp.AutoSize = true;
+            this.mlabEmp.Font = new System.Drawing.Font("SimSun", 12F);
+            this.mlabEmp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.mlabEmp.Location = new System.Drawing.Point(101, 120);
+            this.mlabEmp.Name = "mlabEmp";
+            this.mlabEmp.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.mlabEmp.Size = new System.Drawing.Size(76, 16);
+            this.mlabEmp.TabIndex = 42;
+            this.mlabEmp.Text = "21103379";
+            this.mlabEmp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiMarkLabel2
+            // 
+            this.uiMarkLabel2.AutoSize = true;
+            this.uiMarkLabel2.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiMarkLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiMarkLabel2.Location = new System.Drawing.Point(101, 149);
+            this.uiMarkLabel2.Name = "uiMarkLabel2";
+            this.uiMarkLabel2.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.uiMarkLabel2.Size = new System.Drawing.Size(60, 16);
+            this.uiMarkLabel2.TabIndex = 43;
+            this.uiMarkLabel2.Text = "杨胜碧";
+            this.uiMarkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // uiGifAvatar1
+            // 
+            this.uiGifAvatar1.AvatarSize = 60;
+            this.uiGifAvatar1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(242)))), ((int)(((byte)(251)))));
+            this.uiGifAvatar1.Font = new System.Drawing.Font("SimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiGifAvatar1.Image = global::NetAIVision.Properties.Resources.opred;
+            this.uiGifAvatar1.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.uiGifAvatar1.Location = new System.Drawing.Point(7, 95);
+            this.uiGifAvatar1.MinimumSize = new System.Drawing.Size(1, 1);
+            this.uiGifAvatar1.Name = "uiGifAvatar1";
+            this.uiGifAvatar1.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(242)))), ((int)(((byte)(251)))));
+            this.uiGifAvatar1.Size = new System.Drawing.Size(88, 76);
+            this.uiGifAvatar1.Style = Sunny.UI.UIStyle.Custom;
+            this.uiGifAvatar1.TabIndex = 41;
+            this.uiGifAvatar1.Text = "uiGifAvatar1";
+            // 
+            // uiTextBox4
+            // 
+            this.uiTextBox4.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.uiTextBox4.EnterAsTab = true;
+            this.uiTextBox4.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiTextBox4.Location = new System.Drawing.Point(100, 108);
+            this.uiTextBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.uiTextBox4.MinimumSize = new System.Drawing.Size(1, 16);
+            this.uiTextBox4.Name = "uiTextBox4";
+            this.uiTextBox4.Padding = new System.Windows.Forms.Padding(5);
+            this.uiTextBox4.ReadOnly = true;
+            this.uiTextBox4.ShowText = false;
+            this.uiTextBox4.Size = new System.Drawing.Size(340, 29);
+            this.uiTextBox4.TabIndex = 50;
+            this.uiTextBox4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiTextBox4.Watermark = "";
+            // 
+            // uiLabel5
+            // 
+            this.uiLabel5.AutoSize = true;
+            this.uiLabel5.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel5.Location = new System.Drawing.Point(26, 114);
+            this.uiLabel5.Name = "uiLabel5";
+            this.uiLabel5.Size = new System.Drawing.Size(71, 16);
+            this.uiLabel5.TabIndex = 51;
+            this.uiLabel5.Text = "脚本名称";
+            this.uiLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1404, 709);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbFrameRate);
-            this.Controls.Add(this.tbGain);
-            this.Controls.Add(this.tbExposure);
+            this.ClientSize = new System.Drawing.Size(1377, 850);
+            this.Controls.Add(this.uiMarkLabel2);
+            this.Controls.Add(this.mlabEmp);
+            this.Controls.Add(this.uiGifAvatar1);
+            this.Controls.Add(this.uiLine2);
+            this.Controls.Add(this.groupSetting);
+            this.Controls.Add(this.grouplogs);
             this.Controls.Add(this.cbDeviceList);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
@@ -405,12 +786,20 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmMaster";
+            this.ShowFullScreen = true;
+            this.ShowRect = false;
             this.Text = "AI Vision";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ZoomScaleRect = new System.Drawing.Rectangle(15, 15, 840, 590);
             this.StepMenuStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.uiGroupBox1.ResumeLayout(false);
+            this.uiGroupBox1.PerformLayout();
+            this.groupSetting.ResumeLayout(false);
+            this.groupSetting.PerformLayout();
+            this.uiGroupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -459,6 +848,30 @@
         private System.Windows.Forms.ToolStripMenuItem 目标ROI显示DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ℹ关于AToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private Sunny.UI.UIGroupBox uiGroupBox1;
+        private Sunny.UI.UIGroupBox grouplogs;
+        private Sunny.UI.UIGroupBox groupSetting;
+        private Sunny.UI.UITextBox uiTextBox1;
+        private Sunny.UI.UILabel uiLabel1;
+        private Sunny.UI.UITextBox edtName;
+        private Sunny.UI.UILabel uiLabel2;
+        private Sunny.UI.UITextBox uiTextBox3;
+        private Sunny.UI.UILabel uiLabel4;
+        private Sunny.UI.UITextBox uiTextBox2;
+        private Sunny.UI.UILabel uiLabel3;
+        private Sunny.UI.UILine uiLine1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private Sunny.UI.UIGroupBox uiGroupBox2;
+        private Sunny.UI.UILabel uiLabel7;
+        private Sunny.UI.UISwitch switchMES;
+        private Sunny.UI.UIRadioButton RadioDebugMode;
+        private Sunny.UI.UIRadioButton RadioBtnProductionMode;
+        private Sunny.UI.UILine uiLine2;
+        private Sunny.UI.UIMarkLabel mlabEmp;
+        private Sunny.UI.UIMarkLabel uiMarkLabel2;
+        private Sunny.UI.UIGifAvatar uiGifAvatar1;
+        private Sunny.UI.UITextBox uiTextBox4;
+        private Sunny.UI.UILabel uiLabel5;
     }
 }
 
