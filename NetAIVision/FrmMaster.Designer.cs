@@ -54,7 +54,6 @@
             this.高斯模糊UToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.边缘检测EToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.水平翻转FToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.垂直翻转VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.亮度LToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.亮度MToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.对比度CToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,8 +106,10 @@
             this.oCRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.QRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveTempToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewRoiScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.垂直翻转VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -129,7 +130,7 @@
             this.oCRToolStripMenuItem,
             this.QRCodeToolStripMenuItem,
             this.saveTempToolStripMenuItem,
-            this.viewScriptToolStripMenuItem,
+            this.viewRoiScriptToolStripMenuItem,
             this.runScriptToolStripMenuItem,
             this.taintAnalysisToolStripMenuItem});
             this.StepMenuStrip.Name = "StepMenuStrip";
@@ -192,7 +193,8 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewlogToolStripMenuItem});
+            this.viewlogToolStripMenuItem,
+            this.chearLogToolStripMenuItem});
             this.viewToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(80, 25);
@@ -201,15 +203,15 @@
             // viewlogToolStripMenuItem
             // 
             this.viewlogToolStripMenuItem.Name = "viewlogToolStripMenuItem";
-            this.viewlogToolStripMenuItem.Size = new System.Drawing.Size(132, 26);
+            this.viewlogToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.viewlogToolStripMenuItem.Text = "📄 Log";
             // 
             // refreshToolStripMenuItem
             // 
-            this.refreshToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Emoji", 10.25F);
+            this.refreshToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Emoji", 12F);
             this.refreshToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(72, 25);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(80, 25);
             this.refreshToolStripMenuItem.Text = "🔄 刷新";
             // 
             // openToolStripMenuItem
@@ -329,15 +331,11 @@
             // 
             // 水平翻转FToolStripMenuItem
             // 
+            this.水平翻转FToolStripMenuItem.Checked = true;
+            this.水平翻转FToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.水平翻转FToolStripMenuItem.Name = "水平翻转FToolStripMenuItem";
             this.水平翻转FToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
             this.水平翻转FToolStripMenuItem.Text = "↔️ 水平翻转(&F)";
-            // 
-            // 垂直翻转VToolStripMenuItem
-            // 
-            this.垂直翻转VToolStripMenuItem.Name = "垂直翻转VToolStripMenuItem";
-            this.垂直翻转VToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
-            this.垂直翻转VToolStripMenuItem.Text = "↕️ 垂直翻转(&V)";
             // 
             // 亮度LToolStripMenuItem
             // 
@@ -904,12 +902,12 @@
             this.saveTempToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.saveTempToolStripMenuItem.Text = "Save Temp";
             // 
-            // viewScriptToolStripMenuItem
+            // viewRoiScriptToolStripMenuItem
             // 
-            this.viewScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.ic_more_rename;
-            this.viewScriptToolStripMenuItem.Name = "viewScriptToolStripMenuItem";
-            this.viewScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.viewScriptToolStripMenuItem.Text = "View Script";
+            this.viewRoiScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.ic_more_rename;
+            this.viewRoiScriptToolStripMenuItem.Name = "viewRoiScriptToolStripMenuItem";
+            this.viewRoiScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.viewRoiScriptToolStripMenuItem.Text = "View Script";
             // 
             // runScriptToolStripMenuItem
             // 
@@ -917,6 +915,20 @@
             this.runScriptToolStripMenuItem.Name = "runScriptToolStripMenuItem";
             this.runScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.runScriptToolStripMenuItem.Text = "Run Script";
+            // 
+            // chearLogToolStripMenuItem
+            // 
+            this.chearLogToolStripMenuItem.Name = "chearLogToolStripMenuItem";
+            this.chearLogToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.chearLogToolStripMenuItem.Text = "📄 Clear Log";
+            // 
+            // 垂直翻转VToolStripMenuItem
+            // 
+            this.垂直翻转VToolStripMenuItem.Checked = true;
+            this.垂直翻转VToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.垂直翻转VToolStripMenuItem.Name = "垂直翻转VToolStripMenuItem";
+            this.垂直翻转VToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.垂直翻转VToolStripMenuItem.Text = "↕️ 垂直翻转(&V)";
             // 
             // FrmMaster
             // 
@@ -988,7 +1000,6 @@
         private System.Windows.Forms.ToolStripMenuItem 高斯模糊UToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 边缘检测EToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 水平翻转FToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 垂直翻转VToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 亮度LToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 亮度MToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 对比度CToolStripMenuItem;
@@ -1034,11 +1045,13 @@
         private Sunny.UI.UIFlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem importImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveTempToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewScriptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewRoiScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem taintAnalysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chearLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 垂直翻转VToolStripMenuItem;
     }
 }
 

@@ -139,13 +139,50 @@ namespace NetAIVision
             this.FormClosing += FrmMaster_FormClosing;
             //污点检查
             this.taintAnalysisToolStripMenuItem.Click += TaintAnalysisToolStripMenuItem_Click;
+            //ROI 脚本按钮
+            this.viewRoiScriptToolStripMenuItem.Click += ViewRoIScriptToolStripMenuItem_Click;
+            this.chearLogToolStripMenuItem.Click += ClearLogToolStripMenuItem_Click;
         }
 
+        /// <summary>
+        /// 擦除日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClearLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                richboxLogs.Clear();
+            }));
+        }
+
+        /// <summary>
+        /// 查看ROI 的脚本信息（ROI 内容处理步骤）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ViewRoIScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frmScrip = new FrmScript();
+            frmScrip.ShowDialog();
+        }
+
+        /// <summary>
+        /// 关于我们的窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AboutAToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FrmAbout().ShowDialog();
         }
 
+        /// <summary>
+        /// ROI 污点检查
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TaintAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (selectedRoi == null)
