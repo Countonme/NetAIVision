@@ -56,6 +56,7 @@ namespace NetAIVision.Services
         /// </summary>
         public void AppendLog(string message)
         {
+            LogFileHelper.SaveLog(message);
             message = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {message}";
             if (_richTextBox.InvokeRequired)
             {
