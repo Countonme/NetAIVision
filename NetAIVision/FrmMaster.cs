@@ -1194,25 +1194,10 @@ namespace NetAIVision
                         BitmapData bitmapData = m_bitmap.LockBits(new Rectangle(0, 0, stConvertInfo.nWidth, stConvertInfo.nHeight), ImageLockMode.ReadWrite, m_bitmap.PixelFormat);
                         CopyMemory(bitmapData.Scan0, stConvertInfo.pDstBuffer, (UInt32)(bitmapData.Stride * m_bitmap.Height));
                         m_bitmap.UnlockBits(bitmapData);
-                        // 在 Bitmap 上绘制参考线
-                        using (Graphics g = Graphics.FromImage(m_bitmap))
+                        //绘制参考线
+                        if (guidelineToolStripMenuItem.Checked)
                         {
-                            int w = m_bitmap.Width;
-                            int h = m_bitmap.Height;
-
-                            // 设置抗锯齿绘图参数
-                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                            // 定义画笔
-                            using (Pen pen = new Pen(Color.Lime, 2))
-                            {
-                                // 绘制中心十字线
-                                g.DrawLine(pen, w / 2, 0, w / 2, h);
-                                g.DrawLine(pen, 0, h / 2, w, h / 2);
-
-                                // 例如可以再画外边框
-                                g.DrawRectangle(pen, 0, 0, w - 1, h - 1);
-                            }
+                            DrawCrossLine();
                         }
                         // === 如需显示处理结果，可通过 Invoke 设置 UI ===
                         this.Invoke(new Action(() =>
@@ -1253,56 +1238,26 @@ namespace NetAIVision
 
         // 在缓冲上画十字参考线，直接用整数判断像素类型
         // 修改绘制函数，直接接受枚举类型
-        private void DrawCrossLine(IntPtr pBuf, int width, int height, MvGvspPixelType pixelType)
+        private void DrawCrossLine()
         {
-            if (pBuf == IntPtr.Zero || width <= 0 || height <= 0)
-                return;
-
-            unsafe
+            // 在 Bitmap 上绘制参考线
+            using (Graphics g = Graphics.FromImage(m_bitmap))
             {
-                byte* ptr = (byte*)pBuf.ToPointer();
-                int centerX = width / 2;
-                int centerY = height / 2;
+                int w = m_bitmap.Width;
+                int h = m_bitmap.Height;
 
-                // 灰度图 Mono8
-                if (pixelType == MvGvspPixelType.PixelType_Gvsp_HB_Mono8)
+                // 设置抗锯齿绘图参数
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                // 定义画笔
+                using (Pen pen = new Pen(Color.Lime, 2))
                 {
-                    for (int x = 0; x < width; x++)
-                    {
-                        int idx = centerY * width + x;
-                        if (idx < width * height) // 防越界
-                            ptr[idx] = 255;
-                    }
-                    for (int y = 0; y < height; y++)
-                    {
-                        int idx = y * width + centerX;
-                        if (idx < width * height)
-                            ptr[idx] = 255;
-                    }
-                }
-                // 彩色 RGB24
-                else if (pixelType == MvGvspPixelType.PixelType_Gvsp_BayerRG8)
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        int idx = (centerY * width + x) * 3;
-                        if (idx + 2 < width * height * 3)
-                        {
-                            ptr[idx + 0] = 0;
-                            ptr[idx + 1] = 0;
-                            ptr[idx + 2] = 255;
-                        }
-                    }
-                    for (int y = 0; y < height; y++)
-                    {
-                        int idx = (y * width + centerX) * 3;
-                        if (idx + 2 < width * height * 3)
-                        {
-                            ptr[idx + 0] = 0;
-                            ptr[idx + 1] = 0;
-                            ptr[idx + 2] = 255;
-                        }
-                    }
+                    // 绘制中心十字线
+                    g.DrawLine(pen, w / 2, 0, w / 2, h);
+                    g.DrawLine(pen, 0, h / 2, w, h / 2);
+
+                    // 例如可以再画外边框
+                    g.DrawRectangle(pen, 0, 0, w - 1, h - 1);
                 }
             }
         }
@@ -1572,7 +1527,7 @@ namespace NetAIVision
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            using (var pen = new Pen(Color.Lime, 2))
+            using (var pen = new Pen(Color.Blue, 2))
             using (var semiTransBrush = new SolidBrush(Color.FromArgb(60, Color.Lime)))
             using (var font = new Font("Arial", 10, FontStyle.Bold))
             {
@@ -1591,6 +1546,21 @@ namespace NetAIVision
                     g.DrawRectangle(Pens.Red, currentROI.Rect);
                 }
             }
+            // 初始化字体和画刷
+            var font1 = new Font("Arial", 12, FontStyle.Bold);
+            var brush = new SolidBrush(Color.White);
+            // 获取当前时间字符串
+            string currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            // 计算文本的尺寸
+            SizeF textSize = e.Graphics.MeasureString(currentTime, font1);
+
+            // 计算文本的位置（右下角）
+            float x = pictureBox1.ClientSize.Width - textSize.Width - 5; // 5是边距
+            float y = pictureBox1.ClientSize.Height - textSize.Height - 5; // 5是边距
+
+            // 绘制文本
+            e.Graphics.DrawString(currentTime, font1, brush, x, y);
         }
 
         /// <summary>

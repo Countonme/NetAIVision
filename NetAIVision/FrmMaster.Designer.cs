@@ -60,7 +60,7 @@
             this.对比度TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oCRRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.二维码读取QToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.参考线NToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.guidelineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.目标ROI显示DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbDeviceList = new System.Windows.Forms.ComboBox();
@@ -248,25 +248,25 @@
             // SavebmpToolStripMenuItem
             // 
             this.SavebmpToolStripMenuItem.Name = "SavebmpToolStripMenuItem";
-            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavebmpToolStripMenuItem.Text = "🖼️ *.Bmp";
             // 
             // SavejPGToolStripMenuItem
             // 
             this.SavejPGToolStripMenuItem.Name = "SavejPGToolStripMenuItem";
-            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavejPGToolStripMenuItem.Text = "🖼️ *.JPG";
             // 
             // SavepNGToolStripMenuItem
             // 
             this.SavepNGToolStripMenuItem.Name = "SavepNGToolStripMenuItem";
-            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavepNGToolStripMenuItem.Text = "🖼️ *.PNG";
             // 
             // SavetIFFToolStripMenuItem
             // 
             this.SavetIFFToolStripMenuItem.Name = "SavetIFFToolStripMenuItem";
-            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavetIFFToolStripMenuItem.Text = "🖼️ *.TIFF";
             // 
             // 功能ToolStripMenuItem
@@ -286,7 +286,7 @@
             this.对比度TToolStripMenuItem,
             this.oCRRToolStripMenuItem,
             this.二维码读取QToolStripMenuItem,
-            this.参考线NToolStripMenuItem,
+            this.guidelineToolStripMenuItem,
             this.目标ROI显示DToolStripMenuItem});
             this.功能ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
@@ -373,11 +373,12 @@
             this.二维码读取QToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
             this.二维码读取QToolStripMenuItem.Text = "🧩 二维码读取(&Q)";
             // 
-            // 参考线NToolStripMenuItem
+            // guidelineToolStripMenuItem
             // 
-            this.参考线NToolStripMenuItem.Name = "参考线NToolStripMenuItem";
-            this.参考线NToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
-            this.参考线NToolStripMenuItem.Text = "➕ 参考线(&N)";
+            this.guidelineToolStripMenuItem.CheckOnClick = true;
+            this.guidelineToolStripMenuItem.Name = "guidelineToolStripMenuItem";
+            this.guidelineToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.guidelineToolStripMenuItem.Text = "➕ 参考线(&N)";
             // 
             // 目标ROI显示DToolStripMenuItem
             // 
@@ -1006,7 +1007,7 @@
         private System.Windows.Forms.ToolStripMenuItem 对比度TToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem oCRRToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 二维码读取QToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 参考线NToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem guidelineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 目标ROI显示DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutAToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
