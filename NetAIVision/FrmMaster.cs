@@ -1673,5 +1673,19 @@ namespace NetAIVision
                 }
             }
         }
+
+        /// <summary>
+        /// 加载窗体配置
+        /// </summary>
+        private void LoadControllerSetting()
+        {
+        }
+
+        /// <summary>
+        /// 保存窗体配置
+        /// </summary>
+        private void SaveControllerSetting()
+        {
+        }
     }
 }
