@@ -298,7 +298,8 @@ namespace NetAIVision
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void FrmMaster_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        {   //保存参数
+            SaveControllerSetting();
             if (this.ShowAskDialog("您確定要退出系統嗎?"))
             {
                 MES_Service.MesDisConnect();
@@ -319,6 +320,8 @@ namespace NetAIVision
         /// <exception cref="NotImplementedException"></exception>
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //保存参数
+            SaveControllerSetting();
             if (this.ShowAskDialog("您確定要退出系統嗎?"))
             {
                 MES_Service.MesDisConnect();
@@ -857,6 +860,7 @@ namespace NetAIVision
             groupSetting.Width = this.Width - pictureBox1.Width - 10;
             uiLine2.Width = groupSetting.Width - 10;
             logHelper.AppendLog("INFO: 程序启动");
+            LoadControllerSetting();
         }
 
         /// <summary>
@@ -1679,6 +1683,8 @@ namespace NetAIVision
         /// </summary>
         private void LoadControllerSetting()
         {
+            //参考线
+            this.guidelineToolStripMenuItem.Checked = Properties.Settings.Default.guide_line;
         }
 
         /// <summary>
@@ -1686,6 +1692,9 @@ namespace NetAIVision
         /// </summary>
         private void SaveControllerSetting()
         {
+            //参考线
+            Properties.Settings.Default.guide_line = this.guidelineToolStripMenuItem.Checked;
+            Properties.Settings.Default.Save(); // 保存到用户配置文件
         }
     }
 }
