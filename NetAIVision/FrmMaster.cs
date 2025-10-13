@@ -164,7 +164,33 @@ namespace NetAIVision
         /// <param name="e"></param>
         private void ViewRoIScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frmScrip = new FrmScript();
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Rectangle roiRect = selectedRoi.Rect;
+
+            // 确保 ROI 在图像范围内
+            if (roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 1. 创建 ROI 区域的位图
+            Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+            using (Graphics g = Graphics.FromImage(templateImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+            var frmScrip = new FrmScript(templateImage);
             frmScrip.ShowDialog();
         }
 
