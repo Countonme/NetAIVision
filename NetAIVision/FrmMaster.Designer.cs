@@ -112,6 +112,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.newScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveingScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RunningScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -205,6 +206,7 @@
             this.openToolStripMenuItem,
             this.closeToolStripMenuItem,
             this.stopToolStripMenuItem,
+            this.RunningScriptToolStripMenuItem,
             this.保存图像ToolStripMenuItem,
             this.功能ToolStripMenuItem,
             this.aboutAToolStripMenuItem});
@@ -947,6 +949,12 @@
             this.saveingScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
             this.saveingScriptsToolStripMenuItem.Text = "💾 Save Script";
             // 
+            // RunningScriptToolStripMenuItem
+            // 
+            this.RunningScriptToolStripMenuItem.Name = "RunningScriptToolStripMenuItem";
+            this.RunningScriptToolStripMenuItem.Size = new System.Drawing.Size(80, 25);
+            this.RunningScriptToolStripMenuItem.Text = "▶️ 运行";
+            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1071,6 +1079,7 @@
         private System.Windows.Forms.ToolStripMenuItem 垂直翻转VToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newScriptsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveingScriptsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RunningScriptToolStripMenuItem;
     }
 }
 

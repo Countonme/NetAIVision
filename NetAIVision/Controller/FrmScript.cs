@@ -1,4 +1,5 @@
-﻿using NetAIVision.Services;
+﻿using NetAIVision.Model.ROI;
+using NetAIVision.Services;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using Tesseract;
 using ZXing.QrCode.Internal;
@@ -22,18 +24,22 @@ namespace NetAIVision.Controller
     {
         private Bitmap _bitmap;
         private Bitmap _bitmap_with;
+        public ROI _roi;
 
         // 初始化日志控件
         private ConsoleStyleLogHelper logHelper;
 
-        public FrmScript(Bitmap bitmap)
+        public FrmScript(Bitmap bitmap, ROI roi)
         {
             InitializeComponent();
             logHelper = new ConsoleStyleLogHelper(richboxLogs, 50);
-
+            this._roi = roi;
             this._bitmap = bitmap;
             this._bitmap_with = bitmap;
             this.runToolStripMenuItem.Click += RunToolStripMenuItem_Click;
+            //脚本保存
+            this.saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
+
             this.Shown += FrmScript_Shown;
             this.baseOToolStripMenuItem.Click += BaseOToolStripMenuItem_Click;
             this.clearStepsToolStripMenuItem.Click += ClearStepsToolStripMenuItem_Click;
@@ -63,6 +69,20 @@ namespace NetAIVision.Controller
             this.MeanBlurToolStripMenuItem.Click += MeanBlurToolStripMenuItem_Click;
             //锐化
             this.EnhanceSharpnessToolStripMenuItem.Click += EnhanceSharpnessToolStripMenuItem_Click;
+        }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (uiListBox1.Items.Count > 0)
+            {
+                var selectedItems = uiListBox1.Items.Cast<object>()
+                                          .Select(x => x.ToString())
+                                          .ToArray();
+
+                // 转成数组：["11", "22", "33"]
+                //string result = string.Join(", ", selectedItems);
+                _roi.step_script = selectedItems.ToList();
+            }
         }
 
         private void ClearStepsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -111,7 +131,7 @@ namespace NetAIVision.Controller
         private void TreeVFn_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             // 获取被点击的节点
-            TreeNode clickedNode = e.Node;
+            System.Windows.Forms.TreeNode clickedNode = e.Node;
             addProcessStep(e.Node.Name);
         }
 
@@ -247,6 +267,10 @@ namespace NetAIVision.Controller
         private void FrmScript_Shown(object sender, EventArgs e)
         {
             pictureBox1.Image = _bitmap;
+            if (!(_roi.step_script is null) && _roi.step_script.Count > 0)
+            {
+                uiListBox1.Items.AddRange(_roi.step_script.ToArray());
+            }
         }
 
         private void addProcessStep(string stepFn)

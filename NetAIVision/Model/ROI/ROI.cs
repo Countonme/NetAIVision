@@ -28,5 +28,15 @@ namespace NetAIVision.Model.ROI
         /// 测试脚本信息
         /// </summary>
         public List<string> step_script { get; set; }
+
+        /// <summary>
+        /// 边框画笔颜色
+        /// </summary>
+        public Color pen_color { get; set; } = Color.Red;
+
+        /// <summary>
+        /// 字体颜色
+        /// </summary>
+        public Brush Brushes_color { get; set; } = Brushes.Blue;
     }
 }

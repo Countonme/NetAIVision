@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using OpenCvSharp;
 using OpenCvSharp.Internal.Vectors;
 using Sunny.UI;
+using Sunny.UI.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -90,6 +91,7 @@ namespace NetAIVision
             //About
             this.aboutAToolStripMenuItem.Click += AboutAToolStripMenuItem_Click;
             // Open
+            this.RunningScriptToolStripMenuItem.Click += RunningScriptToolStripMenuItem_Click;
             this.openToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
             this.openImagesToolStripMenuItem.Click += OpenImagesToolStripMenuItem_Click;
             this.openLogsToolStripMenuItem.Click += OpenLogsToolStripMenuItem_Click;
@@ -151,6 +153,96 @@ namespace NetAIVision
             this.saveingScriptsToolStripMenuItem.Click += SaveingScriptsToolStripMenuItem_Click;
             //加载脚本
             this.openScriptToolStripMenuItem.Click += OpenScriptToolStripMenuItem_Click;
+            //单步运行脚本
+            this.runScriptToolStripMenuItem.Click += RunScriptToolStripMenuItem_Click;
+        }
+
+        private void RunningScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!(rois is null) && rois.Count > 0)
+            {
+                rois.ForEach((item) =>
+                {
+                    Rectangle roiRect = item.Rect;
+
+                    // 确保 ROI 在图像范围内
+                    if (roiRect.X < 0 || roiRect.Y < 0 ||
+                        roiRect.Right > pictureBox1.Image.Width ||
+                        roiRect.Bottom > pictureBox1.Image.Height)
+                    {
+                        MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // 1. 创建 ROI 区域的位图
+                    Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+                    using (Graphics g = Graphics.FromImage(templateImage))
+                    {
+                        g.DrawImage(pictureBox1.Image,
+                                    new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                                    roiRect,
+                                    GraphicsUnit.Pixel);
+                    }
+                    if (runProcessStep(templateImage, item))
+                    {
+                        item.pen_color = Color.Lime; // 绿色表示通过
+                        item.Brushes_color = Brushes.LimeGreen;
+                    }
+                    else
+                    {
+                        item.pen_color = Color.Red; // 绿色表示通过
+                        item.Brushes_color = Brushes.Red;
+                    }
+                    pictureBox1.Invalidate(); ; // 重绘图像区域以显示 ROI
+                });
+            }
+        }
+
+        /// <summary>
+        /// 单步运行脚本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void RunScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (selectedRoi == null)
+            {
+                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Rectangle roiRect = selectedRoi.Rect;
+
+            // 确保 ROI 在图像范围内
+            if (roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 1. 创建 ROI 区域的位图
+            Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+            using (Graphics g = Graphics.FromImage(templateImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+            if (runProcessStep(templateImage, selectedRoi))
+            {
+                selectedRoi.pen_color = Color.Lime; // 绿色表示通过
+                selectedRoi.Brushes_color = Brushes.LimeGreen;
+            }
+            else
+            {
+                selectedRoi.pen_color = Color.Red; // 绿色表示通过
+                selectedRoi.Brushes_color = Brushes.Red;
+            }
+            pictureBox1.Invalidate(); ; // 重绘图像区域以显示 ROI
         }
 
         /// <summary>
@@ -201,7 +293,11 @@ namespace NetAIVision
                                 this.ShowWarningNotifier("脚本文件为空或无效。");
                                 return;
                             }
-
+                            foreach (var item in loadedRois)
+                            {
+                                item.Brushes_color = Brushes.Blue;
+                                item.pen_color = Color.Blue;
+                            }
                             // 成功加载，替换当前 rois
                             rois.Clear();
                             rois.AddRange(loadedRois);
@@ -348,8 +444,9 @@ namespace NetAIVision
                             roiRect,
                             GraphicsUnit.Pixel);
             }
-            var frmScrip = new FrmScript(templateImage);
+            var frmScrip = new FrmScript(templateImage, selectedRoi);
             frmScrip.ShowDialog();
+            selectedRoi = frmScrip._roi;
         }
 
         /// <summary>
@@ -1719,6 +1816,7 @@ namespace NetAIVision
         {
             var g = e.Graphics;
             using (var pen = new Pen(Color.Blue, 2))
+            using (var pen1 = new Pen(Color.Blue, 2))
             using (var semiTransBrush = new SolidBrush(Color.FromArgb(60, Color.Lime)))
             using (var font = new Font("Arial", 10, FontStyle.Bold))
             {
@@ -1726,8 +1824,9 @@ namespace NetAIVision
                 foreach (var roi in rois)
                 {
                     //  g.FillRectangle(semiTransBrush, roi.Rect);
-                    g.DrawRectangle(pen, roi.Rect);
-                    g.DrawString(roi.Name, font, Brushes.Yellow, roi.Rect.Location);
+                    pen.Color = roi.pen_color;
+                    g.DrawRectangle(pen1, roi.Rect);
+                    g.DrawString(roi.Name, font, roi.Brushes_color, roi.Rect.Location);
                 }
 
                 // 绘制当前正在绘制的ROI
@@ -1882,6 +1981,99 @@ namespace NetAIVision
             //参考线
             Properties.Settings.Default.guide_line = this.guidelineToolStripMenuItem.Checked;
             Properties.Settings.Default.Save(); // 保存到用户配置文件
+        }
+
+        /// <summary>
+        /// 执行处理步骤
+        /// </summary>
+        private bool runProcessStep(Bitmap _bitmap, ROI _withRoi)
+        {
+            var _bitmap_with = _bitmap;
+            if (!(_withRoi.step_script is null) && _withRoi.step_script.Count > 0)
+            {
+                List<(int step, string text)> list = new List<(int step, string text)>();
+                for (int i = 0; i < _withRoi.step_script.Count; i++)
+                {
+                    var itemString = _withRoi.step_script[i].ToString();
+                    var fn = itemString.Split(':')[0];
+                    switch (fn)
+                    {
+                        //OCR Function
+                        case "YS101":
+                            {
+                                var result = BitmapProcessorServices.OCRFn(_bitmap_with);
+                                //logHelper.AppendLog($"INFO :OCR Data:{result}");
+                                list.Add((i, result));
+                                logHelper.AppendLog($"INFO :Step{i} OCR 文字提取 OCR Data:{result}");
+                                break;
+                            }
+                        //文字比对
+                        case "YS102":
+                            {
+                                var step = int.Parse(itemString.Split(':')[3].ToString());
+                                var base_string = itemString.Split(':')[4].ToString();
+                                var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
+                                logHelper.AppendLog($"INFO :Step{i} 文字比对 OCR Data：{ocr_string}");
+                                if (base_string == ocr_string)
+                                {
+                                    logHelper.AppendLog($"SUCCESS:文字比对成功，内容一致");
+                                }
+                                else
+                                {
+                                    logHelper.AppendLog($"ERROR:文字比对失败，内容不一致");
+                                    return false;
+                                }
+
+                                break;
+                            }
+                        case "YS103":  //图像反色
+                            {
+                                _bitmap_with = BitmapProcessorServices.Invert(_bitmap_with);
+                                logHelper.AppendLog($"INFO :Step{i} 图像反色处理完成");
+                                //PictureRefresh();
+                                break;
+                            }
+                        case "YS104":  //二值化
+                            {
+                                _bitmap_with = BitmapProcessorServices.Threshold(_bitmap_with);
+                                logHelper.AppendLog($"INFO :Step{i} 图像二值化处理完成");
+                                //PictureRefresh();
+                                break;
+                            }
+                        case "YS105":  //灰色边缘处理
+                            {
+                                _bitmap_with = BitmapProcessorServices.DetectEdges(_bitmap_with);
+                                logHelper.AppendLog($"INFO :Step{i} 图像灰色边缘处理完成");
+                                //PictureRefresh();
+                                break;
+                            }
+                        case "YS106":  //彩色边缘处理
+                            {
+                                _bitmap_with = BitmapProcessorServices.DetectEdgesColored(_bitmap_with);
+                                logHelper.AppendLog($"INFO :Step{i} 图像彩色边缘处理完成");
+                                // PictureRefresh();
+                                break;
+                            }
+
+                        case "YS110":  //锐化处理
+                            {
+                                _bitmap_with = BitmapProcessorServices.EnhanceSharpness(_bitmap_with, 5);
+                                logHelper.AppendLog($"INFO :Step{i} 图像理锐化处理完成");
+                                break;
+                            }
+                        case "YS111":
+                            {
+                                var text = BitmapProcessorServices.QR_Code(_bitmap_with);
+                                logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
+                                break;
+                            }
+                    }
+                }
+            }
+            else
+            {
+            }
+            return true;
         }
     }
 }
