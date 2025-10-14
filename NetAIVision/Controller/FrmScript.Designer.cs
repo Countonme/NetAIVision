@@ -29,27 +29,27 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("🌀 高斯模糊");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("反色");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("二值化");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("🔄 反色");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("⚖️ 二值化");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("🔍 灰色边缘检测");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("🔍 彩色边缘检测");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode(" ✨ 锐化");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("图像处理", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("✨ 锐化");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("🖼️ 图像处理", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
             treeNode4,
             treeNode5,
             treeNode6});
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("文字提取（OCR）");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("文字处理", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("🔤  文字提取（OCR）");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("🔤 文字处理", new System.Windows.Forms.TreeNode[] {
             treeNode8});
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("条码识别");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("条码处理", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("🧩 条码识别");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("🧩 条码处理", new System.Windows.Forms.TreeNode[] {
             treeNode10});
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("字符串比对");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("🆚 字符串比对");
             System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("数值比对");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("运算处理", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
             treeNode12,
             treeNode13});
             System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("结果返回");
@@ -87,6 +87,7 @@
             this.中值滤波ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EnhanceSharpnessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearStepsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.uiSplitContainer1)).BeginInit();
             this.uiSplitContainer1.Panel1.SuspendLayout();
             this.uiSplitContainer1.Panel2.SuspendLayout();
@@ -132,31 +133,31 @@
             treeNode1.Name = "Node1";
             treeNode1.Text = "🌀 高斯模糊";
             treeNode2.Name = "YS103";
-            treeNode2.Text = "反色";
+            treeNode2.Text = "🔄 反色";
             treeNode3.Name = "YS104";
-            treeNode3.Text = "二值化";
+            treeNode3.Text = "⚖️ 二值化";
             treeNode4.Name = "YS105";
             treeNode4.Text = "🔍 灰色边缘检测";
             treeNode5.Name = "YS106";
             treeNode5.Text = "🔍 彩色边缘检测";
             treeNode6.Name = "YS110";
-            treeNode6.Text = " ✨ 锐化";
+            treeNode6.Text = "✨ 锐化";
             treeNode7.Name = "Node0";
-            treeNode7.Text = "图像处理";
+            treeNode7.Text = "🖼️ 图像处理";
             treeNode8.Name = "YS101";
-            treeNode8.Text = "文字提取（OCR）";
+            treeNode8.Text = "🔤  文字提取（OCR）";
             treeNode9.Name = "Node4";
-            treeNode9.Text = "文字处理";
+            treeNode9.Text = "🔤 文字处理";
             treeNode10.Name = "YS111";
-            treeNode10.Text = "条码识别";
+            treeNode10.Text = "🧩 条码识别";
             treeNode11.Name = "Node5";
-            treeNode11.Text = "条码处理";
+            treeNode11.Text = "🧩 条码处理";
             treeNode12.Name = "YS102";
-            treeNode12.Text = "字符串比对";
+            treeNode12.Text = "🆚 字符串比对";
             treeNode13.Name = "Node3";
             treeNode13.Text = "数值比对";
             treeNode14.Name = "Node6";
-            treeNode14.Text = "运算处理";
+            treeNode14.Text = "🔢 运算处理";
             treeNode15.Name = "Node0";
             treeNode15.Text = "结果返回";
             treeNode16.Name = "Node1";
@@ -255,7 +256,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.runToolStripMenuItem,
             this.功能ToolStripMenuItem,
-            this.clearStepsToolStripMenuItem});
+            this.clearStepsToolStripMenuItem,
+            this.saveToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 35);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1263, 24);
@@ -265,8 +267,8 @@
             // runToolStripMenuItem
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.runToolStripMenuItem.Text = "Run";
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.runToolStripMenuItem.Text = "▶️ Run";
             // 
             // 功能ToolStripMenuItem
             // 
@@ -296,43 +298,43 @@
             // baseOToolStripMenuItem
             // 
             this.baseOToolStripMenuItem.Name = "baseOToolStripMenuItem";
-            this.baseOToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.baseOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.baseOToolStripMenuItem.Text = "🖼️ 原圖(&O)";
             // 
             // GrayscaleToolStripMenuItem
             // 
             this.GrayscaleToolStripMenuItem.Name = "GrayscaleToolStripMenuItem";
-            this.GrayscaleToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.GrayscaleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.GrayscaleToolStripMenuItem.Text = "🔳 灰度(&G)";
             // 
             // ThresholdToolStripMenuItem
             // 
             this.ThresholdToolStripMenuItem.Name = "ThresholdToolStripMenuItem";
-            this.ThresholdToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.ThresholdToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ThresholdToolStripMenuItem.Text = "⚖️ 二值化(&B)";
             // 
             // InvertToolStripMenuItem
             // 
             this.InvertToolStripMenuItem.Name = "InvertToolStripMenuItem";
-            this.InvertToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.InvertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.InvertToolStripMenuItem.Text = "🔄 反色(&I)";
             // 
             // GaussianBlurUToolStripMenuItem
             // 
             this.GaussianBlurUToolStripMenuItem.Name = "GaussianBlurUToolStripMenuItem";
-            this.GaussianBlurUToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.GaussianBlurUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.GaussianBlurUToolStripMenuItem.Text = "🌀 高斯模糊(&U)";
             // 
             // DetectEdgestoolStripMenuItem1
             // 
             this.DetectEdgestoolStripMenuItem1.Name = "DetectEdgestoolStripMenuItem1";
-            this.DetectEdgestoolStripMenuItem1.Size = new System.Drawing.Size(169, 22);
+            this.DetectEdgestoolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.DetectEdgestoolStripMenuItem1.Text = "🔍 边缘检测(灰色)";
             // 
             // DetectEdgesColoredToolStripMenuItem
             // 
             this.DetectEdgesColoredToolStripMenuItem.Name = "DetectEdgesColoredToolStripMenuItem";
-            this.DetectEdgesColoredToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.DetectEdgesColoredToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.DetectEdgesColoredToolStripMenuItem.Text = "🔍 边缘检测(彩色)";
             // 
             // FlipHorizontalToolStripMenuItem
@@ -340,7 +342,7 @@
             this.FlipHorizontalToolStripMenuItem.Checked = true;
             this.FlipHorizontalToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FlipHorizontalToolStripMenuItem.Name = "FlipHorizontalToolStripMenuItem";
-            this.FlipHorizontalToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.FlipHorizontalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FlipHorizontalToolStripMenuItem.Text = "↔️ 水平翻转(&F)";
             // 
             // FlipVerticalToolStripMenuItem
@@ -348,43 +350,43 @@
             this.FlipVerticalToolStripMenuItem.Checked = true;
             this.FlipVerticalToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FlipVerticalToolStripMenuItem.Name = "FlipVerticalToolStripMenuItem";
-            this.FlipVerticalToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.FlipVerticalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FlipVerticalToolStripMenuItem.Text = "↕️ 垂直翻转(&V)";
             // 
             // 亮度LToolStripMenuItem
             // 
             this.亮度LToolStripMenuItem.Name = "亮度LToolStripMenuItem";
-            this.亮度LToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.亮度LToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.亮度LToolStripMenuItem.Text = "🔆 亮度 + (&L)";
             // 
             // 亮度MToolStripMenuItem
             // 
             this.亮度MToolStripMenuItem.Name = "亮度MToolStripMenuItem";
-            this.亮度MToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.亮度MToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.亮度MToolStripMenuItem.Text = "🔅 亮度 -(&M)";
             // 
             // 对比度CToolStripMenuItem
             // 
             this.对比度CToolStripMenuItem.Name = "对比度CToolStripMenuItem";
-            this.对比度CToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.对比度CToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.对比度CToolStripMenuItem.Text = "📈 对比度 +(&C)";
             // 
             // 对比度TToolStripMenuItem
             // 
             this.对比度TToolStripMenuItem.Name = "对比度TToolStripMenuItem";
-            this.对比度TToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.对比度TToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.对比度TToolStripMenuItem.Text = "📉 对比度 -(&T)";
             // 
             // OCRToolStripMenuItem
             // 
             this.OCRToolStripMenuItem.Name = "OCRToolStripMenuItem";
-            this.OCRToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.OCRToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.OCRToolStripMenuItem.Text = "🔤 OCR(&R)";
             // 
             // QRCodeToolStripMenuItem
             // 
             this.QRCodeToolStripMenuItem.Name = "QRCodeToolStripMenuItem";
-            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.QRCodeToolStripMenuItem.Text = "🧩 二维码读取(&Q)";
             // 
             // guidelineToolStripMenuItem
@@ -395,7 +397,7 @@
             this.双边滤波ToolStripMenuItem,
             this.中值滤波ToolStripMenuItem});
             this.guidelineToolStripMenuItem.Name = "guidelineToolStripMenuItem";
-            this.guidelineToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.guidelineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.guidelineToolStripMenuItem.Text = "降噪处理";
             // 
             // MeanBlurToolStripMenuItem
@@ -419,14 +421,20 @@
             // EnhanceSharpnessToolStripMenuItem
             // 
             this.EnhanceSharpnessToolStripMenuItem.Name = "EnhanceSharpnessToolStripMenuItem";
-            this.EnhanceSharpnessToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.EnhanceSharpnessToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.EnhanceSharpnessToolStripMenuItem.Text = "🔲 锐化";
             // 
             // clearStepsToolStripMenuItem
             // 
             this.clearStepsToolStripMenuItem.Name = "clearStepsToolStripMenuItem";
-            this.clearStepsToolStripMenuItem.Size = new System.Drawing.Size(82, 20);
-            this.clearStepsToolStripMenuItem.Text = "Clear Steps";
+            this.clearStepsToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
+            this.clearStepsToolStripMenuItem.Text = "🗑️ Clear Steps";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.saveToolStripMenuItem.Text = "💾 Save";
             // 
             // FrmScript
             // 
@@ -487,5 +495,6 @@
         private System.Windows.Forms.ToolStripMenuItem 双边滤波ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 中值滤波ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearStepsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
     }
 }

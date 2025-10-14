@@ -6,6 +6,7 @@ using NetAIVision.Model.FrmResult;
 using NetAIVision.Model.ROI;
 using NetAIVision.Services;
 using NetAIVision.Services.MES;
+using Newtonsoft.Json;
 using OpenCvSharp;
 using OpenCvSharp.Internal.Vectors;
 using Sunny.UI;
@@ -24,6 +25,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using Tesseract;
 using ZXing;
 using ZXing.Common;
@@ -59,6 +61,7 @@ namespace NetAIVision
         private UInt32 m_nConvertDstBufLen = 0;
 
         private IntPtr displayHandle = IntPtr.Zero;
+        private bool NewScriptFlag = false;
 
         // 初始化日志控件
         private ConsoleStyleLogHelper logHelper;
@@ -142,6 +145,161 @@ namespace NetAIVision
             //ROI 脚本按钮
             this.viewRoiScriptToolStripMenuItem.Click += ViewRoIScriptToolStripMenuItem_Click;
             this.chearLogToolStripMenuItem.Click += ClearLogToolStripMenuItem_Click;
+            //新建脚本
+            this.newScriptsToolStripMenuItem.Click += NewScriptsToolStripMenuItem_Click;
+            //保存脚本
+            this.saveingScriptsToolStripMenuItem.Click += SaveingScriptsToolStripMenuItem_Click;
+            //加载脚本
+            this.openScriptToolStripMenuItem.Click += OpenScriptToolStripMenuItem_Click;
+        }
+
+        /// <summary>
+        /// 加载脚本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void OpenScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            {
+                using (OpenFileDialog ofd = new OpenFileDialog())
+                {
+                    // 设置文件过滤器
+                    ofd.Filter = "脚本文件|*.ysc|所有文件|*.*";
+                    ofd.Title = "请选择要加载的脚本文件";
+
+                    // 获取程序根目录下的 Scripts 文件夹路径
+                    string appPath = Application.StartupPath;
+                    string defaultFolder = Path.Combine(appPath, "Scripts");
+
+                    // 如果 Scripts 文件夹存在，则设为初始目录
+                    if (Directory.Exists(defaultFolder))
+                    {
+                        ofd.InitialDirectory = defaultFolder;
+                    }
+
+                    // 设置默认文件扩展名
+                    ofd.DefaultExt = "ysc";
+                    ofd.CheckFileExists = true; // 确保文件存在
+
+                    // 显示对话框
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = ofd.FileName;
+
+                        try
+                        {
+                            // 读取文件内容
+                            string scriptContent = System.IO.File.ReadAllText(filePath);
+
+                            // 反序列化 JSON 到 rois 列表
+                            var loadedRois = JsonConvert.DeserializeObject<List<ROI>>(scriptContent);
+
+                            if (loadedRois == null || loadedRois.Count == 0)
+                            {
+                                logHelper.AppendLog("ERROR: 脚本文件为空或无效");
+                                this.ShowWarningNotifier("脚本文件为空或无效。");
+                                return;
+                            }
+
+                            // 成功加载，替换当前 rois
+                            rois.Clear();
+                            rois.AddRange(loadedRois);
+
+                            // 重置为已加载状态（非新建）
+                            NewScriptFlag = false;
+
+                            // 可选：刷新 UI（如 ROI 列表、图像显示等）
+                            pictureBox1.Invalidate(); ; // 重绘图像区域以显示 ROI
+
+                            // 提示成功
+                            logHelper.AppendLog("脚本加载成功！");
+                            this.ShowSuccessNotifier("脚本加载成功！");
+                        }
+                        catch (JsonException jsonEx)
+                        {
+                            logHelper.AppendLog("ERROR: 脚本格式错误，无法解析：" + jsonEx.Message);
+                            this.ShowErrorNotifier("脚本格式错误，无法解析：" + jsonEx.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            logHelper.AppendLog("ERROR: 加载失败：" + ex.Message);
+                            this.ShowErrorNotifier("加载失败：" + ex.Message);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 保存脚本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void SaveingScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewScriptFlag = false;
+            if (rois.Count == 0)
+            {
+                this.ShowErrorNotifier("没有可用的脚本信息");
+                return;
+            }
+
+            var scriptContent = JsonConvert.SerializeObject(rois, Newtonsoft.Json.Formatting.Indented);
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                // 设置默认扩展名和过滤器
+                sfd.Filter = " 脚本文件|*.ysc|所有文件|*.ysc";
+                sfd.Title = "请选择保存路径";
+
+                // 获取程序根目录下的 BNXScripts 文件夹路径
+                string appPath = Application.StartupPath;
+                string defaultFolder = Path.Combine(appPath, "Scripts");
+
+                // 如果文件夹不存在，则创建
+                if (!Directory.Exists(defaultFolder))
+                {
+                    Directory.CreateDirectory(defaultFolder);
+                }
+
+                // 设置初始目录为 BNXScripts 文件夹
+                sfd.InitialDirectory = defaultFolder;
+
+                // 默认文件名（可选）
+                sfd.FileName = "NewScript.ysc";
+
+                // 显示对话框并处理用户选择
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = sfd.FileName;
+
+                    try
+                    {
+                        // 写入内容到文件
+                        System.IO.File.WriteAllText(filePath, scriptContent);
+
+                        // 自定义提示方法（假设你已实现 ShowSuccessTip）
+                        this.ShowSuccessTip("保存成功！");
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ShowSuccessTip("保存失败：" + ex.Message);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 脚本新建功能
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewScriptFlag = true;
+            rois.Clear();
+            logHelper.AppendLog("开启脚本新建功能");
         }
 
         /// <summary>
@@ -1506,9 +1664,12 @@ namespace NetAIVision
         {
             if (e.Button == MouseButtons.Left)
             {
-                isDrawing = true;
-                startPoint = e.Location;
-                currentROI = new ROI { Name = $"ROI_{roiCounter++}" };
+                if (NewScriptFlag)
+                {
+                    isDrawing = true;
+                    startPoint = e.Location;
+                    currentROI = new ROI { Name = $"ROI_{roiCounter++}" };
+                }
             }
         }
 
