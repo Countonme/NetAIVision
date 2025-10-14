@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -60,6 +61,24 @@ namespace NetAIVision.Controller
             {
                 this.Close();
             }));
+        }
+
+        /// <summary>
+        /// 同步显示并在指定时间后关闭（会阻塞当前线程）
+        /// </summary>
+        public void CloseMeSync()
+        {
+            Thread.Sleep(_closeTime * 1000); // 等待指定秒数（单位：毫秒）
+
+            // 使用 Invoke 确保在 UI 线程关闭窗体
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => this.Close()));
+            }
+            else
+            {
+                this.Close();
+            }
         }
     }
 }

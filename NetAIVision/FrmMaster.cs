@@ -169,6 +169,8 @@ namespace NetAIVision
             if (!(rois is null) && rois.Count > 0)
             {
                 var flag = true;
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
                 foreach (var item in rois)
                 {
                     Rectangle roiRect = item.Rect;
@@ -205,19 +207,33 @@ namespace NetAIVision
                     }
                     pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
                 }
+                timer.Stop();
+                TimeSpan elapsed = TimeSpan.FromMilliseconds(timer.ElapsedMilliseconds);
+                txtLengthy.Text = elapsed.TotalSeconds.ToString("F2") + " S";
                 if (flag)
                 {
                     pictureBox2.Image = Properties.Resources.pass;
-                    // var frm = new FrmResult(ResultEnum.Pass, 3);
-                    //frm.Show();
+                    var frm = new FrmResult(ResultEnum.Pass, 3);
+                    frm.Show();
+                    // 把阻塞操作放到后台线程
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(3000); // 等待3秒
+                        frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
+                    });
                     // await frm.CloseMeAsync();
                 }
                 else
                 {
                     pictureBox2.Image = Properties.Resources.fail;
-                    //var frm = new FrmResult(ResultEnum.Fail, 3);
-
-                    // frm.Show();
+                    var frm = new FrmResult(ResultEnum.Fail, 3);
+                    frm.Show();
+                    // 把阻塞操作放到后台线程
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(3000); // 等待3秒
+                        frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
+                    });
                     //await frm.CloseMeAsync();
                 }
             }

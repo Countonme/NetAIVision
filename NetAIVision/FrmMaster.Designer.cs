@@ -89,7 +89,7 @@
             this.RadioDebugMode = new Sunny.UI.UIRadioButton();
             this.RadioBtnProductionMode = new Sunny.UI.UIRadioButton();
             this.uiLine1 = new Sunny.UI.UILine();
-            this.uiTextBox3 = new Sunny.UI.UITextBox();
+            this.txtLengthy = new Sunny.UI.UITextBox();
             this.uiLabel4 = new Sunny.UI.UILabel();
             this.uiTextBox2 = new Sunny.UI.UITextBox();
             this.uiLabel3 = new Sunny.UI.UILabel();
@@ -555,7 +555,7 @@
             this.groupSetting.Controls.Add(this.pictureBox2);
             this.groupSetting.Controls.Add(this.uiLine1);
             this.groupSetting.Controls.Add(this.uiGroupBox1);
-            this.groupSetting.Controls.Add(this.uiTextBox3);
+            this.groupSetting.Controls.Add(this.txtLengthy);
             this.groupSetting.Controls.Add(this.uiLabel4);
             this.groupSetting.Controls.Add(this.uiTextBox2);
             this.groupSetting.Controls.Add(this.uiLabel3);
@@ -694,22 +694,22 @@
             this.uiLine1.Text = "检查结果";
             this.uiLine1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // uiTextBox3
+            // txtLengthy
             // 
-            this.uiTextBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox3.EnterAsTab = true;
-            this.uiTextBox3.Font = new System.Drawing.Font("SimSun", 12F);
-            this.uiTextBox3.Location = new System.Drawing.Point(100, 272);
-            this.uiTextBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox3.MinimumSize = new System.Drawing.Size(1, 16);
-            this.uiTextBox3.Name = "uiTextBox3";
-            this.uiTextBox3.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox3.ReadOnly = true;
-            this.uiTextBox3.ShowText = false;
-            this.uiTextBox3.Size = new System.Drawing.Size(340, 29);
-            this.uiTextBox3.TabIndex = 11;
-            this.uiTextBox3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.uiTextBox3.Watermark = "";
+            this.txtLengthy.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtLengthy.EnterAsTab = true;
+            this.txtLengthy.Font = new System.Drawing.Font("SimSun", 12F);
+            this.txtLengthy.Location = new System.Drawing.Point(100, 272);
+            this.txtLengthy.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtLengthy.MinimumSize = new System.Drawing.Size(1, 16);
+            this.txtLengthy.Name = "txtLengthy";
+            this.txtLengthy.Padding = new System.Windows.Forms.Padding(5);
+            this.txtLengthy.ReadOnly = true;
+            this.txtLengthy.ShowText = false;
+            this.txtLengthy.Size = new System.Drawing.Size(340, 29);
+            this.txtLengthy.TabIndex = 11;
+            this.txtLengthy.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtLengthy.Watermark = "";
             // 
             // uiLabel4
             // 
@@ -1050,7 +1050,7 @@
         private Sunny.UI.UILabel uiLabel1;
         private Sunny.UI.UITextBox edtName;
         private Sunny.UI.UILabel uiLabel2;
-        private Sunny.UI.UITextBox uiTextBox3;
+        private Sunny.UI.UITextBox txtLengthy;
         private Sunny.UI.UILabel uiLabel4;
         private Sunny.UI.UITextBox uiTextBox2;
         private Sunny.UI.UILabel uiLabel3;
