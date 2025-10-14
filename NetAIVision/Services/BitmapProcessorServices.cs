@@ -1,15 +1,31 @@
-﻿using System;
+﻿using MvCameraControl;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Tesseract;
+using ZXing;
+using ZXing.Common;
 
 namespace NetAIVision.Services
 {
     public class BitmapProcessorServices
     {
+        //OCR
+        private static string _lang = "chi_sim"; // 可改为 eng, chi_tra 等
+
+        private static string _tessDataPath;
+
+        public BitmapProcessorServices()
+        {
+        }
+
         #region 像素级处理辅助方法
 
         /// <summary>
@@ -74,6 +90,76 @@ namespace NetAIVision.Services
         public static Bitmap Invert(Bitmap bitmap)
         {
             return ProcessPixelByPixel(bitmap, c => Color.FromArgb(c.A, 255 - c.R, 255 - c.G, 255 - c.B));
+        }
+
+        /// <summary>
+        /// OCR
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <returns></returns>
+        public static string OCRFn(Bitmap bitmap)
+        {
+            // 使用 Tesseract 进行 OCR 识别
+            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
+            // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
+            var ms = new MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
+            ms.Position = 0;
+
+            var img = Pix.LoadFromMemory(ms.ToArray());
+            //var page = engine.Process(img);
+            //string text = page.GetText();
+            //return text;
+            using (var page = engine.Process(img))
+            {
+                string text = page.GetText();
+
+                // 清理文本：去除所有换行、回车、制表符，并压缩空白
+                string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", " ", RegexOptions.None);
+                cleaned = Regex.Replace(cleaned, @"\s+", " "); // 多个空格合并为一个
+                cleaned = cleaned.Trim();
+
+                return cleaned;
+            }
+        }
+
+        /// <summary>
+        /// QR code 解码
+        /// </summary>
+        /// <param name="roiImage"></param>
+        /// <returns></returns>
+        public static (bool flag, string txt, string message) QR_Code(Bitmap roiImage)
+        {
+            var barcodeReader = new ZXing.BarcodeReader()
+            {
+                AutoRotate = true,
+                TryInverted = true,
+                Options = new DecodingOptions
+                {
+                    TryHarder = true,
+                    PossibleFormats = new List<BarcodeFormat> {
+                        BarcodeFormat.QR_CODE,
+                        ZXing.BarcodeFormat.DATA_MATRIX,
+                        ZXing.BarcodeFormat.AZTEC,
+                        ZXing.BarcodeFormat.PDF_417
+                    }
+                }
+            };
+            var result = barcodeReader.Decode(roiImage);
+
+            // 4. 显示结果
+            if (result != null)
+            {
+                return (true, result.Text, $"识别成功：{result.Text}");
+                //logHelper.AppendLog($"INFO:{selectedRoi.Name} 识别成功：{result.Text}");
+                //MessageBox.Show($"识别成功：\n{result.Text}", "二维码内容", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                return (false, result.Text, $"未识别到二维码，请确保该区域包含清晰的二维码。");
+                //logHelper.AppendLog($"ERROR:{selectedRoi.Name} 未识别到二维码，请确保该区域包含清晰的二维码");
+                //MessageBox.Show("未识别到二维码，请确保该区域包含清晰的二维码。", "识别失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -150,6 +236,320 @@ namespace NetAIVision.Services
             }
             return result;
         }
+
+        #region 图像降噪处理
+
+        /// <summary>
+        /// 中值滤波（有效去除椒盐噪声、脏点）
+        /// </summary>
+        /// <param name="bitmap">输入图像</param>
+        /// <param name="kernelSize">滤波窗口大小（建议 3 或 5，必须为奇数）param>
+        /// <returns>去噪后的图像</returns>
+        public static Bitmap MedianBlur(Bitmap bitmap, int kernelSize = 3)
+        {
+            if (kernelSize % 2 == 0) kernelSize++; // 必须为奇数
+            int radius = kernelSize / 2;
+
+            Bitmap result = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format32bppArgb);
+            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData resultData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                byte* resultPtr = (byte*)resultData.Scan0;
+                int stride = data.Stride;
+                int bytesPerPixel = 4;
+
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    for (int x = 0; x < bitmap.Width; x++)
+                    {
+                        List<int> rList = new List<int>(), gList = new List<int>(), bList = new List<int>();
+
+                        // 收集邻域像素
+                        for (int ky = -radius; ky <= radius; ky++)
+                        {
+                            for (int kx = -radius; kx <= radius; kx++)
+                            {
+                                int nx = x + kx;
+                                int ny = y + ky;
+
+                                if (nx >= 0 && nx < bitmap.Width && ny >= 0 && ny < bitmap.Height)
+                                {
+                                    int idx = (ny * stride) + (nx * bytesPerPixel);
+                                    bList.Add(ptr[idx + 0]);
+                                    gList.Add(ptr[idx + 1]);
+                                    rList.Add(ptr[idx + 2]);
+                                }
+                            }
+                        }
+
+                        // 排序取中值
+                        int dstIdx = (y * stride) + (x * bytesPerPixel);
+                        resultPtr[dstIdx + 0] = GetMedian(bList);
+                        resultPtr[dstIdx + 1] = GetMedian(gList);
+                        resultPtr[dstIdx + 2] = GetMedian(rList);
+                        resultPtr[dstIdx + 3] = 255; // Alpha
+                    }
+                }
+            }
+
+            bitmap.UnlockBits(data);
+            result.UnlockBits(resultData);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 均值滤波（简单平滑，轻微去噪）
+        /// </summary>
+        /// <param name="bitmap">输入图像</param>
+        /// <param name="kernelSize">窗口大小（3x3, 5x5）</param>
+        /// <returns>平滑后的图像</returns>
+        public static Bitmap MeanBlur(Bitmap bitmap, int kernelSize = 3)
+        {
+            if (kernelSize % 2 == 0) kernelSize++;
+            int radius = kernelSize / 2;
+
+            Bitmap result = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format32bppArgb);
+            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData resultData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                byte* resultPtr = (byte*)resultData.Scan0;
+                int stride = data.Stride;
+                int bytesPerPixel = 4;
+
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    for (int x = 0; x < bitmap.Width; x++)
+                    {
+                        int r = 0, g = 0, b = 0, count = 0;
+
+                        for (int ky = -radius; ky <= radius; ky++)
+                        {
+                            for (int kx = -radius; kx <= radius; kx++)
+                            {
+                                int nx = x + kx;
+                                int ny = y + ky;
+
+                                if (nx >= 0 && nx < bitmap.Width && ny >= 0 && ny < bitmap.Height)
+                                {
+                                    int idx = (ny * stride) + (nx * bytesPerPixel);
+                                    b += ptr[idx + 0];
+                                    g += ptr[idx + 1];
+                                    r += ptr[idx + 2];
+                                    count++;
+                                }
+                            }
+                        }
+
+                        int dstIdx = (y * stride) + (x * bytesPerPixel);
+                        resultPtr[dstIdx + 0] = (byte)(b / count);
+                        resultPtr[dstIdx + 1] = (byte)(g / count);
+                        resultPtr[dstIdx + 2] = (byte)(r / count);
+                        resultPtr[dstIdx + 3] = 255;
+                    }
+                }
+            }
+
+            bitmap.UnlockBits(data);
+            result.UnlockBits(resultData);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 双边滤波（保边去噪，效果好但较慢）
+        /// </summary>
+        /// <param name="bitmap">输入图像</param>
+        /// <param name="d">邻域直径（建议 5）</param>
+        /// <param name="sigmaColor">颜色相似性权重（越大越平滑）</param>
+        /// <param name="sigmaSpace">空间距离权重</param>
+        /// <returns>去噪图像</returns>
+        public static Bitmap BilateralFilter(Bitmap bitmap, int d = 5, double sigmaColor = 75, double sigmaSpace = 75)
+        {
+            int radius = d / 2;
+            Bitmap result = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format32bppArgb);
+            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData resultData = result.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                byte* resultPtr = (byte*)resultData.Scan0;
+                int stride = data.Stride;
+                int bytesPerPixel = 4;
+
+                for (int y = 0; y < bitmap.Height; y++)
+                {
+                    for (int x = 0; x < bitmap.Width; x++)
+                    {
+                        double rSum = 0, gSum = 0, bSum = 0, weightSum = 0;
+
+                        for (int ky = -radius; ky <= radius; ky++)
+                        {
+                            for (int kx = -radius; kx <= radius; kx++)
+                            {
+                                int nx = x + kx;
+                                int ny = y + ky;
+
+                                if (nx >= 0 && nx < bitmap.Width && ny >= 0 && ny < bitmap.Height)
+                                {
+                                    int idx = (ny * stride) + (nx * bytesPerPixel);
+                                    int idx2 = (y * stride) + (x * bytesPerPixel);
+
+                                    double spatial = Math.Sqrt(kx * kx + ky * ky);
+                                    double colorDiff = Distance(ptr[idx + 0], ptr[idx + 1], ptr[idx + 2],
+                                                                ptr[idx2 + 0], ptr[idx2 + 1], ptr[idx2 + 2]);
+                                    double weight = Math.Exp(-spatial / sigmaSpace) * Math.Exp(-colorDiff / sigmaColor);
+
+                                    bSum += ptr[idx + 0] * weight;
+                                    gSum += ptr[idx + 1] * weight;
+                                    rSum += ptr[idx + 2] * weight;
+                                    weightSum += weight;
+                                }
+                            }
+                        }
+
+                        int dstIdx = (y * stride) + (x * bytesPerPixel);
+                        resultPtr[dstIdx + 0] = (byte)(bSum / weightSum);
+                        resultPtr[dstIdx + 1] = (byte)(gSum / weightSum);
+                        resultPtr[dstIdx + 2] = (byte)(rSum / weightSum);
+                        resultPtr[dstIdx + 3] = 255;
+                    }
+                }
+            }
+
+            bitmap.UnlockBits(data);
+            result.UnlockBits(resultData);
+
+            return result;
+        }
+
+        // 辅助函数：计算中值
+        private static byte GetMedian(List<int> values)
+        {
+            var sorted = values.OrderBy(x => x).ToList();
+            int mid = sorted.Count / 2;
+            return (byte)(sorted.Count % 2 == 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid]);
+        }
+
+        // 辅助函数：计算颜色距离
+        private static double Distance(int b1, int g1, int r1, int b2, int g2, int r2)
+        {
+            return (r1 - r2) * (r1 - r2) + (g1 - g2) * (g1 - g2) + (b1 - b2) * (b1 - b2);
+        }
+
+        #endregion 图像降噪处理
+
+        /// <summary>
+        /// 提升图像清晰度（锐化 + 高质量缩放）
+        /// </summary>
+        /// <param name="bitmap">原始图像</param>
+        /// <param name="scaleFactor">放大倍数（如 2.0 表示放大 2 倍）</param>
+        /// <returns>更清晰的图像</returns>
+        public static Bitmap EnhanceSharpness(Bitmap bitmap, double scaleFactor = 1.0)
+        {
+            if (bitmap == null) throw new ArgumentNullException(nameof(bitmap));
+            if (scaleFactor <= 0) throw new ArgumentException("scaleFactor 必须大于 0");
+
+            // 步骤1：先缩放到目标尺寸（高质量插值）
+            int newWidth = (int)(bitmap.Width * scaleFactor);
+            int newHeight = (int)(bitmap.Height * scaleFactor);
+
+            Bitmap resized = new Bitmap(newWidth, newHeight, PixelFormat.Format32bppArgb);
+            using (Graphics g = Graphics.FromImage(resized))
+            {
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.DrawImage(bitmap, new Rectangle(0, 0, newWidth, newHeight));
+            }
+
+            // 步骤2：应用锐化滤波
+            return ApplySharpen(resized);
+        }
+
+        /// <summary>
+        /// 应用锐化卷积核
+        /// </summary>
+        private static Bitmap ApplySharpen(Bitmap bitmap)
+        {
+            // 锐化卷积核（强调中心像素）
+            int[,] kernel = {
+        { 0, -1,  0 },
+        { -1, 5, -1 },
+        { 0, -1,  0 }
+    };
+            int factor = 1;
+            int bias = 0;
+
+            return Convolve(bitmap, kernel, factor, bias);
+        }
+
+        /// <summary>
+        /// 卷积操作（用于模糊、锐化等）
+        /// </summary>
+        private static Bitmap Convolve(Bitmap bitmap, int[,] kernel, int factor = 1, int bias = 0)
+        {
+            int width = bitmap.Width;
+            int height = bitmap.Height;
+            Bitmap result = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+            BitmapData data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData resultData = result.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+            unsafe
+            {
+                byte* ptr = (byte*)data.Scan0;
+                byte* resultPtr = (byte*)resultData.Scan0;
+                int stride = data.Stride;
+
+                int radius = kernel.GetLength(0) / 2;
+
+                for (int y = radius; y < height - radius; y++)
+                {
+                    for (int x = radius; x < width - radius; x++)
+                    {
+                        double r = 0, g = 0, b = 0;
+
+                        for (int ky = -radius; ky <= radius; ky++)
+                        {
+                            for (int kx = -radius; kx <= radius; kx++)
+                            {
+                                int nx = x + kx;
+                                int ny = y + ky;
+                                int idx = (ny * stride) + (nx * 4);
+                                int w = kernel[ky + radius, kx + radius];
+
+                                b += ptr[idx + 0] * w;
+                                g += ptr[idx + 1] * w;
+                                r += ptr[idx + 2] * w;
+                            }
+                        }
+
+                        int dstIdx = (y * stride) + (x * 4);
+                        resultPtr[dstIdx + 0] = Clamp((int)(b / factor) + bias);
+                        resultPtr[dstIdx + 1] = Clamp((int)(g / factor) + bias);
+                        resultPtr[dstIdx + 2] = Clamp((int)(r / factor) + bias);
+                        resultPtr[dstIdx + 3] = 255;
+                    }
+                }
+            }
+
+            bitmap.UnlockBits(data);
+            result.UnlockBits(resultData);
+
+            return result;
+        }
+
+        // 辅助函数：限制值在 [0,255]
+        private static byte Clamp(int value) => (byte)(value < 0 ? 0 : (value > 255 ? 255 : value));
 
         #region 边缘检测 - Sobel 算子
 

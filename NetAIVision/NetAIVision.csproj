@@ -99,6 +99,12 @@
     <Compile Include="Controller\FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\FrmCharacterComparison.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controller\FrmCharacterComparison.Designer.cs">
+      <DependentUpon>FrmCharacterComparison.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controller\FrmGaussianBlur.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +147,9 @@
     <Compile Include="Services\MES\MES_Service.cs" />
     <EmbeddedResource Include="Controller\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controller\FrmCharacterComparison.resx">
+      <DependentUpon>FrmCharacterComparison.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controller\FrmGaussianBlur.resx">
       <DependentUpon>FrmGaussianBlur.cs</DependentUpon>
