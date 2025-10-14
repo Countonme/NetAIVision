@@ -161,7 +161,7 @@ namespace NetAIVision
         {
             if (!(rois is null) && rois.Count > 0)
             {
-                rois.ForEach((item) =>
+                foreach (var item in rois)
                 {
                     Rectangle roiRect = item.Rect;
 
@@ -185,7 +185,7 @@ namespace NetAIVision
                     }
                     if (runProcessStep(templateImage, item))
                     {
-                        item.pen_color = Color.Lime; // 绿色表示通过
+                        item.pen_color = Color.LimeGreen; // 绿色表示通过
                         item.Brushes_color = Brushes.LimeGreen;
                     }
                     else
@@ -193,8 +193,8 @@ namespace NetAIVision
                         item.pen_color = Color.Red; // 绿色表示通过
                         item.Brushes_color = Brushes.Red;
                     }
-                    pictureBox1.Invalidate(); ; // 重绘图像区域以显示 ROI
-                });
+                    pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
+                }
             }
         }
 
@@ -278,7 +278,7 @@ namespace NetAIVision
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
                         string filePath = ofd.FileName;
-
+                        txtscriptName.Text = filePath;
                         try
                         {
                             // 读取文件内容
@@ -1816,17 +1816,33 @@ namespace NetAIVision
         {
             var g = e.Graphics;
             using (var pen = new Pen(Color.Blue, 2))
-            using (var pen1 = new Pen(Color.Blue, 2))
+
             using (var semiTransBrush = new SolidBrush(Color.FromArgb(60, Color.Lime)))
             using (var font = new Font("Arial", 10, FontStyle.Bold))
             {
                 // 绘制所有已存在的ROI
+                // 绘制所有已存在的 ROI
                 foreach (var roi in rois)
                 {
-                    //  g.FillRectangle(semiTransBrush, roi.Rect);
-                    pen.Color = roi.pen_color;
-                    g.DrawRectangle(pen1, roi.Rect);
-                    g.DrawString(roi.Name, font, roi.Brushes_color, roi.Rect.Location);
+                    // 设置画笔颜色（注意：你这里用了两个 pen，建议优化）
+                    using (var pen1 = new Pen(roi.pen_color, 2))
+                    {
+                        g.DrawRectangle(pen1, roi.Rect);
+
+                        // 计算文字位置：在矩形上方，垂直居中对齐
+                        var textSizes = g.MeasureString(roi.Name, font);  // 测量文字大小
+                        float textX = roi.Rect.X;                          // 文字从矩形左侧开始
+                        float textY = roi.Rect.Y - textSizes.Height - 2;    // 在矩形上方，留 2 像素间距
+
+                        // 可选：绘制一个浅色背景，提高文字可读性
+                        using (var bgBrush = new SolidBrush(Color.FromArgb(180, Color.White)))
+                        {
+                            g.FillRectangle(bgBrush, textX, textY, textSizes.Width, textSizes.Height);
+                        }
+
+                        // 绘制文字
+                        g.DrawString(roi.Name, font, roi.Brushes_color, new PointF(textX, textY));
+                    }
                 }
 
                 // 绘制当前正在绘制的ROI
@@ -2061,10 +2077,17 @@ namespace NetAIVision
                                 logHelper.AppendLog($"INFO :Step{i} 图像理锐化处理完成");
                                 break;
                             }
-                        case "YS111":
+                        case "YS111": //图像二维码识别
                             {
+                                txtSerialNumber.Text = string.Empty;
                                 var text = BitmapProcessorServices.QR_Code(_bitmap_with);
                                 logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
+                                if (text.flag)
+                                {
+                                    txtSerialNumber.Text = text.txt;
+                                    //MES 检测
+                                    //
+                                }
                                 break;
                             }
                     }
@@ -2072,6 +2095,8 @@ namespace NetAIVision
             }
             else
             {
+                logHelper.AppendLog("ERROR: 未设定处理脚本");
+                return false;
             }
             return true;
         }

@@ -88,7 +88,7 @@
             this.richboxLogs = new System.Windows.Forms.RichTextBox();
             this.groupSetting = new Sunny.UI.UIGroupBox();
             this.flowLayoutPanel1 = new Sunny.UI.UIFlowLayoutPanel();
-            this.uiTextBox4 = new Sunny.UI.UITextBox();
+            this.txtscriptName = new Sunny.UI.UITextBox();
             this.uiLabel5 = new Sunny.UI.UILabel();
             this.uiGroupBox2 = new Sunny.UI.UIGroupBox();
             this.uiLabel7 = new Sunny.UI.UILabel();
@@ -101,7 +101,7 @@
             this.uiLabel4 = new Sunny.UI.UILabel();
             this.uiTextBox2 = new Sunny.UI.UITextBox();
             this.uiLabel3 = new Sunny.UI.UILabel();
-            this.uiTextBox1 = new Sunny.UI.UITextBox();
+            this.txtSerialNumber = new Sunny.UI.UITextBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
             this.edtName = new Sunny.UI.UITextBox();
             this.uiLabel2 = new Sunny.UI.UILabel();
@@ -596,7 +596,7 @@
             // groupSetting
             // 
             this.groupSetting.Controls.Add(this.flowLayoutPanel1);
-            this.groupSetting.Controls.Add(this.uiTextBox4);
+            this.groupSetting.Controls.Add(this.txtscriptName);
             this.groupSetting.Controls.Add(this.uiLabel5);
             this.groupSetting.Controls.Add(this.uiGroupBox2);
             this.groupSetting.Controls.Add(this.pictureBox2);
@@ -606,7 +606,7 @@
             this.groupSetting.Controls.Add(this.uiLabel4);
             this.groupSetting.Controls.Add(this.uiTextBox2);
             this.groupSetting.Controls.Add(this.uiLabel3);
-            this.groupSetting.Controls.Add(this.uiTextBox1);
+            this.groupSetting.Controls.Add(this.txtSerialNumber);
             this.groupSetting.Controls.Add(this.uiLabel1);
             this.groupSetting.Controls.Add(this.edtName);
             this.groupSetting.Controls.Add(this.uiLabel2);
@@ -635,22 +635,22 @@
             this.flowLayoutPanel1.Text = "uiFlowLayoutPanel1";
             this.flowLayoutPanel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // uiTextBox4
+            // txtscriptName
             // 
-            this.uiTextBox4.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox4.EnterAsTab = true;
-            this.uiTextBox4.Font = new System.Drawing.Font("SimSun", 12F);
-            this.uiTextBox4.Location = new System.Drawing.Point(100, 108);
-            this.uiTextBox4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox4.MinimumSize = new System.Drawing.Size(1, 16);
-            this.uiTextBox4.Name = "uiTextBox4";
-            this.uiTextBox4.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox4.ReadOnly = true;
-            this.uiTextBox4.ShowText = false;
-            this.uiTextBox4.Size = new System.Drawing.Size(340, 29);
-            this.uiTextBox4.TabIndex = 50;
-            this.uiTextBox4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.uiTextBox4.Watermark = "";
+            this.txtscriptName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtscriptName.EnterAsTab = true;
+            this.txtscriptName.Font = new System.Drawing.Font("SimSun", 12F);
+            this.txtscriptName.Location = new System.Drawing.Point(100, 108);
+            this.txtscriptName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtscriptName.MinimumSize = new System.Drawing.Size(1, 16);
+            this.txtscriptName.Name = "txtscriptName";
+            this.txtscriptName.Padding = new System.Windows.Forms.Padding(5);
+            this.txtscriptName.ReadOnly = true;
+            this.txtscriptName.ShowText = false;
+            this.txtscriptName.Size = new System.Drawing.Size(340, 29);
+            this.txtscriptName.TabIndex = 50;
+            this.txtscriptName.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtscriptName.Watermark = "";
             // 
             // uiLabel5
             // 
@@ -812,22 +812,22 @@
             this.uiLabel3.Text = "机种名称";
             this.uiLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // uiTextBox1
+            // txtSerialNumber
             // 
-            this.uiTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox1.EnterAsTab = true;
-            this.uiTextBox1.Font = new System.Drawing.Font("SimSun", 12F);
-            this.uiTextBox1.Location = new System.Drawing.Point(100, 190);
-            this.uiTextBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.uiTextBox1.MinimumSize = new System.Drawing.Size(1, 16);
-            this.uiTextBox1.Name = "uiTextBox1";
-            this.uiTextBox1.Padding = new System.Windows.Forms.Padding(5);
-            this.uiTextBox1.ReadOnly = true;
-            this.uiTextBox1.ShowText = false;
-            this.uiTextBox1.Size = new System.Drawing.Size(340, 29);
-            this.uiTextBox1.TabIndex = 7;
-            this.uiTextBox1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.uiTextBox1.Watermark = "";
+            this.txtSerialNumber.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSerialNumber.EnterAsTab = true;
+            this.txtSerialNumber.Font = new System.Drawing.Font("SimSun", 12F);
+            this.txtSerialNumber.Location = new System.Drawing.Point(100, 190);
+            this.txtSerialNumber.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSerialNumber.MinimumSize = new System.Drawing.Size(1, 16);
+            this.txtSerialNumber.Name = "txtSerialNumber";
+            this.txtSerialNumber.Padding = new System.Windows.Forms.Padding(5);
+            this.txtSerialNumber.ReadOnly = true;
+            this.txtSerialNumber.ShowText = false;
+            this.txtSerialNumber.Size = new System.Drawing.Size(340, 29);
+            this.txtSerialNumber.TabIndex = 7;
+            this.txtSerialNumber.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtSerialNumber.Watermark = "";
             // 
             // uiLabel1
             // 
@@ -1038,7 +1038,7 @@
         private Sunny.UI.UIGroupBox uiGroupBox1;
         private Sunny.UI.UIGroupBox grouplogs;
         private Sunny.UI.UIGroupBox groupSetting;
-        private Sunny.UI.UITextBox uiTextBox1;
+        private Sunny.UI.UITextBox txtSerialNumber;
         private Sunny.UI.UILabel uiLabel1;
         private Sunny.UI.UITextBox edtName;
         private Sunny.UI.UILabel uiLabel2;
@@ -1057,7 +1057,7 @@
         private Sunny.UI.UIMarkLabel mlabEmp;
         private Sunny.UI.UIMarkLabel uiMarkLabel2;
         private Sunny.UI.UIGifAvatar uiGifAvatar1;
-        private Sunny.UI.UITextBox uiTextBox4;
+        private Sunny.UI.UITextBox txtscriptName;
         private Sunny.UI.UILabel uiLabel5;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 保存图像ToolStripMenuItem;
