@@ -38,7 +38,7 @@
 
 > **Author**: Victory  
 > **Organization**:  liteon
-> **Contact**: yysvent@liteon.com
+> **Contact**: yysvent@163.com
 > **GitHub**: [https://github.com/yourname/NetAIVision](https://github.com/yourname/NetAIVision)  
 > **Build Date**: 2025年4月5日  
 > **License**: 仅供学习交流 · 保留所有权利 © 2025
