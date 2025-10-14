@@ -138,7 +138,9 @@
     <Compile Include="FrmMaster.Designer.cs">
       <DependentUpon>FrmMaster.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\CharacterComparison.cs" />
     <Compile Include="Model\FrmResult\ResultEnum.cs" />
+    <Compile Include="Model\GaussianBlur.cs" />
     <Compile Include="Model\QRCodeHelper.cs" />
     <Compile Include="Model\ROI\ROI.cs" />
     <Compile Include="Program.cs" />

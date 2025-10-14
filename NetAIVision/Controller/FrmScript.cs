@@ -216,7 +216,13 @@ namespace NetAIVision.Controller
         /// <exception cref="NotImplementedException"></exception>
         private void GaussianBlurUToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var frm = new FrmGaussianBlur();
+            frm.ShowDialog();
+            if (frm.IsOK)
+            {
+                _bitmap_with = BitmapProcessorServices.GaussianBlur(_bitmap_with, frm.Param.SigmaX, frm.Param.KernelSize);
+                pictureBox1.Image = _bitmap_with;
+            }
         }
 
         /// <summary>
@@ -304,10 +310,16 @@ namespace NetAIVision.Controller
                             this.ShowErrorNotifier("必须有OCR 步骤才能使用文字比对");
                             return;
                         }
-                        var strFrm = new FrmCharacterComparison(uiListBox1.Items.Count);
+                        var strFrm = new FrmCharacterComparison(uiListBox1.Items.Count - 1);
                         strFrm.ShowDialog();
-                        uiListBox1.Items.Add($"YS102:{uiListBox1.Items.Count}:文字比对:{strFrm.step_number}:{strFrm.base_string}");
-
+                        if (strFrm.IsOK)
+                        {
+                            uiListBox1.Items.Add($"YS102:{uiListBox1.Items.Count}:文字比对:{strFrm.Person.step_number}:{strFrm.Person.base_string}");
+                        }
+                        else
+                        {
+                            logHelper.AppendLog("WARN: 处理步骤取消");
+                        }
                         break;
                     }
                 case "YS103":

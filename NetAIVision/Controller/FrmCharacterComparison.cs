@@ -1,4 +1,5 @@
-﻿using Sunny.UI;
+﻿using NetAIVision.Model;
+using Sunny.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,23 +12,35 @@ using System.Windows.Forms;
 
 namespace NetAIVision.Controller
 {
-    public partial class FrmCharacterComparison : UIForm
+    public partial class FrmCharacterComparison : UIEditForm
     {
-        public int step_number { get; set; }
-        public string base_string { get; set; }
-
         public FrmCharacterComparison(int max)
         {
             InitializeComponent();
             stepNumber.Maximum = max;
             stepNumber.Minimum = 0;
-            this.FormClosing += FrmCharacterComparison_FormClosing;
         }
 
-        private void FrmCharacterComparison_FormClosing(object sender, FormClosingEventArgs e)
+        private CharacterComparison person;
+
+        public CharacterComparison Person
         {
-            step_number = stepNumber.Value;
-            base_string = txtBaseString.Text;
+            get
+            {
+                if (person == null)
+                {
+                    person = new CharacterComparison();
+                }
+
+                person.step_number = stepNumber.Value;
+                person.base_string = txtBaseString.Text;
+                return person;
+            }
+
+            set
+            {
+                person = value;
+            }
         }
     }
 }

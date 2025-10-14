@@ -32,7 +32,21 @@
             this.SigmaX = new Sunny.UI.UIIntegerUpDown();
             this.uiLine1 = new Sunny.UI.UILine();
             this.kernelSize = new Sunny.UI.UIIntegerUpDown();
+            this.pnlBtm.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // pnlBtm
+            // 
+            this.pnlBtm.Location = new System.Drawing.Point(1, 213);
+            this.pnlBtm.Size = new System.Drawing.Size(374, 55);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(246, 12);
+            // 
+            // btnOK
+            // 
+            this.btnOK.Location = new System.Drawing.Point(131, 12);
             // 
             // uiLine4
             // 
@@ -49,6 +63,7 @@
             // 
             // SigmaX
             // 
+            this.SigmaX.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.SigmaX.Font = new System.Drawing.Font("SimSun", 12F);
             this.SigmaX.Location = new System.Drawing.Point(13, 83);
             this.SigmaX.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -56,6 +71,7 @@
             this.SigmaX.Minimum = -100D;
             this.SigmaX.MinimumSize = new System.Drawing.Size(100, 0);
             this.SigmaX.Name = "SigmaX";
+            this.SigmaX.Padding = new System.Windows.Forms.Padding(5);
             this.SigmaX.ShowText = false;
             this.SigmaX.Size = new System.Drawing.Size(150, 29);
             this.SigmaX.TabIndex = 48;
@@ -78,6 +94,7 @@
             // 
             // kernelSize
             // 
+            this.kernelSize.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.kernelSize.Font = new System.Drawing.Font("SimSun", 12F);
             this.kernelSize.Location = new System.Drawing.Point(13, 154);
             this.kernelSize.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -85,6 +102,7 @@
             this.kernelSize.Minimum = -100D;
             this.kernelSize.MinimumSize = new System.Drawing.Size(100, 0);
             this.kernelSize.Name = "kernelSize";
+            this.kernelSize.Padding = new System.Windows.Forms.Padding(5);
             this.kernelSize.ShowText = false;
             this.kernelSize.Size = new System.Drawing.Size(150, 29);
             this.kernelSize.TabIndex = 50;
@@ -95,17 +113,20 @@
             // FrmGaussianBlur
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(333, 199);
+            this.ClientSize = new System.Drawing.Size(376, 271);
             this.Controls.Add(this.uiLine1);
             this.Controls.Add(this.kernelSize);
             this.Controls.Add(this.uiLine4);
             this.Controls.Add(this.SigmaX);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FrmGaussianBlur";
-            this.ShowIcon = false;
             this.Text = "高斯模糊参数";
             this.ZoomScaleRect = new System.Drawing.Rectangle(15, 15, 800, 450);
+            this.Controls.SetChildIndex(this.SigmaX, 0);
+            this.Controls.SetChildIndex(this.uiLine4, 0);
+            this.Controls.SetChildIndex(this.kernelSize, 0);
+            this.Controls.SetChildIndex(this.uiLine1, 0);
+            this.Controls.SetChildIndex(this.pnlBtm, 0);
+            this.pnlBtm.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
