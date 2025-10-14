@@ -106,9 +106,9 @@
             this.kernelSize.ShowText = false;
             this.kernelSize.Size = new System.Drawing.Size(150, 29);
             this.kernelSize.TabIndex = 50;
-            this.kernelSize.Text = "10";
+            this.kernelSize.Text = "5";
             this.kernelSize.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.kernelSize.Value = 10;
+            this.kernelSize.Value = 5;
             // 
             // FrmGaussianBlur
             // 

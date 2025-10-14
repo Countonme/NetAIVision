@@ -64,7 +64,6 @@
             this.uiLine1 = new Sunny.UI.UILine();
             this.uiLine3 = new Sunny.UI.UILine();
             this.uiListBox1 = new Sunny.UI.UIListBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,13 +89,14 @@
             this.EnhanceSharpnessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearStepsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.uiSplitContainer1)).BeginInit();
             this.uiSplitContainer1.Panel1.SuspendLayout();
             this.uiSplitContainer1.Panel2.SuspendLayout();
             this.uiSplitContainer1.SuspendLayout();
             this.grouplogs.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // uiSplitContainer1
@@ -144,7 +144,7 @@
             treeNode5.Text = "🔍 彩色边缘检测";
             treeNode6.Name = "YS110";
             treeNode6.Text = "✨ 锐化";
-            treeNode7.Name = "Node0";
+            treeNode7.Name = "YS112";
             treeNode7.Text = "🖼️ 图像相似度比对";
             treeNode8.Name = "Node0";
             treeNode8.Text = "🖼️ 图像处理";
@@ -246,15 +246,6 @@
             this.uiListBox1.TabIndex = 1;
             this.uiListBox1.Text = "uiListBox1";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(5, 44);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(553, 471);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -302,43 +293,43 @@
             // baseOToolStripMenuItem
             // 
             this.baseOToolStripMenuItem.Name = "baseOToolStripMenuItem";
-            this.baseOToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.baseOToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.baseOToolStripMenuItem.Text = "🖼️ 原圖(&O)";
             // 
             // GrayscaleToolStripMenuItem
             // 
             this.GrayscaleToolStripMenuItem.Name = "GrayscaleToolStripMenuItem";
-            this.GrayscaleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.GrayscaleToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.GrayscaleToolStripMenuItem.Text = "🔳 灰度(&G)";
             // 
             // ThresholdToolStripMenuItem
             // 
             this.ThresholdToolStripMenuItem.Name = "ThresholdToolStripMenuItem";
-            this.ThresholdToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ThresholdToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.ThresholdToolStripMenuItem.Text = "⚖️ 二值化(&B)";
             // 
             // InvertToolStripMenuItem
             // 
             this.InvertToolStripMenuItem.Name = "InvertToolStripMenuItem";
-            this.InvertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.InvertToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.InvertToolStripMenuItem.Text = "🔄 反色(&I)";
             // 
             // GaussianBlurUToolStripMenuItem
             // 
             this.GaussianBlurUToolStripMenuItem.Name = "GaussianBlurUToolStripMenuItem";
-            this.GaussianBlurUToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.GaussianBlurUToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.GaussianBlurUToolStripMenuItem.Text = "🌀 高斯模糊(&U)";
             // 
             // DetectEdgestoolStripMenuItem1
             // 
             this.DetectEdgestoolStripMenuItem1.Name = "DetectEdgestoolStripMenuItem1";
-            this.DetectEdgestoolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.DetectEdgestoolStripMenuItem1.Size = new System.Drawing.Size(169, 22);
             this.DetectEdgestoolStripMenuItem1.Text = "🔍 边缘检测(灰色)";
             // 
             // DetectEdgesColoredToolStripMenuItem
             // 
             this.DetectEdgesColoredToolStripMenuItem.Name = "DetectEdgesColoredToolStripMenuItem";
-            this.DetectEdgesColoredToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DetectEdgesColoredToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.DetectEdgesColoredToolStripMenuItem.Text = "🔍 边缘检测(彩色)";
             // 
             // FlipHorizontalToolStripMenuItem
@@ -346,7 +337,7 @@
             this.FlipHorizontalToolStripMenuItem.Checked = true;
             this.FlipHorizontalToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FlipHorizontalToolStripMenuItem.Name = "FlipHorizontalToolStripMenuItem";
-            this.FlipHorizontalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FlipHorizontalToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.FlipHorizontalToolStripMenuItem.Text = "↔️ 水平翻转(&F)";
             // 
             // FlipVerticalToolStripMenuItem
@@ -354,43 +345,43 @@
             this.FlipVerticalToolStripMenuItem.Checked = true;
             this.FlipVerticalToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FlipVerticalToolStripMenuItem.Name = "FlipVerticalToolStripMenuItem";
-            this.FlipVerticalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FlipVerticalToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.FlipVerticalToolStripMenuItem.Text = "↕️ 垂直翻转(&V)";
             // 
             // 亮度LToolStripMenuItem
             // 
             this.亮度LToolStripMenuItem.Name = "亮度LToolStripMenuItem";
-            this.亮度LToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.亮度LToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.亮度LToolStripMenuItem.Text = "🔆 亮度 + (&L)";
             // 
             // 亮度MToolStripMenuItem
             // 
             this.亮度MToolStripMenuItem.Name = "亮度MToolStripMenuItem";
-            this.亮度MToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.亮度MToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.亮度MToolStripMenuItem.Text = "🔅 亮度 -(&M)";
             // 
             // 对比度CToolStripMenuItem
             // 
             this.对比度CToolStripMenuItem.Name = "对比度CToolStripMenuItem";
-            this.对比度CToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.对比度CToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.对比度CToolStripMenuItem.Text = "📈 对比度 +(&C)";
             // 
             // 对比度TToolStripMenuItem
             // 
             this.对比度TToolStripMenuItem.Name = "对比度TToolStripMenuItem";
-            this.对比度TToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.对比度TToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.对比度TToolStripMenuItem.Text = "📉 对比度 -(&T)";
             // 
             // OCRToolStripMenuItem
             // 
             this.OCRToolStripMenuItem.Name = "OCRToolStripMenuItem";
-            this.OCRToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OCRToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.OCRToolStripMenuItem.Text = "🔤 OCR(&R)";
             // 
             // QRCodeToolStripMenuItem
             // 
             this.QRCodeToolStripMenuItem.Name = "QRCodeToolStripMenuItem";
-            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.QRCodeToolStripMenuItem.Text = "🧩 二维码读取(&Q)";
             // 
             // guidelineToolStripMenuItem
@@ -401,7 +392,7 @@
             this.双边滤波ToolStripMenuItem,
             this.中值滤波ToolStripMenuItem});
             this.guidelineToolStripMenuItem.Name = "guidelineToolStripMenuItem";
-            this.guidelineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.guidelineToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.guidelineToolStripMenuItem.Text = "降噪处理";
             // 
             // MeanBlurToolStripMenuItem
@@ -425,7 +416,7 @@
             // EnhanceSharpnessToolStripMenuItem
             // 
             this.EnhanceSharpnessToolStripMenuItem.Name = "EnhanceSharpnessToolStripMenuItem";
-            this.EnhanceSharpnessToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.EnhanceSharpnessToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.EnhanceSharpnessToolStripMenuItem.Text = "🔲 锐化";
             // 
             // clearStepsToolStripMenuItem
@@ -439,6 +430,15 @@
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.saveToolStripMenuItem.Text = "💾 Save";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(5, 44);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(553, 471);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // FrmScript
             // 
@@ -457,9 +457,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.uiSplitContainer1)).EndInit();
             this.uiSplitContainer1.ResumeLayout(false);
             this.grouplogs.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

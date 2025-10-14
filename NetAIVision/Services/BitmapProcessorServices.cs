@@ -1,4 +1,7 @@
 ﻿using MvCameraControl;
+using OpenCvSharp;
+using OpenCvSharp.Features2D;
+using OpenCvSharp.Flann;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -217,7 +221,7 @@ namespace NetAIVision.Services
             {
                 g.ScaleTransform(-1, 1);
                 g.TranslateTransform(-bitmap.Width, 0);
-                g.DrawImage(bitmap, new Point(0, 0));
+                g.DrawImage(bitmap, new System.Drawing.Point(0, 0));
             }
             return result;
         }
@@ -232,7 +236,7 @@ namespace NetAIVision.Services
             {
                 g.ScaleTransform(1, -1);
                 g.TranslateTransform(0, -bitmap.Height);
-                g.DrawImage(bitmap, new Point(0, 0));
+                g.DrawImage(bitmap, new System.Drawing.Point(0, 0));
             }
             return result;
         }
@@ -870,5 +874,193 @@ namespace NetAIVision.Services
         }
 
         #endregion 脏污检测
+
+        ///// <summary>
+        ///// 模板比对函数 图片比对函数
+        ///// </summary>
+        ///// <param name="imagePath1"></param>
+        ///// <param name="imagePath2"></param>
+        ///// <returns></returns>
+        ///// <exception cref="Exception"></exception>
+        //public static double CompareImageSimilarity(string imagePath1, string imagePath2)
+        //{
+        //    using (Mat img1 = Cv2.ImRead(imagePath1, ImreadModes.Color))
+        //    using (Mat img2 = Cv2.ImRead(imagePath2, ImreadModes.Color))
+        //    {
+        //        if (img1.Empty() || img2.Empty())
+        //        {
+        //            throw new Exception("图像加载失败，请检查路径");
+        //        }
+
+        //        // 调整大小为相同尺寸（可选）
+        //        Cv2.Resize(img1, img1, new OpenCvSharp.Size(500, 500));
+        //        Cv2.Resize(img2, img2, new OpenCvSharp.Size(500, 500));
+
+        //        // 转为 HSV 色彩空间（对光照变化更鲁棒）
+        //        using (Mat hsv1 = new Mat())
+        //        using (Mat hsv2 = new Mat())
+        //        {
+        //            Cv2.CvtColor(img1, hsv1, ColorConversionCodes.BGR2HSV);
+        //            Cv2.CvtColor(img2, hsv2, ColorConversionCodes.BGR2HSV);
+
+        //            // 计算直方图
+        //            int[] channels = { 0, 1 }; // H 和 S 通道
+        //            int[] histSize = { 50, 60 }; // H:50 bins, S:60 bins
+        //            Rangef[] ranges = { new Rangef(0, 180), new Rangef(0, 256) };
+
+        //            using (Mat hist1 = new Mat())
+        //            using (Mat hist2 = new Mat())
+        //            {
+        //                Cv2.CalcHist(new[] { hsv1 }, channels, null, hist1, 2, histSize, ranges);
+        //                Cv2.CalcHist(new[] { hsv2 }, channels, null, hist2, 2, histSize, ranges);
+
+        //                // 归一化
+        //                Cv2.Normalize(hist1, hist1, 0, 1, NormTypes.MinMax);
+        //                Cv2.Normalize(hist2, hist2, 0, 1, NormTypes.MinMax);
+
+        //                // 比较直方图（方法 0: Correlation，值越接近 1 越相似）
+        //                double similarity = Cv2.CompareHist(hist1, hist2, HistCompMethods.Correl);
+
+        //                return similarity; // 返回 0.0 ~ 1.0，1 表示完全相同
+        //            }
+        //        }
+        //    }
+        //}
+        /// <summary>
+        /// 计算两张图片的相似度（基于模板匹配）
+        /// </summary>
+        /// <param name="sourcePath">源图像路径</param>
+        /// <param name="templatePath">模板图像路径</param>
+        /// <param name="method">匹配方法，默认使用归一化相关系数</param>
+        /// <returns>相似度分数（0~1），越接近1表示越相似</returns>
+        public static double CompareImageSimilarity(string sourcePath, string templatePath, TemplateMatchModes method = TemplateMatchModes.CCoeffNormed)
+        {
+            using (var src = Cv2.ImRead(sourcePath, ImreadModes.Grayscale))
+            using (var tpl = Cv2.ImRead(templatePath, ImreadModes.Grayscale))
+            {
+                if (src.Empty() || tpl.Empty())
+                    throw new ArgumentException("无法读取图像文件，请检查路径。");
+
+                if (tpl.Rows > src.Rows || tpl.Cols > src.Cols)
+                    throw new ArgumentException("模板图像不能大于源图像。");
+
+                // 执行模板匹配
+                using (var result = new Mat())
+                {
+                    Cv2.MatchTemplate(src, tpl, result, method);
+
+                    // 归一化结果（可选，但推荐）
+                    Cv2.Normalize(result, result, 0, 1, NormTypes.MinMax);
+
+                    // 获取最佳匹配位置的值（即最大相似度）
+                    Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out _);
+
+                    // 对于 CCoeffNormed 和 SQDIFF_NORMED，maxVal 即为相似度
+                    // 注意：SQDIFF_NORMED 越小越相似，但这里我们统一返回 0~1，越大越相似
+                    if (method == TemplateMatchModes.SqDiffNormed)
+                    {
+                        maxVal = 1 - maxVal; // 反转，使其符合“越大越相似”
+                    }
+
+                    return Math.Max(0, Math.Min(1, maxVal)); // 限制在 0~1 范围
+                }
+            }
+        }
+
+        /// <summary>
+        /// 直接从内存中的 Mat 对象进行比对
+        /// </summary>
+        public static double CompareImageSimilarity(Mat source, Mat template, TemplateMatchModes method = TemplateMatchModes.CCoeffNormed)
+        {
+            if (source.Empty() || template.Empty())
+                throw new ArgumentException("图像为空。");
+
+            if (template.Rows > source.Rows || template.Cols > source.Cols)
+                throw new ArgumentException("模板图像不能大于源图像。");
+
+            using (var result = new Mat())
+            {
+                Cv2.MatchTemplate(source, template, result, method);
+                Cv2.Normalize(result, result, 0, 1, NormTypes.MinMax);
+                Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out _);
+
+                if (method == TemplateMatchModes.SqDiffNormed)
+                    maxVal = 1 - maxVal;
+
+                return Math.Max(0, Math.Min(1, maxVal));
+            }
+        }
+
+        /// <summary>
+        /// 使用 SIFT 特征点匹配计算图像相似度（适配新版 OpenCvSharp）
+        /// </summary>
+        public static double CompareWithSIFT(string sourcePath, string templatePath)
+        {
+            using (var src = Cv2.ImRead(sourcePath, ImreadModes.Grayscale))
+            using (var tpl = Cv2.ImRead(templatePath, ImreadModes.Grayscale))
+            {
+                if (src.Empty() || tpl.Empty())
+                    throw new ArgumentException("无法加载图像");
+
+                var sift = SIFT.Create(500); // 创建 SIFT 检测器
+
+                // 提取特征点和描述子
+                KeyPoint[] kp1;
+                Mat des1 = new Mat();
+                sift.DetectAndCompute(src, null, out kp1, des1);
+
+                KeyPoint[] kp2;
+                Mat des2 = new Mat();
+                sift.DetectAndCompute(tpl, null, out kp2, des2);
+
+                if (des1.Rows == 0 || des2.Rows == 0)
+                {
+                    des1.Dispose();
+                    des2.Dispose();
+                    return 0;
+                }
+
+                try
+                {
+                    using (var matcher = new FlannBasedMatcher())
+                    {
+                        var matches = matcher.KnnMatch(des1, des2, k: 2);
+
+                        var goodMatches = matches
+                            .Where(m => m.Length == 2 && m[0].Distance < 0.7 * m[1].Distance)
+                            .Select(m => m[0])
+                            .ToList();
+
+                        double similarity = 0;
+
+                        if (goodMatches.Count >= 4)
+                        {
+                            var srcPts = goodMatches.Select(m => kp1[m.QueryIdx].Pt).ToArray();
+                            var dstPts = goodMatches.Select(m => kp2[m.TrainIdx].Pt).ToArray();
+
+                            using (var srcInput = InputArray.Create(srcPts))
+                            using (var dstInput = InputArray.Create(dstPts))
+                            using (var mask = new Mat())
+                            {
+                                Cv2.FindHomography(srcInput, dstInput, HomographyMethods.Ransac, 3, mask);
+                                int inliers = Cv2.CountNonZero(mask);
+                                similarity = (double)inliers / Math.Max(kp1.Length, kp2.Length);
+                            }
+                        }
+                        else
+                        {
+                            similarity = (double)goodMatches.Count / Math.Max(kp1.Length, kp2.Length);
+                        }
+
+                        return Math.Min(1.0, similarity);
+                    }
+                }
+                finally
+                {
+                    des1.Dispose();
+                    des2.Dispose();
+                }
+            }
+        }
     }
 }

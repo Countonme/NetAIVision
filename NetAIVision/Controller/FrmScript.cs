@@ -391,6 +391,17 @@ namespace NetAIVision.Controller
                         logHelper.AppendLog("INFO: 添加图像  QR Code 识别 处理步骤");
                         break;
                     }
+                case "YS112": //图片相似度比较
+                    {
+                        var frm = new FrmSimilarity(_bitmap);
+                        frm.ShowDialog();
+                        if (frm.IsOK)
+                        {
+                            uiListBox1.Items.Add($"YS112->{uiListBox1.Items.Count}->图片相似度比较->{frm.Param.threshold}->{frm.Param.path}");
+                            logHelper.AppendLog("INFO: 添加图像 图片相似度比较 处理步骤");
+                        }
+                        break;
+                    }
             }
         }
 
@@ -426,8 +437,8 @@ namespace NetAIVision.Controller
                         //文字比对
                         case "YS102":
                             {
-                                var step = int.Parse(itemString.Split(':')[3].ToString());
-                                var base_string = itemString.Split(':')[4].ToString();
+                                var step = int.Parse(itemString.Split("->")[3].ToString());
+                                var base_string = itemString.Split("->")[4].ToString();
                                 var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
                                 logHelper.AppendLog($"INFO :Step{i} 文字比对 OCR Data：{ocr_string}");
                                 if (base_string == ocr_string)
@@ -481,6 +492,28 @@ namespace NetAIVision.Controller
                             {
                                 var text = BitmapProcessorServices.QR_Code(_bitmap_with);
                                 logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
+                                break;
+                            }
+                        case "YS112":////图片相似度比较
+                            {
+                                var threshold = double.Parse(itemString.Split("->")[3].ToString());
+                                var path = itemString.Split("->")[4].ToString();
+                                if (string.IsNullOrEmpty(path) && !File.Exists(path))
+                                {
+                                    logHelper.AppendLog($"ERROR :Step{i} 图片相似度比较 参考图片路径无效");
+                                    return;
+                                }
+                                string _basePath = System.Windows.Forms.Application.StartupPath + @"\" + Guid.NewGuid().ToString() + ".jpg";
+                                _bitmap_with.Save(_basePath);
+                                var value = BitmapProcessorServices.CompareWithSIFT(_basePath, path);
+                                if (value >= threshold)
+                                {
+                                    logHelper.AppendLog($"SUCCESS :Step{i} 图片相似度比较 结果:{value.ToString("F3")},阈值:{threshold}");
+                                }
+                                else
+                                {
+                                    logHelper.AppendLog($"WARN :Step{i} 图片相似度比较 结果:{value.ToString("F3")},阈值:{threshold}");
+                                }
                                 break;
                             }
                     }

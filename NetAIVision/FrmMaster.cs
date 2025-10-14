@@ -90,6 +90,7 @@ namespace NetAIVision
             this.Load += FrmMaster_Load;
             //About
             this.aboutAToolStripMenuItem.Click += AboutAToolStripMenuItem_Click;
+            this.editScriptsToolStripMenuItem.Click += EditScriptsToolStripMenuItem_Click;
             // Open
             this.RunningScriptToolStripMenuItem.Click += RunningScriptToolStripMenuItem_Click;
             this.openToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
@@ -157,10 +158,17 @@ namespace NetAIVision
             this.runScriptToolStripMenuItem.Click += RunScriptToolStripMenuItem_Click;
         }
 
+        private void EditScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewScriptFlag = true;
+            logHelper.AppendLog("WARN: 启用脚本编辑功能");
+        }
+
         private void RunningScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!(rois is null) && rois.Count > 0)
             {
+                var flag = true;
                 foreach (var item in rois)
                 {
                     Rectangle roiRect = item.Rect;
@@ -192,8 +200,25 @@ namespace NetAIVision
                     {
                         item.pen_color = Color.Red; // 绿色表示通过
                         item.Brushes_color = Brushes.Red;
+                        flag = false;
+                        break;
                     }
                     pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
+                }
+                if (flag)
+                {
+                    pictureBox2.Image = Properties.Resources.pass;
+                    // var frm = new FrmResult(ResultEnum.Pass, 3);
+                    //frm.Show();
+                    // await frm.CloseMeAsync();
+                }
+                else
+                {
+                    pictureBox2.Image = Properties.Resources.fail;
+                    //var frm = new FrmResult(ResultEnum.Fail, 3);
+
+                    // frm.Show();
+                    //await frm.CloseMeAsync();
                 }
             }
         }
@@ -1929,58 +1954,6 @@ namespace NetAIVision
         }
 
         /// <summary>
-        /// 模板比对函数 图片比对函数
-        /// </summary>
-        /// <param name="imagePath1"></param>
-        /// <param name="imagePath2"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public double CompareImageSimilarity(string imagePath1, string imagePath2)
-        {
-            using (Mat img1 = Cv2.ImRead(imagePath1, ImreadModes.Color))
-            using (Mat img2 = Cv2.ImRead(imagePath2, ImreadModes.Color))
-            {
-                if (img1.Empty() || img2.Empty())
-                {
-                    throw new Exception("图像加载失败，请检查路径");
-                }
-
-                // 调整大小为相同尺寸（可选）
-                Cv2.Resize(img1, img1, new OpenCvSharp.Size(500, 500));
-                Cv2.Resize(img2, img2, new OpenCvSharp.Size(500, 500));
-
-                // 转为 HSV 色彩空间（对光照变化更鲁棒）
-                using (Mat hsv1 = new Mat())
-                using (Mat hsv2 = new Mat())
-                {
-                    Cv2.CvtColor(img1, hsv1, ColorConversionCodes.BGR2HSV);
-                    Cv2.CvtColor(img2, hsv2, ColorConversionCodes.BGR2HSV);
-
-                    // 计算直方图
-                    int[] channels = { 0, 1 }; // H 和 S 通道
-                    int[] histSize = { 50, 60 }; // H:50 bins, S:60 bins
-                    Rangef[] ranges = { new Rangef(0, 180), new Rangef(0, 256) };
-
-                    using (Mat hist1 = new Mat())
-                    using (Mat hist2 = new Mat())
-                    {
-                        Cv2.CalcHist(new[] { hsv1 }, channels, null, hist1, 2, histSize, ranges);
-                        Cv2.CalcHist(new[] { hsv2 }, channels, null, hist2, 2, histSize, ranges);
-
-                        // 归一化
-                        Cv2.Normalize(hist1, hist1, 0, 1, NormTypes.MinMax);
-                        Cv2.Normalize(hist2, hist2, 0, 1, NormTypes.MinMax);
-
-                        // 比较直方图（方法 0: Correlation，值越接近 1 越相似）
-                        double similarity = Cv2.CompareHist(hist1, hist2, HistCompMethods.Correl);
-
-                        return similarity; // 返回 0.0 ~ 1.0，1 表示完全相同
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// 加载窗体配置
         /// </summary>
         private void LoadControllerSetting()
@@ -2090,12 +2063,36 @@ namespace NetAIVision
                                 }
                                 break;
                             }
+                        case "YS112":////图片相似度比较
+                            {
+                                var threshold = double.Parse(itemString.Split("->")[3].ToString());
+                                var path = itemString.Split("->")[4].ToString();
+                                if (string.IsNullOrEmpty(path) && !File.Exists(path))
+                                {
+                                    logHelper.AppendLog($"ERROR :Step{i} 图片相似度比较 参考图片路径无效");
+                                    return false;
+                                }
+                                string _basePath = System.Windows.Forms.Application.StartupPath + @"\" + Guid.NewGuid().ToString() + ".jpg";
+                                _bitmap_with.Save(_basePath);
+                                var value = BitmapProcessorServices.CompareWithSIFT(_basePath, path);
+                                if (value >= threshold)
+                                {
+                                    logHelper.AppendLog($"SUCCESS :Step{i} 图片相似度比较 结果:{value.ToString("F3")},阈值:{threshold}");
+                                    return true;
+                                }
+                                else
+                                {
+                                    logHelper.AppendLog($"WARN :Step{i} 图片相似度比较 结果:{value.ToString("F3")},阈值:{threshold}");
+                                    return false;
+                                }
+                                break;
+                            }
                     }
                 }
             }
             else
             {
-                logHelper.AppendLog("ERROR: 未设定处理脚本");
+                logHelper.AppendLog($"ERROR: {_withRoi.Name} 未设定处理脚本");
                 return false;
             }
             return true;

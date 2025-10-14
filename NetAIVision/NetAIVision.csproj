@@ -132,6 +132,12 @@
     <Compile Include="Controller\FrmScript.Designer.cs">
       <DependentUpon>FrmScript.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\FrmSimilarity.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controller\FrmSimilarity.Designer.cs">
+      <DependentUpon>FrmSimilarity.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmMaster.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +147,7 @@
     <Compile Include="Model\CharacterComparison.cs" />
     <Compile Include="Model\FrmResult\ResultEnum.cs" />
     <Compile Include="Model\GaussianBlur.cs" />
+    <Compile Include="Model\PicSimilarity.cs" />
     <Compile Include="Model\QRCodeHelper.cs" />
     <Compile Include="Model\ROI\ROI.cs" />
     <Compile Include="Program.cs" />
@@ -167,6 +174,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controller\FrmScript.resx">
       <DependentUpon>FrmScript.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controller\FrmSimilarity.resx">
+      <DependentUpon>FrmSimilarity.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMaster.resx">
       <DependentUpon>FrmMaster.cs</DependentUpon>
