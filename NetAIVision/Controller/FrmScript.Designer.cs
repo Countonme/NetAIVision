@@ -132,7 +132,7 @@
             this.treeVFn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.treeVFn.MinimumSize = new System.Drawing.Size(1, 1);
             this.treeVFn.Name = "treeVFn";
-            treeNode1.Name = "Node1";
+            treeNode1.Name = "YS001";
             treeNode1.Text = "🌀 高斯模糊";
             treeNode2.Name = "YS103";
             treeNode2.Text = "🔄 反色";

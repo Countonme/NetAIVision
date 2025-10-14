@@ -2011,7 +2011,7 @@ namespace NetAIVision
                 for (int i = 0; i < _withRoi.step_script.Count; i++)
                 {
                     var itemString = _withRoi.step_script[i].ToString();
-                    var fn = itemString.Split(':')[0];
+                    var fn = itemString.Split("->")[0];
                     switch (fn)
                     {
                         //OCR Function
@@ -2026,8 +2026,8 @@ namespace NetAIVision
                         //文字比对
                         case "YS102":
                             {
-                                var step = int.Parse(itemString.Split(':')[3].ToString());
-                                var base_string = itemString.Split(':')[4].ToString();
+                                var step = int.Parse(itemString.Split("->")[3].ToString());
+                                var base_string = itemString.Split("->")[4].ToString();
                                 var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
                                 logHelper.AppendLog($"INFO :Step{i} 文字比对 OCR Data：{ocr_string}");
                                 if (base_string == ocr_string)

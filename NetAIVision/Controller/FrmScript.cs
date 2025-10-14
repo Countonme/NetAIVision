@@ -283,10 +283,27 @@ namespace NetAIVision.Controller
         {
             switch (stepFn)
             {
+                //高斯模糊
+                case "YS001":
+                    {
+                        var frm = new FrmGaussianBlur();
+                        frm.ShowDialog();
+                        if (frm.IsOK)
+                        {
+                            uiListBox1.Items.Add($"YS001->{uiListBox1.Items.Count}->图像高斯模糊->{frm.Param.SigmaX}->{frm.Param.KernelSize}");
+                            logHelper.AppendLog("INFO: 添加图像高斯模糊处理步骤");
+                        }
+                        else
+                        {
+                            logHelper.AppendLog("WARN: 图像高斯模糊处理步骤取消");
+                        }
+                        break;
+                    }
                 //OCR
                 case "YS101":
                     {
-                        uiListBox1.Items.Add($"YS101:{uiListBox1.Items.Count}:OCR 文字提取");
+                        uiListBox1.Items.Add($"YS101->{uiListBox1.Items.Count}->OCR 文字提取");
+                        logHelper.AppendLog("INFO: 添加图像OCR 文字提取处理步骤");
                         break;
                     }
                 case "YS102":
@@ -314,7 +331,7 @@ namespace NetAIVision.Controller
                         strFrm.ShowDialog();
                         if (strFrm.IsOK)
                         {
-                            uiListBox1.Items.Add($"YS102:{uiListBox1.Items.Count}:文字比对:{strFrm.Person.step_number}:{strFrm.Person.base_string}");
+                            uiListBox1.Items.Add($"YS102->{uiListBox1.Items.Count}->文字比对->{strFrm.Person.step_number}->{strFrm.Person.base_string}");
                         }
                         else
                         {
@@ -324,22 +341,26 @@ namespace NetAIVision.Controller
                     }
                 case "YS103":
                     {
-                        uiListBox1.Items.Add($"YS103:{uiListBox1.Items.Count}:图像反色");
+                        uiListBox1.Items.Add($"YS103->{uiListBox1.Items.Count}->图像反色");
+                        logHelper.AppendLog("INFO: 添加图像  图像反色 处理步骤");
                         break;
                     }
                 case "YS104"://图像二值化
                     {
-                        uiListBox1.Items.Add($"YS104:{uiListBox1.Items.Count}:图像二值化");
+                        uiListBox1.Items.Add($"YS104->{uiListBox1.Items.Count}->图像二值化");
+                        logHelper.AppendLog("INFO: 添加图像  二值化 处理步骤");
                         break;
                     }
                 case "YS105"://图像灰色边缘检测
                     {
-                        uiListBox1.Items.Add($"YS105:{uiListBox1.Items.Count}:图像灰色边缘检测");
+                        uiListBox1.Items.Add($"YS105->{uiListBox1.Items.Count}->图像灰色边缘检测");
+                        logHelper.AppendLog("INFO: 添加图像  灰色边缘检测 处理步骤");
                         break;
                     }
                 case "YS106"://图像彩色边缘检测
                     {
-                        uiListBox1.Items.Add($"YS106:{uiListBox1.Items.Count}:图像彩色边缘检测");
+                        uiListBox1.Items.Add($"YS106->{uiListBox1.Items.Count}->图像彩色边缘检测");
+                        logHelper.AppendLog("INFO: 添加图像  彩色边缘检测 处理步骤");
                         break;
                     }
                 case "YS107"://均值滤波
@@ -360,12 +381,14 @@ namespace NetAIVision.Controller
 
                 case "YS110"://锐化处理
                     {
-                        uiListBox1.Items.Add($"YS110:{uiListBox1.Items.Count}:图像锐化处理");
+                        uiListBox1.Items.Add($"YS110->{uiListBox1.Items.Count}->图像锐化处理");
+                        logHelper.AppendLog("INFO: 添加图像  锐化 处理步骤");
                         break;
                     }
                 case "YS111"://QRCODE 识别
                     {
-                        uiListBox1.Items.Add($"YS111:{uiListBox1.Items.Count}:图像QR Code 识别");
+                        uiListBox1.Items.Add($"YS111->{uiListBox1.Items.Count}->图像QR Code 识别");
+                        logHelper.AppendLog("INFO: 添加图像  QR Code 识别 处理步骤");
                         break;
                     }
             }
@@ -383,7 +406,7 @@ namespace NetAIVision.Controller
                 for (int i = 0; i < uiListBox1.Items.Count; i++)
                 {
                     var itemString = uiListBox1.Items[i].ToString();
-                    var fn = itemString.Split(':')[0];
+                    var fn = itemString.Split("->")[0];
                     // 先取消之前的选中项
                     uiListBox1.ClearSelected();
 
