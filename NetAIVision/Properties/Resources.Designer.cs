@@ -143,6 +143,16 @@ namespace NetAIVision.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Inprogress {
+            get {
+                object obj = ResourceManager.GetObject("Inprogress", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OCR识别管理 {
             get {
                 object obj = ResourceManager.GetObject("OCR识别管理", resourceCulture);

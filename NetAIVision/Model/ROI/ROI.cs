@@ -25,6 +25,11 @@ namespace NetAIVision.Model.ROI
         public Rectangle Rect { get; set; }
 
         /// <summary>
+        /// msg
+        /// </summary>
+        public string msg { get; set; }
+
+        /// <summary>
         /// 测试脚本信息
         /// </summary>
         public List<string> step_script { get; set; }

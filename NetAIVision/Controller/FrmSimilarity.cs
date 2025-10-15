@@ -33,7 +33,8 @@ namespace NetAIVision.Controller
         {
             string _basePath = Application.StartupPath + @"\" + Guid.NewGuid().ToString() + ".jpg";
             _baseBitmap.Save(_basePath);
-            var value = BitmapProcessorServices.CompareWithSIFT(_basePath, txtPath.Text);
+            //var value = BitmapProcessorServices.CompareWithSIFT(_basePath, txtPath.Text);
+            var value = ImageSimilarityHelper.CompareImageSimilarityHybrid(_basePath, txtPath.Text);
             uiRoundProcess3.Text = value.ToString("F3");
             if (File.Exists(_basePath))
             {

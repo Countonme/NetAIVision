@@ -167,75 +167,93 @@ namespace NetAIVision
         private void RunningScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!(rois is null) && rois.Count > 0)
-            {
-                var flag = true;
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
-                foreach (var item in rois)
-                {
-                    Rectangle roiRect = item.Rect;
+            {   ///每次檢查前 初始化檢查結果
+                initRoIAndCheckResult();
+                pictureBox1.Invalidate();
+                pictureBox2.Image = Properties.Resources.Inprogress;
+                Task.Run(() =>
+               {
+                   // 耗时操作放后台线程
+                   var flag = true;
+                   Stopwatch timer = new Stopwatch();
+                   timer.Start();
+                   foreach (var item in rois)
+                   {
+                       Rectangle roiRect = item.Rect;
 
-                    // 确保 ROI 在图像范围内
-                    if (roiRect.X < 0 || roiRect.Y < 0 ||
-                        roiRect.Right > pictureBox1.Image.Width ||
-                        roiRect.Bottom > pictureBox1.Image.Height)
-                    {
-                        MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                       // 确保 ROI 在图像范围内
+                       if (roiRect.X < 0 || roiRect.Y < 0 ||
+                           roiRect.Right > pictureBox1.Image.Width ||
+                           roiRect.Bottom > pictureBox1.Image.Height)
+                       {
+                           MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                           return;
+                       }
 
-                    // 1. 创建 ROI 区域的位图
-                    Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
-                    using (Graphics g = Graphics.FromImage(templateImage))
-                    {
-                        g.DrawImage(pictureBox1.Image,
-                                    new Rectangle(0, 0, roiRect.Width, roiRect.Height),
-                                    roiRect,
-                                    GraphicsUnit.Pixel);
-                    }
-                    if (runProcessStep(templateImage, item))
-                    {
-                        item.pen_color = Color.LimeGreen; // 绿色表示通过
-                        item.Brushes_color = Brushes.LimeGreen;
-                    }
-                    else
-                    {
-                        item.pen_color = Color.Red; // 绿色表示通过
-                        item.Brushes_color = Brushes.Red;
-                        flag = false;
-                        break;
-                    }
-                    pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
-                }
-                timer.Stop();
-                TimeSpan elapsed = TimeSpan.FromMilliseconds(timer.ElapsedMilliseconds);
-                txtLengthy.Text = elapsed.TotalSeconds.ToString("F2") + " S";
-                if (flag)
-                {
-                    pictureBox2.Image = Properties.Resources.pass;
-                    var frm = new FrmResult(ResultEnum.Pass, 3);
-                    frm.Show();
-                    // 把阻塞操作放到后台线程
-                    Task.Run(() =>
-                    {
-                        Thread.Sleep(3000); // 等待3秒
-                        frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
-                    });
-                    // await frm.CloseMeAsync();
-                }
-                else
-                {
-                    pictureBox2.Image = Properties.Resources.fail;
-                    var frm = new FrmResult(ResultEnum.Fail, 3);
-                    frm.Show();
-                    // 把阻塞操作放到后台线程
-                    Task.Run(() =>
-                    {
-                        Thread.Sleep(3000); // 等待3秒
-                        frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
-                    });
-                    //await frm.CloseMeAsync();
-                }
+                       // 1. 创建 ROI 区域的位图
+                       Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+                       using (Graphics g = Graphics.FromImage(templateImage))
+                       {
+                           g.DrawImage(pictureBox1.Image,
+                                       new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                                       roiRect,
+                                       GraphicsUnit.Pixel);
+                       }
+                       if (runProcessStep(templateImage, item))
+                       {
+                           item.pen_color = Color.LimeGreen; // 绿色表示通过
+                           item.Brushes_color = Brushes.LimeGreen;
+                       }
+                       else
+                       {
+                           item.pen_color = Color.Red; // 绿色表示通过
+                           item.Brushes_color = Brushes.Red;
+                           flag = false;
+                           break;
+                       }
+                       pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
+                   }
+                   timer.Stop();
+                   TimeSpan elapsed = TimeSpan.FromMilliseconds(timer.ElapsedMilliseconds);
+                   txtLengthy.BeginInvoke(new Action(() =>
+                   {
+                       txtLengthy.Text = elapsed.TotalSeconds.ToString("F2") + " S";
+                   }));
+
+                   if (flag)
+                   {
+                       this.Invoke(new Action(() =>
+                       {
+                           pictureBox2.Image = Properties.Resources.pass;
+                           var frm = new FrmResult(ResultEnum.Pass, 3);
+                           frm.Show();
+                           // 把阻塞操作放到后台线程
+                           Task.Run(() =>
+                           {
+                               Thread.Sleep(3000); // 等待3秒
+                               frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
+                           });
+                       }));
+
+                       // await frm.CloseMeAsync();
+                   }
+                   else
+                   {
+                       this.Invoke(new Action(() =>
+                       {
+                           pictureBox2.Image = Properties.Resources.fail;
+                           var frm = new FrmResult(ResultEnum.Fail, 3);
+                           frm.Show();
+                           // 把阻塞操作放到后台线程
+                           Task.Run(() =>
+                            {
+                                Thread.Sleep(3000); // 等待3秒
+                                frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
+                            });
+                       }));
+                       //await frm.CloseMeAsync();
+                   }
+               });
             }
         }
 
@@ -334,15 +352,12 @@ namespace NetAIVision
                                 this.ShowWarningNotifier("脚本文件为空或无效。");
                                 return;
                             }
-                            foreach (var item in loadedRois)
-                            {
-                                item.Brushes_color = Brushes.Blue;
-                                item.pen_color = Color.Blue;
-                            }
+
                             // 成功加载，替换当前 rois
                             rois.Clear();
                             rois.AddRange(loadedRois);
-
+                            //初始化
+                            initRoIAndCheckResult();
                             // 重置为已加载状态（非新建）
                             NewScriptFlag = false;
 
@@ -1871,7 +1886,7 @@ namespace NetAIVision
                         g.DrawRectangle(pen1, roi.Rect);
 
                         // 计算文字位置：在矩形上方，垂直居中对齐
-                        var textSizes = g.MeasureString(roi.Name, font);  // 测量文字大小
+                        var textSizes = g.MeasureString($"{roi.Name} {roi.msg}", font);  // 测量文字大小
                         float textX = roi.Rect.X;                          // 文字从矩形左侧开始
                         float textY = roi.Rect.Y - textSizes.Height - 2;    // 在矩形上方，留 2 像素间距
 
@@ -1882,7 +1897,7 @@ namespace NetAIVision
                         }
 
                         // 绘制文字
-                        g.DrawString(roi.Name, font, roi.Brushes_color, new PointF(textX, textY));
+                        g.DrawString($"{roi.Name} {roi.msg}", font, roi.Brushes_color, new PointF(textX, textY));
                     }
                 }
 
@@ -2009,6 +2024,7 @@ namespace NetAIVision
                                 var result = BitmapProcessorServices.OCRFn(_bitmap_with);
                                 //logHelper.AppendLog($"INFO :OCR Data:{result}");
                                 list.Add((i, result));
+                                _withRoi.msg = result;
                                 logHelper.AppendLog($"INFO :Step{i} OCR 文字提取 OCR Data:{result}");
                                 break;
                             }
@@ -2019,12 +2035,15 @@ namespace NetAIVision
                                 var base_string = itemString.Split("->")[4].ToString();
                                 var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
                                 logHelper.AppendLog($"INFO :Step{i} 文字比对 OCR Data：{ocr_string}");
+
                                 if (base_string == ocr_string)
                                 {
+                                    _withRoi.msg = "内容一致";
                                     logHelper.AppendLog($"SUCCESS:文字比对成功，内容一致");
                                 }
                                 else
                                 {
+                                    _withRoi.msg = "内容不一致";
                                     logHelper.AppendLog($"ERROR:文字比对失败，内容不一致");
                                     return false;
                                 }
@@ -2068,15 +2087,21 @@ namespace NetAIVision
                             }
                         case "YS111": //图像二维码识别
                             {
-                                txtSerialNumber.Text = string.Empty;
-                                var text = BitmapProcessorServices.QR_Code(_bitmap_with);
-                                logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
-                                if (text.flag)
+                                txtSerialNumber.BeginInvoke(new Action(() =>
+
                                 {
-                                    txtSerialNumber.Text = text.txt;
-                                    //MES 检测
-                                    //
+                                    txtSerialNumber.Text = string.Empty;
+                                    var text = BitmapProcessorServices.QR_Code(_bitmap_with);
+                                    logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
+                                    if (text.flag)
+                                    {
+                                        txtSerialNumber.Text = text.txt;
+                                        //MES 检测
+                                        //
+                                    }
                                 }
+                                ));
+
                                 break;
                             }
                         case "YS112":////图片相似度比较
@@ -2090,7 +2115,9 @@ namespace NetAIVision
                                 }
                                 string _basePath = System.Windows.Forms.Application.StartupPath + @"\" + Guid.NewGuid().ToString() + ".jpg";
                                 _bitmap_with.Save(_basePath);
-                                var value = BitmapProcessorServices.CompareWithSIFT(_basePath, path);
+                                //var value = BitmapProcessorServices.CompareWithSIFT(_basePath, path);
+                                var value = ImageSimilarityHelper.CompareImageSimilarityHybrid(_basePath, path);
+                                _withRoi.msg = $"相似度:{(value * 100).ToString("F2")}%";
                                 if (value >= threshold)
                                 {
                                     logHelper.AppendLog($"SUCCESS :Step{i} 图片相似度比较 结果:{value.ToString("F3")},阈值:{threshold}");
@@ -2112,6 +2139,22 @@ namespace NetAIVision
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// 初始化ROI 檢查結果
+        /// </summary>
+        private void initRoIAndCheckResult()
+        {
+            foreach (var item in rois)
+            {
+                item.Brushes_color = Brushes.Blue;
+                item.pen_color = Color.Blue;
+                item.msg = string.Empty;
+            }
+            //pictureBox2.Image.Dispose();
+            pictureBox2.Image = null;
+            pictureBox1.Invalidate();
         }
     }
 }

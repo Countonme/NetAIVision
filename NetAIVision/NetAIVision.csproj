@@ -155,6 +155,7 @@
     <Compile Include="Services\BitmapProcessorServices.cs" />
     <Compile Include="Services\ConsoleStyleLogHelper.cs" />
     <Compile Include="Services\HikMVS\MyCamera.cs" />
+    <Compile Include="Services\ImageSimilarityHelper.cs" />
     <Compile Include="Services\LogFileHelper.cs" />
     <Compile Include="Services\MES\MES_Service.cs" />
     <EmbeddedResource Include="Controller\FrmAbout.resx">

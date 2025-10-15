@@ -33,6 +33,9 @@
             this.taintAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveingScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +49,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RunningScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.保存图像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SavebmpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SavejPGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,9 +104,6 @@
             this.uiLine2 = new Sunny.UI.UILine();
             this.mlabEmp = new Sunny.UI.UIMarkLabel();
             this.uiMarkLabel2 = new Sunny.UI.UIMarkLabel();
-            this.newScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveingScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RunningScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -113,7 +114,6 @@
             this.saveTempToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewRoiScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editScriptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -185,6 +185,24 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(80, 25);
             this.fileToolStripMenuItem.Text = "📁 文件";
+            // 
+            // newScriptsToolStripMenuItem
+            // 
+            this.newScriptsToolStripMenuItem.Name = "newScriptsToolStripMenuItem";
+            this.newScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.newScriptsToolStripMenuItem.Text = "➕ New Scripts";
+            // 
+            // editScriptsToolStripMenuItem
+            // 
+            this.editScriptsToolStripMenuItem.Name = "editScriptsToolStripMenuItem";
+            this.editScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.editScriptsToolStripMenuItem.Text = "✏️ Edit Scripts";
+            // 
+            // saveingScriptsToolStripMenuItem
+            // 
+            this.saveingScriptsToolStripMenuItem.Name = "saveingScriptsToolStripMenuItem";
+            this.saveingScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.saveingScriptsToolStripMenuItem.Text = "💾 Save Script";
             // 
             // openScriptToolStripMenuItem
             // 
@@ -272,6 +290,14 @@
             this.stopToolStripMenuItem.Size = new System.Drawing.Size(112, 25);
             this.stopToolStripMenuItem.Text = "🚫 停止采集";
             // 
+            // RunningScriptToolStripMenuItem
+            // 
+            this.RunningScriptToolStripMenuItem.Name = "RunningScriptToolStripMenuItem";
+            this.RunningScriptToolStripMenuItem.ShortcutKeyDisplayString = "F5";
+            this.RunningScriptToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.RunningScriptToolStripMenuItem.Size = new System.Drawing.Size(107, 25);
+            this.RunningScriptToolStripMenuItem.Text = "▶️ 运行(&F5)";
+            // 
             // 保存图像ToolStripMenuItem
             // 
             this.保存图像ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -286,25 +312,25 @@
             // SavebmpToolStripMenuItem
             // 
             this.SavebmpToolStripMenuItem.Name = "SavebmpToolStripMenuItem";
-            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavebmpToolStripMenuItem.Text = "🖼️ *.Bmp";
             // 
             // SavejPGToolStripMenuItem
             // 
             this.SavejPGToolStripMenuItem.Name = "SavejPGToolStripMenuItem";
-            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavejPGToolStripMenuItem.Text = "🖼️ *.JPG";
             // 
             // SavepNGToolStripMenuItem
             // 
             this.SavepNGToolStripMenuItem.Name = "SavepNGToolStripMenuItem";
-            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavepNGToolStripMenuItem.Text = "🖼️ *.PNG";
             // 
             // SavetIFFToolStripMenuItem
             // 
             this.SavetIFFToolStripMenuItem.Name = "SavetIFFToolStripMenuItem";
-            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.SavetIFFToolStripMenuItem.Text = "🖼️ *.TIFF";
             // 
             // 功能ToolStripMenuItem
@@ -511,7 +537,7 @@
             this.uiGroupBox1.Controls.Add(this.label2);
             this.uiGroupBox1.Controls.Add(this.tbFrameRate);
             this.uiGroupBox1.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.uiGroupBox1.Location = new System.Drawing.Point(449, 335);
+            this.uiGroupBox1.Location = new System.Drawing.Point(449, 115);
             this.uiGroupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.uiGroupBox1.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiGroupBox1.Name = "uiGroupBox1";
@@ -569,7 +595,7 @@
             this.groupSetting.MinimumSize = new System.Drawing.Size(1, 1);
             this.groupSetting.Name = "groupSetting";
             this.groupSetting.Padding = new System.Windows.Forms.Padding(0, 32, 0, 0);
-            this.groupSetting.Size = new System.Drawing.Size(683, 542);
+            this.groupSetting.Size = new System.Drawing.Size(683, 563);
             this.groupSetting.TabIndex = 39;
             this.groupSetting.Text = "系统参数";
             this.groupSetting.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
@@ -577,13 +603,13 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(463, 47);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(448, 47);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.flowLayoutPanel1.MinimumSize = new System.Drawing.Size(1, 1);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.ShowText = false;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(203, 247);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(228, 67);
             this.flowLayoutPanel1.TabIndex = 52;
             this.flowLayoutPanel1.Text = "uiFlowLayoutPanel1";
             this.flowLayoutPanel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -850,24 +876,6 @@
             this.uiMarkLabel2.Text = "杨胜碧";
             this.uiMarkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // newScriptsToolStripMenuItem
-            // 
-            this.newScriptsToolStripMenuItem.Name = "newScriptsToolStripMenuItem";
-            this.newScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
-            this.newScriptsToolStripMenuItem.Text = "➕ New Scripts";
-            // 
-            // saveingScriptsToolStripMenuItem
-            // 
-            this.saveingScriptsToolStripMenuItem.Name = "saveingScriptsToolStripMenuItem";
-            this.saveingScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
-            this.saveingScriptsToolStripMenuItem.Text = "💾 Save Script";
-            // 
-            // RunningScriptToolStripMenuItem
-            // 
-            this.RunningScriptToolStripMenuItem.Name = "RunningScriptToolStripMenuItem";
-            this.RunningScriptToolStripMenuItem.Size = new System.Drawing.Size(107, 25);
-            this.RunningScriptToolStripMenuItem.Text = "▶️ 运行(&F5)";
-            // 
             // uiGifAvatar1
             // 
             this.uiGifAvatar1.AvatarSize = 60;
@@ -892,7 +900,7 @@
             this.pictureBox2.InitialImage = global::NetAIVision.Properties.Resources.fail;
             this.pictureBox2.Location = new System.Drawing.Point(23, 347);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(419, 174);
+            this.pictureBox2.Size = new System.Drawing.Size(653, 213);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 40;
             this.pictureBox2.TabStop = false;
@@ -956,12 +964,6 @@
             this.runScriptToolStripMenuItem.Name = "runScriptToolStripMenuItem";
             this.runScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.runScriptToolStripMenuItem.Text = "Run Script";
-            // 
-            // editScriptsToolStripMenuItem
-            // 
-            this.editScriptsToolStripMenuItem.Name = "editScriptsToolStripMenuItem";
-            this.editScriptsToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
-            this.editScriptsToolStripMenuItem.Text = "✏️ Edit Scripts";
             // 
             // FrmMaster
             // 
