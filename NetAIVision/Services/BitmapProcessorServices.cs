@@ -1002,7 +1002,7 @@ namespace NetAIVision.Services
                 if (src.Empty() || tpl.Empty())
                     throw new ArgumentException("无法加载图像");
 
-                var sift = SIFT.Create(500); // 创建 SIFT 检测器
+                var sift = SIFT.Create(1000); // 创建 SIFT 检测器
 
                 // 提取特征点和描述子
                 KeyPoint[] kp1;

@@ -865,8 +865,8 @@
             // RunningScriptToolStripMenuItem
             // 
             this.RunningScriptToolStripMenuItem.Name = "RunningScriptToolStripMenuItem";
-            this.RunningScriptToolStripMenuItem.Size = new System.Drawing.Size(80, 25);
-            this.RunningScriptToolStripMenuItem.Text = "▶️ 运行";
+            this.RunningScriptToolStripMenuItem.Size = new System.Drawing.Size(107, 25);
+            this.RunningScriptToolStripMenuItem.Text = "▶️ 运行(&F5)";
             // 
             // uiGifAvatar1
             // 
