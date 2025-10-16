@@ -30,6 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMaster));
             this.StepMenuStrip = new Sunny.UI.UIContextMenuStrip();
+            this.RenameROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oCRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.QRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveTempToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewRoiScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taintAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,6 +99,7 @@
             this.switchMES = new Sunny.UI.UISwitch();
             this.RadioDebugMode = new Sunny.UI.UIRadioButton();
             this.RadioBtnProductionMode = new Sunny.UI.UIRadioButton();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.uiLine1 = new Sunny.UI.UILine();
             this.txtLengthy = new Sunny.UI.UITextBox();
             this.uiLabel4 = new Sunny.UI.UILabel();
@@ -99,21 +107,15 @@
             this.uiLabel3 = new Sunny.UI.UILabel();
             this.txtSerialNumber = new Sunny.UI.UITextBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
-            this.edtName = new Sunny.UI.UITextBox();
             this.uiLabel2 = new Sunny.UI.UILabel();
             this.uiLine2 = new Sunny.UI.UILine();
             this.mlabEmp = new Sunny.UI.UIMarkLabel();
             this.uiMarkLabel2 = new Sunny.UI.UIMarkLabel();
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.RenameROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oCRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.QRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveTempToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewRoiScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uiLedBulb1 = new Sunny.UI.UILedBulb();
+            this.uiLedBulb2 = new Sunny.UI.UILedBulb();
+            this.uiLabel6 = new Sunny.UI.UILabel();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -139,6 +141,55 @@
             this.taintAnalysisToolStripMenuItem});
             this.StepMenuStrip.Name = "StepMenuStrip";
             this.StepMenuStrip.Size = new System.Drawing.Size(161, 180);
+            // 
+            // RenameROIToolStripMenuItem
+            // 
+            this.RenameROIToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.rename;
+            this.RenameROIToolStripMenuItem.Name = "RenameROIToolStripMenuItem";
+            this.RenameROIToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.RenameROIToolStripMenuItem.Text = "Rename ROI";
+            // 
+            // removeROIToolStripMenuItem
+            // 
+            this.removeROIToolStripMenuItem.Image = global::NetAIVision.Properties.Resources._33_删除;
+            this.removeROIToolStripMenuItem.Name = "removeROIToolStripMenuItem";
+            this.removeROIToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.removeROIToolStripMenuItem.Text = "Remove ROI";
+            // 
+            // oCRToolStripMenuItem
+            // 
+            this.oCRToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.OCR识别管理;
+            this.oCRToolStripMenuItem.Name = "oCRToolStripMenuItem";
+            this.oCRToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.oCRToolStripMenuItem.Text = "OCR";
+            // 
+            // QRCodeToolStripMenuItem
+            // 
+            this.QRCodeToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.qrcode;
+            this.QRCodeToolStripMenuItem.Name = "QRCodeToolStripMenuItem";
+            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.QRCodeToolStripMenuItem.Text = "QR Code";
+            // 
+            // saveTempToolStripMenuItem
+            // 
+            this.saveTempToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.Image;
+            this.saveTempToolStripMenuItem.Name = "saveTempToolStripMenuItem";
+            this.saveTempToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.saveTempToolStripMenuItem.Text = "Save Temp";
+            // 
+            // viewRoiScriptToolStripMenuItem
+            // 
+            this.viewRoiScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.ic_more_rename;
+            this.viewRoiScriptToolStripMenuItem.Name = "viewRoiScriptToolStripMenuItem";
+            this.viewRoiScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.viewRoiScriptToolStripMenuItem.Text = "View Script";
+            // 
+            // runScriptToolStripMenuItem
+            // 
+            this.runScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.bofang;
+            this.runScriptToolStripMenuItem.Name = "runScriptToolStripMenuItem";
+            this.runScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.runScriptToolStripMenuItem.Text = "Run Script";
             // 
             // taintAnalysisToolStripMenuItem
             // 
@@ -312,25 +363,25 @@
             // SavebmpToolStripMenuItem
             // 
             this.SavebmpToolStripMenuItem.Name = "SavebmpToolStripMenuItem";
-            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavebmpToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavebmpToolStripMenuItem.Text = "🖼️ *.Bmp";
             // 
             // SavejPGToolStripMenuItem
             // 
             this.SavejPGToolStripMenuItem.Name = "SavejPGToolStripMenuItem";
-            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavejPGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavejPGToolStripMenuItem.Text = "🖼️ *.JPG";
             // 
             // SavepNGToolStripMenuItem
             // 
             this.SavepNGToolStripMenuItem.Name = "SavepNGToolStripMenuItem";
-            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavepNGToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavepNGToolStripMenuItem.Text = "🖼️ *.PNG";
             // 
             // SavetIFFToolStripMenuItem
             // 
             this.SavetIFFToolStripMenuItem.Name = "SavetIFFToolStripMenuItem";
-            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.SavetIFFToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.SavetIFFToolStripMenuItem.Text = "🖼️ *.TIFF";
             // 
             // 功能ToolStripMenuItem
@@ -574,6 +625,9 @@
             // 
             // groupSetting
             // 
+            this.groupSetting.Controls.Add(this.uiLedBulb2);
+            this.groupSetting.Controls.Add(this.uiLabel6);
+            this.groupSetting.Controls.Add(this.uiLedBulb1);
             this.groupSetting.Controls.Add(this.flowLayoutPanel1);
             this.groupSetting.Controls.Add(this.txtscriptName);
             this.groupSetting.Controls.Add(this.uiLabel5);
@@ -587,7 +641,6 @@
             this.groupSetting.Controls.Add(this.uiLabel3);
             this.groupSetting.Controls.Add(this.txtSerialNumber);
             this.groupSetting.Controls.Add(this.uiLabel1);
-            this.groupSetting.Controls.Add(this.edtName);
             this.groupSetting.Controls.Add(this.uiLabel2);
             this.groupSetting.Font = new System.Drawing.Font("PMingLiU", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.groupSetting.Location = new System.Drawing.Point(4, 170);
@@ -707,6 +760,19 @@
             this.RadioBtnProductionMode.TabIndex = 2;
             this.RadioBtnProductionMode.Text = "生产模式";
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.pictureBox2.Image = global::NetAIVision.Properties.Resources.fail;
+            this.pictureBox2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.pictureBox2.InitialImage = global::NetAIVision.Properties.Resources.fail;
+            this.pictureBox2.Location = new System.Drawing.Point(23, 347);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(653, 213);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox2.TabIndex = 40;
+            this.pictureBox2.TabStop = false;
+            // 
             // uiLine1
             // 
             this.uiLine1.BackColor = System.Drawing.Color.Transparent;
@@ -807,24 +873,6 @@
             this.uiLabel1.Text = "条码内容";
             this.uiLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // edtName
-            // 
-            this.edtName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.edtName.EnterAsTab = true;
-            this.edtName.Font = new System.Drawing.Font("SimSun", 12F);
-            this.edtName.Location = new System.Drawing.Point(100, 149);
-            this.edtName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.edtName.MinimumSize = new System.Drawing.Size(1, 16);
-            this.edtName.Name = "edtName";
-            this.edtName.Padding = new System.Windows.Forms.Padding(5);
-            this.edtName.ReadOnly = true;
-            this.edtName.ShowText = false;
-            this.edtName.Size = new System.Drawing.Size(340, 29);
-            this.edtName.TabIndex = 5;
-            this.edtName.Text = "LITEON_ASI_Q_Model Version:10.0.1  ";
-            this.edtName.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.edtName.Watermark = "";
-            // 
             // uiLabel2
             // 
             this.uiLabel2.AutoSize = true;
@@ -832,9 +880,9 @@
             this.uiLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.uiLabel2.Location = new System.Drawing.Point(26, 155);
             this.uiLabel2.Name = "uiLabel2";
-            this.uiLabel2.Size = new System.Drawing.Size(71, 16);
+            this.uiLabel2.Size = new System.Drawing.Size(111, 16);
             this.uiLabel2.TabIndex = 6;
-            this.uiLabel2.Text = "AI Model";
+            this.uiLabel2.Text = "AI 拼詞模型：";
             this.uiLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // uiLine2
@@ -892,19 +940,6 @@
             this.uiGifAvatar1.TabIndex = 41;
             this.uiGifAvatar1.Text = "uiGifAvatar1";
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.pictureBox2.Image = global::NetAIVision.Properties.Resources.fail;
-            this.pictureBox2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pictureBox2.InitialImage = global::NetAIVision.Properties.Resources.fail;
-            this.pictureBox2.Location = new System.Drawing.Point(23, 347);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(653, 213);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox2.TabIndex = 40;
-            this.pictureBox2.TabStop = false;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -916,54 +951,35 @@
             this.pictureBox1.TabIndex = 29;
             this.pictureBox1.TabStop = false;
             // 
-            // RenameROIToolStripMenuItem
+            // uiLedBulb1
             // 
-            this.RenameROIToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.rename;
-            this.RenameROIToolStripMenuItem.Name = "RenameROIToolStripMenuItem";
-            this.RenameROIToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.RenameROIToolStripMenuItem.Text = "Rename ROI";
+            this.uiLedBulb1.Color = System.Drawing.Color.Red;
+            this.uiLedBulb1.Location = new System.Drawing.Point(139, 146);
+            this.uiLedBulb1.Name = "uiLedBulb1";
+            this.uiLedBulb1.Size = new System.Drawing.Size(32, 32);
+            this.uiLedBulb1.TabIndex = 53;
+            this.uiLedBulb1.Text = "uiLedBulb1";
             // 
-            // removeROIToolStripMenuItem
+            // uiLedBulb2
             // 
-            this.removeROIToolStripMenuItem.Image = global::NetAIVision.Properties.Resources._33_删除;
-            this.removeROIToolStripMenuItem.Name = "removeROIToolStripMenuItem";
-            this.removeROIToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.removeROIToolStripMenuItem.Text = "Remove ROI";
+            this.uiLedBulb2.Color = System.Drawing.Color.Red;
+            this.uiLedBulb2.Location = new System.Drawing.Point(304, 145);
+            this.uiLedBulb2.Name = "uiLedBulb2";
+            this.uiLedBulb2.Size = new System.Drawing.Size(32, 32);
+            this.uiLedBulb2.TabIndex = 55;
+            this.uiLedBulb2.Text = "uiLedBulb2";
             // 
-            // oCRToolStripMenuItem
+            // uiLabel6
             // 
-            this.oCRToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.OCR识别管理;
-            this.oCRToolStripMenuItem.Name = "oCRToolStripMenuItem";
-            this.oCRToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.oCRToolStripMenuItem.Text = "OCR";
-            // 
-            // QRCodeToolStripMenuItem
-            // 
-            this.QRCodeToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.qrcode;
-            this.QRCodeToolStripMenuItem.Name = "QRCodeToolStripMenuItem";
-            this.QRCodeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.QRCodeToolStripMenuItem.Text = "QR Code";
-            // 
-            // saveTempToolStripMenuItem
-            // 
-            this.saveTempToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.Image;
-            this.saveTempToolStripMenuItem.Name = "saveTempToolStripMenuItem";
-            this.saveTempToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.saveTempToolStripMenuItem.Text = "Save Temp";
-            // 
-            // viewRoiScriptToolStripMenuItem
-            // 
-            this.viewRoiScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.ic_more_rename;
-            this.viewRoiScriptToolStripMenuItem.Name = "viewRoiScriptToolStripMenuItem";
-            this.viewRoiScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.viewRoiScriptToolStripMenuItem.Text = "View Script";
-            // 
-            // runScriptToolStripMenuItem
-            // 
-            this.runScriptToolStripMenuItem.Image = global::NetAIVision.Properties.Resources.bofang;
-            this.runScriptToolStripMenuItem.Name = "runScriptToolStripMenuItem";
-            this.runScriptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.runScriptToolStripMenuItem.Text = "Run Script";
+            this.uiLabel6.AutoSize = true;
+            this.uiLabel6.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel6.Location = new System.Drawing.Point(191, 154);
+            this.uiLabel6.Name = "uiLabel6";
+            this.uiLabel6.Size = new System.Drawing.Size(103, 16);
+            this.uiLabel6.TabIndex = 54;
+            this.uiLabel6.Text = "AI OCR模型：";
+            this.uiLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FrmMaster
             // 
@@ -1050,7 +1066,6 @@
         private Sunny.UI.UIGroupBox groupSetting;
         private Sunny.UI.UITextBox txtSerialNumber;
         private Sunny.UI.UILabel uiLabel1;
-        private Sunny.UI.UITextBox edtName;
         private Sunny.UI.UILabel uiLabel2;
         private Sunny.UI.UITextBox txtLengthy;
         private Sunny.UI.UILabel uiLabel4;
@@ -1091,6 +1106,9 @@
         private System.Windows.Forms.ToolStripMenuItem saveingScriptsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RunningScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editScriptsToolStripMenuItem;
+        private Sunny.UI.UILedBulb uiLedBulb1;
+        private Sunny.UI.UILedBulb uiLedBulb2;
+        private Sunny.UI.UILabel uiLabel6;
     }
 }
 

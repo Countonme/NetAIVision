@@ -49,6 +49,7 @@
 
 ![系统截图](f91c183a6f29012ce5fff04cc376193.png)
 ![系统截图](image.png)
+![OCR 拼詞檢查並提示建議詞語](image-1.png)
 > *图示：NetAIVision 主界面 - 支持多任务流程可视化操作*
 
 ---

@@ -402,6 +402,40 @@ namespace NetAIVision.Controller
                         }
                         break;
                     }
+                case "YS113"://拼詞檢查
+                    {
+                        // 初始化（假設詞典文件在執行目錄下）
+                        if (uiListBox1.Items.Count == 0)
+                        {
+                            this.ShowErrorNotifier("必须有OCR 步骤才能使用文字比对");
+                            return;
+                        }
+                        bool ocr_flag = false;
+                        for (int i1 = 0; i1 < uiListBox1.Items.Count; i1++)
+                        {
+                            if (uiListBox1.Items[i1].ToString().StartsWith("YS101"))
+                            {
+                                ocr_flag = true;
+                                break;
+                            }
+                        }
+                        if (!ocr_flag)
+                        {
+                            this.ShowErrorNotifier("必须有OCR 步骤才能使用 拼詞比对");
+                            return;
+                        }
+                        var strFrm = new FrmSettingSpellCheck(uiListBox1.Items.Count - 1);
+                        strFrm.ShowDialog();
+                        if (strFrm.IsOK)
+                        {
+                            uiListBox1.Items.Add($"YS113->{uiListBox1.Items.Count}->文字比对->{strFrm.Param.step_number}->{strFrm.Param.suggest}");
+                        }
+                        else
+                        {
+                            logHelper.AppendLog("WARN: 处理步骤取消");
+                        }
+                        break;
+                    }
             }
         }
 
@@ -513,6 +547,27 @@ namespace NetAIVision.Controller
                                 else
                                 {
                                     logHelper.AppendLog($"WARN :Step{i} 图片相似度比较 结果:{value.ToString("F3")},阈值:{threshold}");
+                                }
+                                break;
+                            }
+                        case "YS113":////Spell 拼詞檢查
+                            {
+                                var step = int.Parse(itemString.Split("->")[3].ToString());
+                                var suggestion = bool.Parse(itemString.Split("->")[4].ToString());
+                                var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
+                                logHelper.AppendLog($"Info: '{ocr_string}' 拼寫檢查。");
+                                if (SpellChecker.Check(ocr_string))
+                                {
+                                    logHelper.AppendLog($"SUCCESS:✅ '{ocr_string}' 拼寫正確。");
+                                }
+                                else
+                                {
+                                    logHelper.AppendLog($"❌ '{ocr_string}' 拼寫錯誤。");
+                                    var suggestions = SpellChecker.Suggest(ocr_string);
+                                    if (suggestion)
+                                    {
+                                        logHelper.AppendLog($"WARN: 建議: {string.Join(", ", suggestions)}");
+                                    }
                                 }
                                 break;
                             }

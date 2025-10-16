@@ -24,7 +24,7 @@ namespace NetAIVision.Services
         //OCR
         private static string _lang = "chi_sim"; // 可改为 eng, chi_tra 等
 
-        private static string _tessDataPath;
+        public static string _tessDataPath;
 
         public BitmapProcessorServices()
         {

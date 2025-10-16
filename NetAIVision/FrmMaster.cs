@@ -67,6 +67,9 @@ namespace NetAIVision
         // 初始化日志控件
         private ConsoleStyleLogHelper logHelper;
 
+        // 拼詞模型Status
+        private bool spellReadyFlag = true;
+
         #region roi
 
         private List<ROI> rois = new List<ROI>(); // 保存ROI的列表
@@ -79,14 +82,18 @@ namespace NetAIVision
         #endregion roi
 
         //OCR
-        private readonly string _lang = "chi_sim"; // 可改为 eng, chi_tra 等
+        public readonly string _lang = "chi_sim"; // 可改为 eng, chi_tra 等
 
-        private readonly string _tessDataPath;
+        public string _tessDataPath;
+        public bool OCRReadyFlag = false;
 
         public FrmMaster()
         {
             InitializeComponent();
-
+            //拼詞檢查Spell 初始化
+            InitSpellChecker();
+            //OCR 初始化
+            InitOCR();
             this.Load += FrmMaster_Load;
             //About
             this.aboutAToolStripMenuItem.Click += AboutAToolStripMenuItem_Click;
@@ -125,20 +132,6 @@ namespace NetAIVision
             this.QRCodeToolStripMenuItem.Click += QRCodeToolStripMenuItem_Click;
             this.RenameROIToolStripMenuItem.Click += RenameROIToolStripMenuItem_Click;
 
-            //OCR
-            // 假设 tessdata 文件夹在项目根目录下
-            this._tessDataPath = Path.Combine(Directory.GetCurrentDirectory(), "tessdata");
-            // 获取当前工作目录（即启动目录）
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            // 构建 tessdata 路径（放在启动目录下）
-            this._tessDataPath = Path.Combine(baseDirectory, "tessdata");
-
-            // 检查 tessdata 文件夹是否存在
-            if (!Directory.Exists(this._tessDataPath))
-            {
-                Directory.CreateDirectory(this._tessDataPath);
-            }
             this.oCRToolStripMenuItem.Click += OCRToolStripMenuItem_Click;
             //Exit
             this.exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
@@ -476,10 +469,14 @@ namespace NetAIVision
         {
             if (selectedRoi == null)
             {
-                MessageBox.Show("请先选择一个ROI区域。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.ShowErrorNotifier("请先选择一个ROI区域。");
                 return;
             }
-
+            if (pictureBox1.Image is null)
+            {
+                this.ShowErrorNotifier("沒有可以處理的圖像,請連接 相機或手動導入圖片");
+                return;
+            }
             Rectangle roiRect = selectedRoi.Rect;
 
             // 确保 ROI 在图像范围内
@@ -487,7 +484,7 @@ namespace NetAIVision
                 roiRect.Right > pictureBox1.Image.Width ||
                 roiRect.Bottom > pictureBox1.Image.Height)
             {
-                MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.ShowErrorNotifier("ROI区域超出图像范围，无法分析。");
                 return;
             }
 
@@ -1198,6 +1195,35 @@ namespace NetAIVision
             uiLine2.Width = groupSetting.Width - 10;
             logHelper.AppendLog("INFO: 程序启动");
             LoadControllerSetting();
+            if (spellReadyFlag)
+            {             // 測試單詞
+                string word = "CHINA";
+                logHelper.AppendLog($"Info: '{word}' 拼寫 Sample。");
+                if (SpellChecker.Check(word))
+                {
+                    logHelper.AppendLog($"SUCCESS:✅ '{word}' 拼寫正確。");
+                }
+                else
+                {
+                    logHelper.AppendLog($"❌ '{word}' 拼寫錯誤。");
+                    var suggestions = SpellChecker.Suggest(word);
+                    logHelper.AppendLog($"WARN: 建議: {string.Join(", ", suggestions)}");
+                }
+
+                // 測試錯誤拼寫
+                word = "CHNIA";
+                logHelper.AppendLog($"Info: '{word}' 測試錯誤拼寫 Sample。");
+                if (SpellChecker.Check(word))
+                {
+                    logHelper.AppendLog($"SUCCESS:✅ '{word}' 拼寫正確。");
+                }
+                else
+                {
+                    logHelper.AppendLog($"ERROR:❌ '{word}' 拼寫錯誤。");
+                    var suggestions = SpellChecker.Suggest(word);
+                    logHelper.AppendLog($"WARN:建議: {string.Join(", ", suggestions)}");
+                }
+            }
         }
 
         /// <summary>
@@ -2130,6 +2156,27 @@ namespace NetAIVision
                                 }
                                 break;
                             }
+                        case "YS113":////Spell 拼詞檢查
+                            {
+                                var step = int.Parse(itemString.Split("->")[3].ToString());
+                                var suggestion = bool.Parse(itemString.Split("->")[4].ToString());
+                                var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
+                                logHelper.AppendLog($"Info: '{ocr_string}' 拼寫檢查。");
+                                if (SpellChecker.Check(ocr_string))
+                                {
+                                    logHelper.AppendLog($"SUCCESS:✅ '{ocr_string}' 拼寫正確。");
+                                }
+                                else
+                                {
+                                    logHelper.AppendLog($"❌ '{ocr_string}' 拼寫錯誤。");
+                                    var suggestions = SpellChecker.Suggest(ocr_string);
+                                    if (suggestion)
+                                    {
+                                        logHelper.AppendLog($"WARN: 建議: {string.Join(", ", suggestions)}");
+                                    }
+                                }
+                                break;
+                            }
                     }
                 }
             }
@@ -2155,6 +2202,60 @@ namespace NetAIVision
             //pictureBox2.Image.Dispose();
             pictureBox2.Image = null;
             pictureBox1.Invalidate();
+        }
+
+        /// <summary>
+        /// 拼詞檢查模型初始化
+        /// </summary>
+        private void InitSpellChecker()
+        {
+            // 初始化（假設詞典文件在執行目錄下）
+            string path = Path.Combine(Application.StartupPath, "Lib", "libreoffice");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string affFile = Path.Combine(path, "en_US.aff");
+            string dicFile = Path.Combine(path, "en_US.dic");
+            if (!File.Exists(affFile))
+            {
+                logHelper.AppendLog($"ERROR:No found file {affFile}");
+                spellReadyFlag = false;
+            }
+            if (!File.Exists(dicFile))
+            {
+                logHelper.AppendLog($"ERROR:No found file {dicFile}");
+                spellReadyFlag = false;
+            }
+            if (spellReadyFlag)
+            {
+                SpellChecker.Initialize(affFile, dicFile);
+                uiLedBulb1.Color = Color.LimeGreen;
+            }
+        }
+
+        /// <summary>
+        /// OCR 初始化
+        /// </summary>
+        private void InitOCR()
+        {
+            //OCR
+            // 假设 tessdata 文件夹在项目根目录下\Lib\tessdata
+            _tessDataPath = Path.Combine(Application.StartupPath, "Lib", "tessdata");
+
+            // 检查 tessdata 文件夹是否存在
+            if (!Directory.Exists(this._tessDataPath))
+            {
+                Directory.CreateDirectory(this._tessDataPath);
+            }
+            var file_path = Path.Combine(this._tessDataPath, "chi_sim.traineddata");
+            if (File.Exists(file_path))
+            {
+                OCRReadyFlag = true;
+                uiLedBulb2.Color = Color.LimeGreen;
+                BitmapProcessorServices._tessDataPath = _tessDataPath;
+            }
         }
     }
 }

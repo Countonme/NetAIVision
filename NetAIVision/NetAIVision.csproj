@@ -48,6 +48,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NHunspell, Version=1.2.5554.16953, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHunspell.1.2.5554.16953\lib\net\NHunspell.dll</HintPath>
+    </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenCvSharp4.4.11.0.20250507\lib\net48\OpenCvSharp.dll</HintPath>
     </Reference>
@@ -132,6 +135,12 @@
     <Compile Include="Controller\FrmScript.Designer.cs">
       <DependentUpon>FrmScript.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\FrmSettingSpellCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controller\FrmSettingSpellCheck.Designer.cs">
+      <DependentUpon>FrmSettingSpellCheck.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controller\FrmSimilarity.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +159,7 @@
     <Compile Include="Model\PicSimilarity.cs" />
     <Compile Include="Model\QRCodeHelper.cs" />
     <Compile Include="Model\ROI\ROI.cs" />
+    <Compile Include="Model\SettingSpellCheck.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BitmapProcessorServices.cs" />
@@ -158,6 +168,7 @@
     <Compile Include="Services\ImageSimilarityHelper.cs" />
     <Compile Include="Services\LogFileHelper.cs" />
     <Compile Include="Services\MES\MES_Service.cs" />
+    <Compile Include="Services\SpellChecker.cs" />
     <EmbeddedResource Include="Controller\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -175,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controller\FrmScript.resx">
       <DependentUpon>FrmScript.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controller\FrmSettingSpellCheck.resx">
+      <DependentUpon>FrmSettingSpellCheck.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controller\FrmSimilarity.resx">
       <DependentUpon>FrmSimilarity.cs</DependentUpon>
@@ -244,6 +258,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="Hunspellx64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Hunspellx86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />

@@ -44,18 +44,20 @@
             treeNode6,
             treeNode7});
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("🔤  文字提取（OCR）");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("🔤 文字处理", new System.Windows.Forms.TreeNode[] {
-            treeNode9});
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("🧩 条码识别");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("🧩 条码处理", new System.Windows.Forms.TreeNode[] {
-            treeNode11});
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("🆚 字符串比对");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("数值比对");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode14});
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("结果返回");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("🤖 AI 拼詞檢查");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("🔤 文字处理", new System.Windows.Forms.TreeNode[] {
+            treeNode9,
+            treeNode10});
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("🧩 条码识别");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("🧩 条码处理", new System.Windows.Forms.TreeNode[] {
+            treeNode12});
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("🆚 字符串比对");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("数值比对");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
+            treeNode14,
+            treeNode15});
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("结果返回");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node1");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmScript));
             this.uiSplitContainer1 = new Sunny.UI.UISplitContainer();
             this.treeVFn = new Sunny.UI.UITreeView();
@@ -64,6 +66,7 @@
             this.uiLine1 = new Sunny.UI.UILine();
             this.uiLine3 = new Sunny.UI.UILine();
             this.uiListBox1 = new Sunny.UI.UIListBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,14 +92,13 @@
             this.EnhanceSharpnessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearStepsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.uiSplitContainer1)).BeginInit();
             this.uiSplitContainer1.Panel1.SuspendLayout();
             this.uiSplitContainer1.Panel2.SuspendLayout();
             this.uiSplitContainer1.SuspendLayout();
             this.grouplogs.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // uiSplitContainer1
@@ -150,29 +152,31 @@
             treeNode8.Text = "🖼️ 图像处理";
             treeNode9.Name = "YS101";
             treeNode9.Text = "🔤  文字提取（OCR）";
-            treeNode10.Name = "Node4";
-            treeNode10.Text = "🔤 文字处理";
-            treeNode11.Name = "YS111";
-            treeNode11.Text = "🧩 条码识别";
-            treeNode12.Name = "Node5";
-            treeNode12.Text = "🧩 条码处理";
-            treeNode13.Name = "YS102";
-            treeNode13.Text = "🆚 字符串比对";
-            treeNode14.Name = "Node3";
-            treeNode14.Text = "数值比对";
-            treeNode15.Name = "Node6";
-            treeNode15.Text = "🔢 运算处理";
-            treeNode16.Name = "Node0";
-            treeNode16.Text = "结果返回";
-            treeNode17.Name = "Node1";
-            treeNode17.Text = "Node1";
+            treeNode10.Name = "YS113";
+            treeNode10.Text = "🤖 AI 拼詞檢查";
+            treeNode11.Name = "Node4";
+            treeNode11.Text = "🔤 文字处理";
+            treeNode12.Name = "YS111";
+            treeNode12.Text = "🧩 条码识别";
+            treeNode13.Name = "Node5";
+            treeNode13.Text = "🧩 条码处理";
+            treeNode14.Name = "YS102";
+            treeNode14.Text = "🆚 字符串比对";
+            treeNode15.Name = "Node3";
+            treeNode15.Text = "数值比对";
+            treeNode16.Name = "Node6";
+            treeNode16.Text = "🔢 运算处理";
+            treeNode17.Name = "Node0";
+            treeNode17.Text = "结果返回";
+            treeNode18.Name = "Node1";
+            treeNode18.Text = "Node1";
             this.treeVFn.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode8,
-            treeNode10,
-            treeNode12,
-            treeNode15,
+            treeNode11,
+            treeNode13,
             treeNode16,
-            treeNode17});
+            treeNode17,
+            treeNode18});
             this.treeVFn.ScrollBarStyleInherited = false;
             this.treeVFn.ShowText = false;
             this.treeVFn.Size = new System.Drawing.Size(210, 694);
@@ -245,6 +249,15 @@
             this.uiListBox1.Size = new System.Drawing.Size(396, 458);
             this.uiListBox1.TabIndex = 1;
             this.uiListBox1.Text = "uiListBox1";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(5, 44);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(553, 471);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // menuStrip1
             // 
@@ -431,15 +444,6 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.saveToolStripMenuItem.Text = "💾 Save";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(5, 44);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(553, 471);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
             // FrmScript
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -457,9 +461,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.uiSplitContainer1)).EndInit();
             this.uiSplitContainer1.ResumeLayout(false);
             this.grouplogs.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
