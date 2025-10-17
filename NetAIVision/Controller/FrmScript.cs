@@ -421,14 +421,14 @@ namespace NetAIVision.Controller
                         }
                         if (!ocr_flag)
                         {
-                            this.ShowErrorNotifier("必须有OCR 步骤才能使用 拼詞比对");
+                            this.ShowErrorNotifier("必须有OCR 步骤才能使用 拼寫檢查");
                             return;
                         }
                         var strFrm = new FrmSettingSpellCheck(uiListBox1.Items.Count - 1);
                         strFrm.ShowDialog();
                         if (strFrm.IsOK)
                         {
-                            uiListBox1.Items.Add($"YS113->{uiListBox1.Items.Count}->文字比对->{strFrm.Param.step_number}->{strFrm.Param.suggest}");
+                            uiListBox1.Items.Add($"YS113->{uiListBox1.Items.Count}->拼寫檢查->{strFrm.Param.step_number}->{strFrm.Param.suggest}");
                         }
                         else
                         {

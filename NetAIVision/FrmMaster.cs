@@ -25,6 +25,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.Xml;
 using Tesseract;
@@ -125,7 +126,7 @@ namespace NetAIVision
             this.SavetIFFToolStripMenuItem.Click += SaveTiffToolStripMenuItem_Click;
             this.SavepNGToolStripMenuItem.Click += SavePNGToolStripMenuItem_Click;
             this.saveTempToolStripMenuItem.Click += SaveTempToolStripMenuItem_Click;
-            logHelper = new ConsoleStyleLogHelper(richboxLogs, 100);
+            logHelper = new ConsoleStyleLogHelper(richboxLogs, 20);
 
             //Remove ROI
             this.removeROIToolStripMenuItem.Click += RemoveROIToolStripMenuItem_Click;
@@ -212,11 +213,11 @@ namespace NetAIVision
                    {
                        txtLengthy.Text = elapsed.TotalSeconds.ToString("F2") + " S";
                    }));
-
-                   if (flag)
+                   this.Invoke(new Action(() =>
                    {
-                       this.Invoke(new Action(() =>
+                       if (flag)
                        {
+                           StyleManager.Style = UIStyle.LayuiGreen;
                            pictureBox2.Image = Properties.Resources.pass;
                            var frm = new FrmResult(ResultEnum.Pass, 3);
                            frm.Show();
@@ -224,16 +225,17 @@ namespace NetAIVision
                            Task.Run(() =>
                            {
                                Thread.Sleep(3000); // 等待3秒
-                               frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
+                               frm.Invoke(new Action(() => {
+                                   frm.Close();
+                                   StyleManager.Style = UIStyle.Blue;
+                               })); // 回到UI线程关闭
                            });
-                       }));
-
-                       // await frm.CloseMeAsync();
-                   }
-                   else
-                   {
-                       this.Invoke(new Action(() =>
+                         
+                           this.ShowSuccessNotifier("所有检测通过！");
+                       }
+                       else
                        {
+                           StyleManager.Style = UIStyle.Red;
                            pictureBox2.Image = Properties.Resources.fail;
                            var frm = new FrmResult(ResultEnum.Fail, 3);
                            frm.Show();
@@ -241,11 +243,16 @@ namespace NetAIVision
                            Task.Run(() =>
                             {
                                 Thread.Sleep(3000); // 等待3秒
-                                frm.Invoke(new Action(() => frm.Close())); // 回到UI线程关闭
+                                frm.Invoke(new Action(() =>
+                                {
+                                    frm.Close();
+                                    StyleManager.Style = UIStyle.Blue;
+                                })); // 回到UI线程关闭
                             });
-                       }));
-                       //await frm.CloseMeAsync();
-                   }
+                           this.ShowErrorNotifier("检测失败，请检查！");
+                          
+                       }
+                   }));
                });
             }
         }
@@ -1195,35 +1202,8 @@ namespace NetAIVision
             uiLine2.Width = groupSetting.Width - 10;
             logHelper.AppendLog("INFO: 程序启动");
             LoadControllerSetting();
-            if (spellReadyFlag)
-            {             // 測試單詞
-                string word = "CHINA";
-                logHelper.AppendLog($"Info: '{word}' 拼寫 Sample。");
-                if (SpellChecker.Check(word))
-                {
-                    logHelper.AppendLog($"SUCCESS:✅ '{word}' 拼寫正確。");
-                }
-                else
-                {
-                    logHelper.AppendLog($"❌ '{word}' 拼寫錯誤。");
-                    var suggestions = SpellChecker.Suggest(word);
-                    logHelper.AppendLog($"WARN: 建議: {string.Join(", ", suggestions)}");
-                }
-
-                // 測試錯誤拼寫
-                word = "CHNIA";
-                logHelper.AppendLog($"Info: '{word}' 測試錯誤拼寫 Sample。");
-                if (SpellChecker.Check(word))
-                {
-                    logHelper.AppendLog($"SUCCESS:✅ '{word}' 拼寫正確。");
-                }
-                else
-                {
-                    logHelper.AppendLog($"ERROR:❌ '{word}' 拼寫錯誤。");
-                    var suggestions = SpellChecker.Suggest(word);
-                    logHelper.AppendLog($"WARN:建議: {string.Join(", ", suggestions)}");
-                }
-            }
+            UIStyles.CultureInfo = CultureInfos.en_US;
+            //if (pageIndex < UIStyle.Colorful.Value())
         }
 
         /// <summary>
@@ -2165,15 +2145,20 @@ namespace NetAIVision
                                 if (SpellChecker.Check(ocr_string))
                                 {
                                     logHelper.AppendLog($"SUCCESS:✅ '{ocr_string}' 拼寫正確。");
+                                    _withRoi.msg = "✅拼寫正確";
+                                    return true;
                                 }
                                 else
                                 {
                                     logHelper.AppendLog($"❌ '{ocr_string}' 拼寫錯誤。");
+                                    _withRoi.msg = "❌ 拼寫錯誤";
                                     var suggestions = SpellChecker.Suggest(ocr_string);
                                     if (suggestion)
                                     {
+                                        _withRoi.msg = $"❌ 拼寫錯誤 建議: {string.Join(", ", suggestions)}";
                                         logHelper.AppendLog($"WARN: 建議: {string.Join(", ", suggestions)}");
                                     }
+                                    return false;
                                 }
                                 break;
                             }
@@ -2257,5 +2242,28 @@ namespace NetAIVision
                 BitmapProcessorServices._tessDataPath = _tessDataPath;
             }
         }
+
+        /// <summary>
+        /// 重载多语翻译
+        /// </summary>
+        public override void Translate()
+        {
+            //必须保留
+            base.Translate();
+            //读取翻译代码中的多语资源
+            CodeTranslator.Load(this);
+        }
+    }
+
+    public class CodeTranslator : IniCodeTranslator<CodeTranslator>
+    {
+        public string CloseAskString { get; set; } = "您确认要退出程序吗？";
+        public string Controls { get; set; } = "控件";
+        public string Forms { get; set; } = "窗体";
+        public string Charts { get; set; } = "图表";
+        public string Industrial { get; set; } = "工控";
+        public string Theme { get; set; } = "主题";
+        public string Symbols { get; set; } = "字体图标";
+        public string Colorful { get; set; } = "多彩主题";
     }
 }

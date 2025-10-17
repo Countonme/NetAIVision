@@ -193,6 +193,9 @@
     <EmbeddedResource Include="Controller\FrmSimilarity.resx">
       <DependentUpon>FrmSimilarity.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmMaster.en.resx">
+      <DependentUpon>FrmMaster.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMaster.resx">
       <DependentUpon>FrmMaster.cs</DependentUpon>
     </EmbeddedResource>
