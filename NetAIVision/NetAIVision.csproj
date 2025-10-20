@@ -157,6 +157,7 @@
     <Compile Include="Model\FrmResult\ResultEnum.cs" />
     <Compile Include="Model\GaussianBlur.cs" />
     <Compile Include="Model\PicSimilarity.cs" />
+    <Compile Include="Model\QRCode.cs" />
     <Compile Include="Model\QRCodeHelper.cs" />
     <Compile Include="Model\ROI\ROI.cs" />
     <Compile Include="Model\SettingSpellCheck.cs" />

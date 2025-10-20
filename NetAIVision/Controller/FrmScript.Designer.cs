@@ -52,12 +52,16 @@
             System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("🧩 条码处理", new System.Windows.Forms.TreeNode[] {
             treeNode12});
             System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("🆚 字符串比对");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("数值比对");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("🆚 数值比对");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("🆚 启用二维码比对");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
             treeNode14,
-            treeNode15});
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("结果返回");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node1");
+            treeNode15,
+            treeNode16});
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node0");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("结果返回", new System.Windows.Forms.TreeNode[] {
+            treeNode18});
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Node1");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmScript));
             this.uiSplitContainer1 = new Sunny.UI.UISplitContainer();
             this.treeVFn = new Sunny.UI.UITreeView();
@@ -163,20 +167,24 @@
             treeNode14.Name = "YS102";
             treeNode14.Text = "🆚 字符串比对";
             treeNode15.Name = "Node3";
-            treeNode15.Text = "数值比对";
-            treeNode16.Name = "Node6";
-            treeNode16.Text = "🔢 运算处理";
-            treeNode17.Name = "Node0";
-            treeNode17.Text = "结果返回";
-            treeNode18.Name = "Node1";
-            treeNode18.Text = "Node1";
+            treeNode15.Text = "🆚 数值比对";
+            treeNode16.Name = "YS114";
+            treeNode16.Text = "🆚 启用二维码比对";
+            treeNode17.Name = "Node6";
+            treeNode17.Text = "🔢 运算处理";
+            treeNode18.Name = "Node0";
+            treeNode18.Text = "Node0";
+            treeNode19.Name = "Node0";
+            treeNode19.Text = "结果返回";
+            treeNode20.Name = "Node1";
+            treeNode20.Text = "Node1";
             this.treeVFn.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode8,
             treeNode11,
             treeNode13,
-            treeNode16,
             treeNode17,
-            treeNode18});
+            treeNode19,
+            treeNode20});
             this.treeVFn.ScrollBarStyleInherited = false;
             this.treeVFn.ShowText = false;
             this.treeVFn.Size = new System.Drawing.Size(210, 694);

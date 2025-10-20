@@ -434,6 +434,24 @@ namespace NetAIVision.Controller
                         {
                             logHelper.AppendLog("WARN: 处理步骤取消");
                         }
+                        logHelper.AppendLog("INFO: 添加图像 图片相似度比较 处理步骤");
+                        break;
+                    }
+                case "YS114":
+                    {
+                        // 初始化（假設詞典文件在執行目錄下）
+                        if (uiListBox1.Items.Count == 0)
+                        {
+                            this.ShowErrorNotifier("必须有OCR 步骤才能使用此功能");
+                            return;
+                        }
+                        var strFrm = new FrmSettingSpellCheck(uiListBox1.Items.Count - 1);
+                        strFrm.ShowDialog();
+                        if (strFrm.IsOK)
+                        {
+                            uiListBox1.Items.Add($"YS114->{uiListBox1.Items.Count}->启用二维码内容比对->{strFrm.Param.step_number}");
+                            logHelper.AppendLog("INFO: 添加图像 启用二维码内容比对 处理步骤");
+                        }
                         break;
                     }
             }
@@ -569,6 +587,11 @@ namespace NetAIVision.Controller
                                         logHelper.AppendLog($"WARN: 建議: {string.Join(", ", suggestions)}");
                                     }
                                 }
+                                break;
+                            }
+                        case "YS114":////二维码内容识别比对
+                            {
+                                logHelper.AppendLog($"WARN :Step{i} 启用二维码内容识别比对,此步骤在该页面没有实际处理逻辑，保存步骤在主界面执行");
                                 break;
                             }
                     }

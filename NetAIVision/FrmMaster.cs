@@ -87,6 +87,7 @@ namespace NetAIVision
 
         public string _tessDataPath;
         public bool OCRReadyFlag = false;
+        private string QrcodeString = string.Empty;
 
         public FrmMaster()
         {
@@ -225,12 +226,13 @@ namespace NetAIVision
                            Task.Run(() =>
                            {
                                Thread.Sleep(3000); // 等待3秒
-                               frm.Invoke(new Action(() => {
+                               frm.Invoke(new Action(() =>
+                               {
                                    frm.Close();
                                    StyleManager.Style = UIStyle.Blue;
                                })); // 回到UI线程关闭
                            });
-                         
+
                            this.ShowSuccessNotifier("所有检测通过！");
                        }
                        else
@@ -250,7 +252,6 @@ namespace NetAIVision
                                 })); // 回到UI线程关闭
                             });
                            this.ShowErrorNotifier("检测失败，请检查！");
-                          
                        }
                    }));
                });
@@ -2093,22 +2094,29 @@ namespace NetAIVision
                             }
                         case "YS111": //图像二维码识别
                             {
-                                txtSerialNumber.BeginInvoke(new Action(() =>
+                                bool result = (bool)txtSerialNumber.Invoke(new Func<bool>(() =>
 
-                                {
-                                    txtSerialNumber.Text = string.Empty;
-                                    var text = BitmapProcessorServices.QR_Code(_bitmap_with);
-                                    logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
-                                    if (text.flag)
-                                    {
-                                        txtSerialNumber.Text = text.txt;
-                                        //MES 检测
-                                        //
-                                    }
-                                }
-                                ));
-
-                                break;
+                                     {
+                                         QrcodeString = string.Empty;
+                                         txtSerialNumber.Text = string.Empty;
+                                         var text = BitmapProcessorServices.QR_Code(_bitmap_with);
+                                         logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
+                                         if (text.flag)
+                                         {
+                                             txtSerialNumber.Text = text.txt;
+                                             //MES 检测
+                                             //
+                                             QrcodeString = text.txt;
+                                             return true;
+                                         }
+                                         else
+                                         {
+                                             logHelper.AppendLog($"ERROR: 无法识别二维码,{text.message}");
+                                             return false;
+                                         }
+                                     }
+                                     ));
+                                return result;
                             }
                         case "YS112":////图片相似度比较
                             {
@@ -2161,6 +2169,30 @@ namespace NetAIVision
                                     return false;
                                 }
                                 break;
+                            }
+                        case "YS114":
+                            {
+                                var step = int.Parse(itemString.Split("->")[3].ToString());
+                                var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
+                                if (string.IsNullOrEmpty(QrcodeString))
+                                {
+                                    logHelper.AppendLog("ERROR: QRCode 未识别");
+                                    return false;
+                                }
+                                if (string.IsNullOrEmpty(ocr_string))
+                                {
+                                    logHelper.AppendLog("ERROR: 文字提取失败");
+                                    return false;
+                                }
+                                if (ocr_string == QrcodeString)
+                                {
+                                    logHelper.AppendLog("SUECCES: 同QR CODE 一致");
+                                    _withRoi.msg = "同QRCode 一致";
+                                    return true;
+                                }
+                                logHelper.AppendLog("ERROR: 同QR Code 不一致");
+                                _withRoi.msg = "同QRCode 不一致";
+                                return false;
                             }
                     }
                 }

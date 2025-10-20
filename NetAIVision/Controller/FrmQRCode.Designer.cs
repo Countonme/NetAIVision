@@ -28,62 +28,75 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.menuStrip1.SuspendLayout();
+            this.uiLine4 = new Sunny.UI.UILine();
+            this.stepNumber = new Sunny.UI.UIIntegerUpDown();
+            this.pnlBtm.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pnlBtm
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.pictureBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 114);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(577, 414);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.pnlBtm.Location = new System.Drawing.Point(1, 222);
+            this.pnlBtm.Size = new System.Drawing.Size(497, 55);
             // 
-            // menuStrip1
+            // btnCancel
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 35);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(889, 24);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "menuStrip1";
+            this.btnCancel.Location = new System.Drawing.Point(369, 12);
             // 
-            // fileToolStripMenuItem
+            // btnOK
             // 
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            this.btnOK.Location = new System.Drawing.Point(254, 12);
+            // 
+            // uiLine4
+            // 
+            this.uiLine4.BackColor = System.Drawing.Color.Transparent;
+            this.uiLine4.Font = new System.Drawing.Font("SimSun", 12F);
+            this.uiLine4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLine4.Location = new System.Drawing.Point(2, 53);
+            this.uiLine4.MinimumSize = new System.Drawing.Size(16, 16);
+            this.uiLine4.Name = "uiLine4";
+            this.uiLine4.Size = new System.Drawing.Size(493, 20);
+            this.uiLine4.TabIndex = 55;
+            this.uiLine4.Text = "获取的目标步骤";
+            this.uiLine4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // stepNumber
+            // 
+            this.stepNumber.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.stepNumber.Font = new System.Drawing.Font("SimSun", 12F);
+            this.stepNumber.Location = new System.Drawing.Point(3, 81);
+            this.stepNumber.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.stepNumber.Maximum = 100D;
+            this.stepNumber.Minimum = -100D;
+            this.stepNumber.MinimumSize = new System.Drawing.Size(100, 0);
+            this.stepNumber.Name = "stepNumber";
+            this.stepNumber.Padding = new System.Windows.Forms.Padding(5);
+            this.stepNumber.ShowText = false;
+            this.stepNumber.Size = new System.Drawing.Size(150, 29);
+            this.stepNumber.TabIndex = 54;
+            this.stepNumber.Text = "10";
+            this.stepNumber.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.stepNumber.Value = 10;
             // 
             // FrmQRCode
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(889, 531);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.ClientSize = new System.Drawing.Size(499, 280);
+            this.Controls.Add(this.uiLine4);
+            this.Controls.Add(this.stepNumber);
             this.Name = "FrmQRCode";
             this.Text = "FrmQRCode";
             this.ZoomScaleRect = new System.Drawing.Rectangle(15, 15, 800, 450);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.Controls.SetChildIndex(this.pnlBtm, 0);
+            this.Controls.SetChildIndex(this.stepNumber, 0);
+            this.Controls.SetChildIndex(this.uiLine4, 0);
+            this.pnlBtm.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private Sunny.UI.UILine uiLine4;
+        private Sunny.UI.UIIntegerUpDown stepNumber;
     }
 }
