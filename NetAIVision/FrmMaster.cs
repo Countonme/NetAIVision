@@ -708,6 +708,7 @@ namespace NetAIVision
             var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
             // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
             var ms = new MemoryStream();
+            templateImage = BitmapProcessorServices.PreprocessForOCR(templateImage);
             templateImage.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
             ms.Position = 0;
 
@@ -1554,7 +1555,8 @@ namespace NetAIVision
                             {
                                 // ✅ 关键：生成安全副本（与 SDK 内存分离）  适应 PictureBox 大小
                                 Bitmap safeBitmap = new Bitmap(m_bitmap, pictureBox1.Size);
-
+                                //int newWidth = (int)(_originalBitmap.Width * _zoomFactor);
+                                //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
                                 // 清理旧图像，防止内存泄漏
                                 if (pictureBox1.Image != null)
                                     pictureBox1.Image.Dispose();

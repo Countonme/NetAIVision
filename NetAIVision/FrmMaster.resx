@@ -185,112 +185,130 @@
     <value>191, 17</value>
   </metadata>
   <data name="menuStrip1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Emoji, 12pt</value>
+    <value>Microsoft JhengHei, 14.25pt</value>
   </data>
   <data name="newScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="newScriptsToolStripMenuItem.Text" xml:space="preserve">
     <value>➕ New Scripts</value>
   </data>
   <data name="editScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="editScriptsToolStripMenuItem.Text" xml:space="preserve">
     <value>✏️ Edit Scripts</value>
   </data>
   <data name="saveingScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="saveingScriptsToolStripMenuItem.Text" xml:space="preserve">
     <value>💾 Save Script</value>
   </data>
   <data name="openScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="openScriptToolStripMenuItem.Text" xml:space="preserve">
     <value>📜 Open Script</value>
   </data>
   <data name="openLogsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="openLogsToolStripMenuItem.Text" xml:space="preserve">
     <value>📄 Open Logs</value>
   </data>
   <data name="openImagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="openImagesToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ Open Images</value>
   </data>
   <data name="importImageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="importImageToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ Import Image</value>
   </data>
   <data name="importScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="importScriptToolStripMenuItem.Text" xml:space="preserve">
     <value>📄 Import Script</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 26</value>
+    <value>228, 28</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>❌ Exit</value>
   </data>
+  <data name="fileToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>86, 28</value>
   </data>
   <data name="fileToolStripMenuItem.Text" xml:space="preserve">
     <value>📁 文件</value>
   </data>
   <data name="viewlogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 26</value>
+    <value>191, 28</value>
   </data>
   <data name="viewlogToolStripMenuItem.Text" xml:space="preserve">
     <value>📄 Log</value>
   </data>
   <data name="chearLogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 26</value>
+    <value>191, 28</value>
   </data>
   <data name="chearLogToolStripMenuItem.Text" xml:space="preserve">
     <value>📄 Clear Log</value>
   </data>
+  <data name="viewToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>86, 28</value>
   </data>
   <data name="viewToolStripMenuItem.Text" xml:space="preserve">
     <value>👁️ 视图</value>
   </data>
   <data name="refreshToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI Emoji, 12pt</value>
+    <value>Microsoft JhengHei, 14.25pt</value>
   </data>
   <data name="refreshToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>86, 28</value>
   </data>
   <data name="refreshToolStripMenuItem.Text" xml:space="preserve">
     <value>🔄 刷新</value>
   </data>
+  <data name="openToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 25</value>
+    <value>124, 28</value>
   </data>
   <data name="openToolStripMenuItem.Text" xml:space="preserve">
     <value>✅ 连接相机</value>
   </data>
+  <data name="closeToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="closeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 25</value>
+    <value>140, 28</value>
   </data>
   <data name="closeToolStripMenuItem.Text" xml:space="preserve">
     <value>🔌❌断开相机</value>
   </data>
+  <data name="stopToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="stopToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 25</value>
+    <value>124, 28</value>
   </data>
   <data name="stopToolStripMenuItem.Text" xml:space="preserve">
     <value>🚫 停止采集</value>
+  </data>
+  <data name="RunningScriptToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
   </data>
   <data name="RunningScriptToolStripMenuItem.ShortcutKeyDisplayString" xml:space="preserve">
     <value>F5</value>
@@ -300,151 +318,172 @@
     <value>F5</value>
   </data>
   <data name="RunningScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 25</value>
+    <value>111, 28</value>
   </data>
   <data name="RunningScriptToolStripMenuItem.Text" xml:space="preserve">
     <value>▶️ 运行(&amp;F5)</value>
   </data>
   <data name="SavebmpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 26</value>
+    <value>161, 28</value>
   </data>
   <data name="SavebmpToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ *.Bmp</value>
   </data>
   <data name="SavejPGToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 26</value>
+    <value>161, 28</value>
   </data>
   <data name="SavejPGToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ *.JPG</value>
   </data>
   <data name="SavepNGToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 26</value>
+    <value>161, 28</value>
   </data>
   <data name="SavepNGToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ *.PNG</value>
   </data>
   <data name="SavetIFFToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 26</value>
+    <value>161, 28</value>
   </data>
   <data name="SavetIFFToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ *.TIFF</value>
   </data>
+  <data name="保存图像ToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="保存图像ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 25</value>
+    <value>124, 28</value>
   </data>
   <data name="保存图像ToolStripMenuItem.Text" xml:space="preserve">
     <value>💾 保存图像</value>
   </data>
   <data name="原圖OToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="原圖OToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ 原圖(&amp;O)</value>
   </data>
   <data name="灰度GToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="灰度GToolStripMenuItem.Text" xml:space="preserve">
     <value>🔳 灰度(&amp;G)</value>
   </data>
   <data name="二值化BToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="二值化BToolStripMenuItem.Text" xml:space="preserve">
     <value>⚖️ 二值化(&amp;B)</value>
   </data>
   <data name="反色IToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="反色IToolStripMenuItem.Text" xml:space="preserve">
     <value>🔄 反色(&amp;I)</value>
   </data>
   <data name="高斯模糊UToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="高斯模糊UToolStripMenuItem.Text" xml:space="preserve">
     <value>🌀 高斯模糊(&amp;U)</value>
   </data>
   <data name="边缘检测EToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="边缘检测EToolStripMenuItem.Text" xml:space="preserve">
     <value>🔍 边缘检测(&amp;E)</value>
   </data>
   <data name="水平翻转FToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="水平翻转FToolStripMenuItem.Text" xml:space="preserve">
     <value>↔️ 水平翻转(&amp;F)</value>
   </data>
   <data name="垂直翻转VToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="垂直翻转VToolStripMenuItem.Text" xml:space="preserve">
     <value>↕️ 垂直翻转(&amp;V)</value>
   </data>
   <data name="亮度LToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="亮度LToolStripMenuItem.Text" xml:space="preserve">
     <value>🔆 亮度 + (&amp;L)</value>
   </data>
   <data name="亮度MToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="亮度MToolStripMenuItem.Text" xml:space="preserve">
     <value>🔅 亮度 -(&amp;M)</value>
   </data>
   <data name="对比度CToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="对比度CToolStripMenuItem.Text" xml:space="preserve">
     <value>📈 对比度 +(&amp;C)</value>
   </data>
   <data name="对比度TToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="对比度TToolStripMenuItem.Text" xml:space="preserve">
     <value>📉 对比度 -(&amp;T)</value>
   </data>
   <data name="oCRRToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="oCRRToolStripMenuItem.Text" xml:space="preserve">
     <value>🔤 OCR(&amp;R)</value>
   </data>
   <data name="二维码读取QToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="二维码读取QToolStripMenuItem.Text" xml:space="preserve">
     <value>🧩 二维码读取(&amp;Q)</value>
   </data>
   <data name="guidelineToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="guidelineToolStripMenuItem.Text" xml:space="preserve">
     <value>➕ 参考线(&amp;N)</value>
   </data>
   <data name="目标ROI显示DToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="目标ROI显示DToolStripMenuItem.Text" xml:space="preserve">
     <value>🔲 目标ROI显示(&amp;D)</value>
   </data>
   <data name="lauToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>240, 28</value>
   </data>
   <data name="lauToolStripMenuItem.Text" xml:space="preserve">
-    <value>Lau</value>
+    <value>放大</value>
+  </data>
+  <data name="縮小ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="縮小ToolStripMenuItem.Text" xml:space="preserve">
+    <value>縮小</value>
+  </data>
+  <data name="原圖ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="原圖ToolStripMenuItem.Text" xml:space="preserve">
+    <value>原圖</value>
+  </data>
+  <data name="功能ToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
   </data>
   <data name="功能ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>86, 28</value>
   </data>
   <data name="功能ToolStripMenuItem.Text" xml:space="preserve">
     <value>⚙️ 功能</value>
   </data>
+  <data name="aboutAToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft JhengHei, 14.25pt</value>
+  </data>
   <data name="aboutAToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 25</value>
+    <value>123, 28</value>
   </data>
   <data name="aboutAToolStripMenuItem.Text" xml:space="preserve">
     <value>ℹ️ 关于(&amp;A)...</value>
@@ -456,7 +495,7 @@
     <value>2, 2, 0, 0</value>
   </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1377, 27</value>
+    <value>1377, 30</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
@@ -4210,6 +4249,18 @@
   </data>
   <data name="&gt;&gt;StyleManager.Type" xml:space="preserve">
     <value>Sunny.UI.UIStyleManager, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;縮小ToolStripMenuItem.Name" xml:space="preserve">
+    <value>縮小ToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;縮小ToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;原圖ToolStripMenuItem.Name" xml:space="preserve">
+    <value>原圖ToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;原圖ToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMaster</value>

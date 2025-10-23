@@ -107,6 +107,7 @@ namespace NetAIVision.Services
             var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
             // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
             var ms = new MemoryStream();
+            bitmap = PreprocessForOCR(bitmap);
             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
             ms.Position = 0;
 
@@ -125,6 +126,28 @@ namespace NetAIVision.Services
 
                 return cleaned;
             }
+        }
+
+        public static Bitmap PreprocessForOCR(Bitmap src)
+        {
+            var gray = new Bitmap(src.Width, src.Height, PixelFormat.Format24bppRgb);
+            using (var g = Graphics.FromImage(gray))
+            {
+                g.DrawImage(src, 0, 0, src.Width, src.Height);
+            }
+
+            // 转灰度
+            for (int y = 0; y < gray.Height; y++)
+            {
+                for (int x = 0; x < gray.Width; x++)
+                {
+                    Color c = gray.GetPixel(x, y);
+                    int l = (int)(0.299 * c.R + 0.587 * c.G + 0.114 * c.B);
+                    gray.SetPixel(x, y, Color.FromArgb(l, l, l));
+                }
+            }
+
+            return gray;
         }
 
         /// <summary>
