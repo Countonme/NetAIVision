@@ -81,6 +81,10 @@
             this.guidelineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.目标ROI显示DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lauToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.縮小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.原圖ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.角度ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.角度ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbDeviceList = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -119,8 +123,6 @@
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.縮小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.原圖ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -370,7 +372,9 @@
             this.目标ROI显示DToolStripMenuItem,
             this.lauToolStripMenuItem,
             this.縮小ToolStripMenuItem,
-            this.原圖ToolStripMenuItem});
+            this.原圖ToolStripMenuItem,
+            this.角度ToolStripMenuItem,
+            this.角度ToolStripMenuItem1});
             resources.ApplyResources(this.功能ToolStripMenuItem, "功能ToolStripMenuItem");
             this.功能ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
@@ -464,6 +468,31 @@
             // 
             this.lauToolStripMenuItem.Name = "lauToolStripMenuItem";
             resources.ApplyResources(this.lauToolStripMenuItem, "lauToolStripMenuItem");
+            this.lauToolStripMenuItem.Click += new System.EventHandler(this.lauToolStripMenuItem_Click);
+            // 
+            // 縮小ToolStripMenuItem
+            // 
+            this.縮小ToolStripMenuItem.Name = "縮小ToolStripMenuItem";
+            resources.ApplyResources(this.縮小ToolStripMenuItem, "縮小ToolStripMenuItem");
+            this.縮小ToolStripMenuItem.Click += new System.EventHandler(this.縮小ToolStripMenuItem_Click);
+            // 
+            // 原圖ToolStripMenuItem
+            // 
+            this.原圖ToolStripMenuItem.Name = "原圖ToolStripMenuItem";
+            resources.ApplyResources(this.原圖ToolStripMenuItem, "原圖ToolStripMenuItem");
+            this.原圖ToolStripMenuItem.Click += new System.EventHandler(this.原圖ToolStripMenuItem_Click);
+            // 
+            // 角度ToolStripMenuItem
+            // 
+            this.角度ToolStripMenuItem.Name = "角度ToolStripMenuItem";
+            resources.ApplyResources(this.角度ToolStripMenuItem, "角度ToolStripMenuItem");
+            this.角度ToolStripMenuItem.Click += new System.EventHandler(this.角度ToolStripMenuItem_Click);
+            // 
+            // 角度ToolStripMenuItem1
+            // 
+            this.角度ToolStripMenuItem1.Name = "角度ToolStripMenuItem1";
+            resources.ApplyResources(this.角度ToolStripMenuItem1, "角度ToolStripMenuItem1");
+            this.角度ToolStripMenuItem1.Click += new System.EventHandler(this.角度ToolStripMenuItem1_Click);
             // 
             // aboutAToolStripMenuItem
             // 
@@ -561,7 +590,6 @@
             this.uiLedBulb2.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb2, "uiLedBulb2");
             this.uiLedBulb2.Name = "uiLedBulb2";
-            this.uiLedBulb2.On = false;
             // 
             // uiLabel6
             // 
@@ -575,7 +603,6 @@
             this.uiLedBulb1.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb1, "uiLedBulb1");
             this.uiLedBulb1.Name = "uiLedBulb1";
-            this.uiLedBulb1.On = false;
             // 
             // flowLayoutPanel1
             // 
@@ -756,16 +783,6 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // 縮小ToolStripMenuItem
-            // 
-            this.縮小ToolStripMenuItem.Name = "縮小ToolStripMenuItem";
-            resources.ApplyResources(this.縮小ToolStripMenuItem, "縮小ToolStripMenuItem");
-            // 
-            // 原圖ToolStripMenuItem
-            // 
-            this.原圖ToolStripMenuItem.Name = "原圖ToolStripMenuItem";
-            resources.ApplyResources(this.原圖ToolStripMenuItem, "原圖ToolStripMenuItem");
-            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -895,6 +912,8 @@
         private Sunny.UI.UIStyleManager StyleManager;
         private System.Windows.Forms.ToolStripMenuItem 縮小ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 原圖ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 角度ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 角度ToolStripMenuItem1;
     }
 }
 

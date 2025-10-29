@@ -122,58 +122,58 @@
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="StepMenuStrip.Font" type="System.Drawing.Font, System.Drawing">
-    <value>PMingLiU, 12pt</value>
+    <value>Tahoma, 12pt</value>
   </data>
   <data name="RenameROIToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="RenameROIToolStripMenuItem.Text" xml:space="preserve">
     <value>Rename ROI</value>
   </data>
   <data name="removeROIToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="removeROIToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove ROI</value>
   </data>
   <data name="oCRToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="oCRToolStripMenuItem.Text" xml:space="preserve">
     <value>OCR</value>
   </data>
   <data name="QRCodeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="QRCodeToolStripMenuItem.Text" xml:space="preserve">
     <value>QR Code</value>
   </data>
   <data name="saveTempToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="saveTempToolStripMenuItem.Text" xml:space="preserve">
     <value>Save Temp</value>
   </data>
   <data name="viewRoiScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="viewRoiScriptToolStripMenuItem.Text" xml:space="preserve">
     <value>View Script</value>
   </data>
   <data name="runScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="runScriptToolStripMenuItem.Text" xml:space="preserve">
     <value>Run Script</value>
   </data>
   <data name="taintAnalysisToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
+    <value>174, 24</value>
   </data>
   <data name="taintAnalysisToolStripMenuItem.Text" xml:space="preserve">
     <value>Taint analysis</value>
   </data>
   <data name="StepMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 180</value>
+    <value>175, 196</value>
   </data>
   <data name="&gt;&gt;StepMenuStrip.Name" xml:space="preserve">
     <value>StepMenuStrip</value>
@@ -469,6 +469,18 @@
   </data>
   <data name="原圖ToolStripMenuItem.Text" xml:space="preserve">
     <value>原圖</value>
+  </data>
+  <data name="角度ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="角度ToolStripMenuItem.Text" xml:space="preserve">
+    <value>角度+</value>
+  </data>
+  <data name="角度ToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="角度ToolStripMenuItem1.Text" xml:space="preserve">
+    <value>角度-</value>
   </data>
   <data name="功能ToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft JhengHei, 14.25pt</value>
@@ -4238,18 +4250,6 @@
   <data name="&gt;&gt;lauToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;aboutAToolStripMenuItem.Name" xml:space="preserve">
-    <value>aboutAToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;aboutAToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StyleManager.Name" xml:space="preserve">
-    <value>StyleManager</value>
-  </data>
-  <data name="&gt;&gt;StyleManager.Type" xml:space="preserve">
-    <value>Sunny.UI.UIStyleManager, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
   <data name="&gt;&gt;縮小ToolStripMenuItem.Name" xml:space="preserve">
     <value>縮小ToolStripMenuItem</value>
   </data>
@@ -4261,6 +4261,30 @@
   </data>
   <data name="&gt;&gt;原圖ToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;角度ToolStripMenuItem.Name" xml:space="preserve">
+    <value>角度ToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;角度ToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;角度ToolStripMenuItem1.Name" xml:space="preserve">
+    <value>角度ToolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;角度ToolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;aboutAToolStripMenuItem.Name" xml:space="preserve">
+    <value>aboutAToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;aboutAToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StyleManager.Name" xml:space="preserve">
+    <value>StyleManager</value>
+  </data>
+  <data name="&gt;&gt;StyleManager.Type" xml:space="preserve">
+    <value>Sunny.UI.UIStyleManager, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMaster</value>

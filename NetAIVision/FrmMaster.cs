@@ -71,6 +71,8 @@ namespace NetAIVision
         // 拼詞模型Status
         private bool spellReadyFlag = true;
 
+        private int _zoomFactor = 1; // 根据你的代码，放大倍数为1
+
         #region roi
 
         private List<ROI> rois = new List<ROI>(); // 保存ROI的列表
@@ -88,6 +90,7 @@ namespace NetAIVision
         public string _tessDataPath;
         public bool OCRReadyFlag = false;
         private string QrcodeString = string.Empty;
+        private float Goal_rotationAngle = 0;
 
         public FrmMaster()
         {
@@ -486,6 +489,11 @@ namespace NetAIVision
                 return;
             }
             Rectangle roiRect = selectedRoi.Rect;
+
+            //roiRect.X = (roiRect.X * _zoomFactor);
+            //roiRect.Y = (roiRect.Y * _zoomFactor);
+            //roiRect.Width = (roiRect.Width * _zoomFactor);
+            //roiRect.Height = (roiRect.Height * _zoomFactor);
 
             // 确保 ROI 在图像范围内
             if (roiRect.X < 0 || roiRect.Y < 0 ||
@@ -1195,6 +1203,7 @@ namespace NetAIVision
         private void FrmMaster_Shown(object sender, EventArgs e)
         {
             pictureBox1.Size = new System.Drawing.Size(1024, 768);
+            //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 100);
             cbDeviceList.Width = 1024;
             cbDeviceList.Location = new System.Drawing.Point(this.Width - 1028, 70);
@@ -1555,13 +1564,16 @@ namespace NetAIVision
                             {
                                 // ✅ 关键：生成安全副本（与 SDK 内存分离）  适应 PictureBox 大小
                                 Bitmap safeBitmap = new Bitmap(m_bitmap, pictureBox1.Size);
+                                // Bitmap safeBitmap1 = new Bitmap(safeBitmap, new System.Drawing.Size(1024 * _zoomFactor, 768 * _zoomFactor));
+
                                 //int newWidth = (int)(_originalBitmap.Width * _zoomFactor);
                                 //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
                                 // 清理旧图像，防止内存泄漏
                                 if (pictureBox1.Image != null)
                                     pictureBox1.Image.Dispose();
-
+                                RotateImage(safeBitmap, Goal_rotationAngle);
                                 pictureBox1.Image = safeBitmap;
+                                //pictureBox1.Image = m_bitmap;
                             }
                         }));
                     }
@@ -1584,6 +1596,41 @@ namespace NetAIVision
                 {
                 }
             }
+        }
+
+        /// <summary>
+        /// 圖片選擇角度
+        /// </summary>
+        /// <param name="img"></param>
+        /// <param name="rotationAngle"></param>
+        /// <returns></returns>
+
+        public System.Drawing.Image RotateImage(System.Drawing.Image img, float rotationAngle)
+        {
+            if (rotationAngle == 0)
+            {
+                return img;
+            }
+            // 创建一个新的空白位图以放置旋转后的图像
+            Bitmap bmp = new Bitmap(img.Width, img.Height);
+            bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+
+            // 创建一个绘图对象
+            Graphics gfx = Graphics.FromImage(bmp);
+
+            // 设置旋转点为中心
+            gfx.TranslateTransform((float)bmp.Width / 2, (float)bmp.Height / 2);
+
+            // 旋转指定的角度
+            gfx.RotateTransform(rotationAngle);
+
+            // 将坐标系平移到中心
+            gfx.TranslateTransform(-(float)bmp.Width / 2, -(float)bmp.Height / 2);
+
+            // 绘制原始图像到新的位置
+            gfx.DrawImage(img, new System.Drawing.Point(0, 0));
+
+            return bmp;
         }
 
         // 在缓冲上画十字参考线，直接用整数判断像素类型
@@ -2286,6 +2333,45 @@ namespace NetAIVision
             base.Translate();
             //读取翻译代码中的多语资源
             CodeTranslator.Load(this);
+        }
+
+        private void lauToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _zoomFactor += 1;
+        }
+
+        private void 縮小ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _zoomFactor -= 1;
+        }
+
+        private void 原圖ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _zoomFactor = 1;
+        }
+
+        private void 角度ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Goal_rotationAngle >= 180)
+            {
+                Goal_rotationAngle = 180;
+            }
+            else
+            {
+                Goal_rotationAngle += 0.5f;
+            }
+        }
+
+        private void 角度ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (Goal_rotationAngle <= 0)
+            {
+                Goal_rotationAngle = 0;
+            }
+            else
+            {
+                Goal_rotationAngle -= 0.5f;
+            }
         }
     }
 
