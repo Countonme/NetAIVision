@@ -166,6 +166,7 @@
     <Compile Include="Services\BitmapProcessorServices.cs" />
     <Compile Include="Services\ConsoleStyleLogHelper.cs" />
     <Compile Include="Services\HikMVS\MyCamera.cs" />
+    <Compile Include="Services\ImageCorrection.cs" />
     <Compile Include="Services\ImageSimilarityHelper.cs" />
     <Compile Include="Services\LogFileHelper.cs" />
     <Compile Include="Services\MES\MES_Service.cs" />
@@ -210,6 +211,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Lib\libreoffice\en_US.aff" />
+    <None Include="Lib\libreoffice\en_US.dic" />
+    <None Include="Lib\Saject\SAJET.INI" />
+    <None Include="Lib\Saject\SajetConnect.ini" />
+    <None Include="Lib\tessdata\chi_sim.traineddata" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -262,6 +268,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="Lib\Saject\SajetConnect.dll" />
+    <Content Include="Lib\Saject\SajetConnectliteon.dll" />
     <None Include="Hunspellx64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

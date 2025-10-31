@@ -91,6 +91,7 @@ namespace NetAIVision
         public bool OCRReadyFlag = false;
         private string QrcodeString = string.Empty;
         private float Goal_rotationAngle = 0;
+        private int Goal_MoveCount = 0;
 
         public FrmMaster()
         {
@@ -721,8 +722,9 @@ namespace NetAIVision
             ms.Position = 0;
 
             var img = Pix.LoadFromMemory(ms.ToArray());
-            var page = engine.Process(img);
+            var page = engine.Process(img, PageSegMode.SingleLine);
             string text = page.GetText();
+
             logHelper.AppendLog($"OCR Data:{text}");
         }
 
@@ -1571,7 +1573,9 @@ namespace NetAIVision
                                 // 清理旧图像，防止内存泄漏
                                 if (pictureBox1.Image != null)
                                     pictureBox1.Image.Dispose();
-                                RotateImage(safeBitmap, Goal_rotationAngle);
+                                safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
+                                safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
+                                safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
                                 pictureBox1.Image = safeBitmap;
                                 //pictureBox1.Image = m_bitmap;
                             }
@@ -1605,7 +1609,7 @@ namespace NetAIVision
         /// <param name="rotationAngle"></param>
         /// <returns></returns>
 
-        public System.Drawing.Image RotateImage(System.Drawing.Image img, float rotationAngle)
+        public Bitmap RotateImage(Bitmap img, float rotationAngle)
         {
             if (rotationAngle == 0)
             {
@@ -1629,6 +1633,60 @@ namespace NetAIVision
 
             // 绘制原始图像到新的位置
             gfx.DrawImage(img, new System.Drawing.Point(0, 0));
+
+            return bmp;
+        }
+
+        /// <summary>
+        /// 左右移動
+        /// </summary>
+        /// <param name="img"></param>
+        /// <param name="offsetX"></param>
+        /// <returns></returns>
+        public Bitmap TranslateImage(Bitmap img, int offsetX)
+        {
+            // 创建一个新的空白位图以放置平移后的图像
+            Bitmap bmp = new Bitmap(img.Width + Math.Abs(offsetX), img.Height);
+            bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+
+            // 创建一个绘图对象
+            Graphics gfx = Graphics.FromImage(bmp);
+
+            // 平移指定的X轴距离
+            gfx.TranslateTransform(offsetX, 0);
+
+            // 绘制原始图像到新的位置
+            gfx.DrawImage(img, new System.Drawing.Point(0, 0));
+
+            // 释放绘图资源
+            gfx.Dispose();
+
+            return bmp;
+        }
+
+        /// <summary>
+        /// 上下移動
+        /// </summary>
+        /// <param name="img"></param>
+        /// <param name="offsetY"></param>
+        /// <returns></returns>
+        public Bitmap TranslateImageVertically(Bitmap img, int offsetY)
+        {
+            // 创建一个新的空白位图以放置平移后的图像
+            Bitmap bmp = new Bitmap(img.Width, img.Height + Math.Abs(offsetY));
+            bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+
+            // 创建一个绘图对象
+            Graphics gfx = Graphics.FromImage(bmp);
+
+            // 平移指定的Y轴距离
+            gfx.TranslateTransform(0, offsetY);
+
+            // 绘制原始图像到新的位置
+            gfx.DrawImage(img, new System.Drawing.Point(0, 0));
+
+            // 释放绘图资源
+            gfx.Dispose();
 
             return bmp;
         }
@@ -2348,6 +2406,8 @@ namespace NetAIVision
         private void 原圖ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _zoomFactor = 1;
+            Goal_rotationAngle = 0;
+            Goal_MoveCount = 0;
         }
 
         private void 角度ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2372,6 +2432,16 @@ namespace NetAIVision
             {
                 Goal_rotationAngle -= 0.5f;
             }
+        }
+
+        private void 上移動ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Goal_MoveCount += 1;
+        }
+
+        private void 下移動ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Goal_MoveCount -= 1;
         }
     }
 

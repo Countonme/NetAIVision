@@ -115,7 +115,7 @@ namespace NetAIVision.Services
             //var page = engine.Process(img);
             //string text = page.GetText();
             //return text;
-            using (var page = engine.Process(img))
+            using (var page = engine.Process(img, PageSegMode.SingleLine))
             {
                 string text = page.GetText();
 
@@ -130,25 +130,56 @@ namespace NetAIVision.Services
 
         public static Bitmap PreprocessForOCR(Bitmap src)
         {
-            var gray = new Bitmap(src.Width, src.Height, PixelFormat.Format24bppRgb);
-            using (var g = Graphics.FromImage(gray))
+            // Step 1: 放大原圖（例如 2x）
+            int newWidth = src.Width * 1;
+            int newHeight = src.Height * 1;
+
+            Bitmap enlarged = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+
+            using (var g = Graphics.FromImage(enlarged))
             {
-                g.DrawImage(src, 0, 0, src.Width, src.Height);
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+
+                g.DrawImage(src, 0, 0, newWidth, newHeight);
             }
 
-            // 转灰度
-            for (int y = 0; y < gray.Height; y++)
+            // Step 2: 轉灰度
+            for (int y = 0; y < enlarged.Height; y++)
             {
-                for (int x = 0; x < gray.Width; x++)
+                for (int x = 0; x < enlarged.Width; x++)
                 {
-                    Color c = gray.GetPixel(x, y);
+                    Color c = enlarged.GetPixel(x, y);
                     int l = (int)(0.299 * c.R + 0.587 * c.G + 0.114 * c.B);
-                    gray.SetPixel(x, y, Color.FromArgb(l, l, l));
+                    enlarged.SetPixel(x, y, Color.FromArgb(l, l, l));
                 }
             }
 
-            return gray;
+            return enlarged;
         }
+
+        //public static Bitmap PreprocessForOCR(Bitmap src)
+        //{
+        //    var gray = new Bitmap(src.Width, src.Height, PixelFormat.Format24bppRgb);
+        //    using (var g = Graphics.FromImage(gray))
+        //    {
+        //        g.DrawImage(src, 0, 0, src.Width, src.Height);
+        //    }
+
+        //    // 转灰度
+        //    for (int y = 0; y < gray.Height; y++)
+        //    {
+        //        for (int x = 0; x < gray.Width; x++)
+        //        {
+        //            Color c = gray.GetPixel(x, y);
+        //            int l = (int)(0.299 * c.R + 0.587 * c.G + 0.114 * c.B);
+        //            gray.SetPixel(x, y, Color.FromArgb(l, l, l));
+        //        }
+        //    }
+
+        //    return gray;
+        //}
 
         /// <summary>
         /// QR code 解码

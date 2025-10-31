@@ -123,6 +123,8 @@
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.上移動ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.下移動ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.uiGroupBox1.SuspendLayout();
@@ -370,11 +372,13 @@
             this.二维码读取QToolStripMenuItem,
             this.guidelineToolStripMenuItem,
             this.目标ROI显示DToolStripMenuItem,
+            this.原圖ToolStripMenuItem,
             this.lauToolStripMenuItem,
             this.縮小ToolStripMenuItem,
-            this.原圖ToolStripMenuItem,
             this.角度ToolStripMenuItem,
-            this.角度ToolStripMenuItem1});
+            this.角度ToolStripMenuItem1,
+            this.上移動ToolStripMenuItem,
+            this.下移動ToolStripMenuItem});
             resources.ApplyResources(this.功能ToolStripMenuItem, "功能ToolStripMenuItem");
             this.功能ToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.功能ToolStripMenuItem.Name = "功能ToolStripMenuItem";
@@ -783,6 +787,18 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // 上移動ToolStripMenuItem
+            // 
+            this.上移動ToolStripMenuItem.Name = "上移動ToolStripMenuItem";
+            resources.ApplyResources(this.上移動ToolStripMenuItem, "上移動ToolStripMenuItem");
+            this.上移動ToolStripMenuItem.Click += new System.EventHandler(this.上移動ToolStripMenuItem_Click);
+            // 
+            // 下移動ToolStripMenuItem
+            // 
+            this.下移動ToolStripMenuItem.Name = "下移動ToolStripMenuItem";
+            resources.ApplyResources(this.下移動ToolStripMenuItem, "下移動ToolStripMenuItem");
+            this.下移動ToolStripMenuItem.Click += new System.EventHandler(this.下移動ToolStripMenuItem_Click);
+            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -914,6 +930,8 @@
         private System.Windows.Forms.ToolStripMenuItem 原圖ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 角度ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 角度ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 上移動ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 下移動ToolStripMenuItem;
     }
 }
 
