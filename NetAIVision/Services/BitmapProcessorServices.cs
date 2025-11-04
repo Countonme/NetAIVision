@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Tesseract;
 using ZXing;
 using ZXing.Common;
+using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace NetAIVision.Services
 {
@@ -96,15 +97,40 @@ namespace NetAIVision.Services
             return ProcessPixelByPixel(bitmap, c => Color.FromArgb(c.A, 255 - c.R, 255 - c.G, 255 - c.B));
         }
 
+        public static string OCRFn(Bitmap bitmap)
+        {
+            // 圖像預處理
+            Bitmap processed = bitmap;
+            // 轉為 Pix
+            using (var ms = new MemoryStream())
+            {
+                processed.Save(ms, ImageFormat.Tiff);
+                ms.Position = 0;
+
+                using (var img = Pix.LoadFromMemory(ms.ToArray()))
+                using (var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.LstmOnly))
+                {
+                    engine.DefaultPageSegMode = PageSegMode.SparseText;
+                    using (var page = engine.Process(img))
+                    {
+                        string text = page.GetText();
+                        string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", " ");
+                        cleaned = Regex.Replace(cleaned, @"\s+", " ").Trim();
+                        return cleaned;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// OCR
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        public static string OCRFn(Bitmap bitmap)
+        public static string OCRFn1(Bitmap bitmap)
         {
             // 使用 Tesseract 进行 OCR 识别
-            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
+            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.TesseractOnly);
             // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
             var ms = new MemoryStream();
             bitmap = PreprocessForOCR(bitmap);
@@ -115,7 +141,7 @@ namespace NetAIVision.Services
             //var page = engine.Process(img);
             //string text = page.GetText();
             //return text;
-            using (var page = engine.Process(img, PageSegMode.SingleLine))
+            using (var page = engine.Process(img, PageSegMode.SingleBlock))
             {
                 string text = page.GetText();
 

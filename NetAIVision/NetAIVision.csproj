@@ -268,8 +268,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="Lib\MvCameraControl.Net.dll" />
     <Content Include="Lib\Saject\SajetConnect.dll" />
     <Content Include="Lib\Saject\SajetConnectliteon.dll" />
+    <Content Include="Lib\Tesseract.dll" />
+    <Content Include="Lib\zxing.dll" />
     <None Include="Hunspellx64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
