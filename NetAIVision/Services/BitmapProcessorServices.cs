@@ -129,6 +129,7 @@ namespace NetAIVision.Services
         /// <returns></returns>
         public static string OCRFn(Bitmap bitmap)
         {
+            // return  PaddleOCRHelper.Recognize(bitmap);
             var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
             // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
             var ms = new MemoryStream();

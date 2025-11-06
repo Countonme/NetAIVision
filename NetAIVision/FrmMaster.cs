@@ -83,6 +83,24 @@ namespace NetAIVision
         private System.Drawing.Point startPoint;                 // 起点
         private int roiCounter = 1;               // ROI编号计数
         private ScriptROI selectedRoi;
+        private bool isDraggingRoi = false;
+        private System.Drawing.Point dragOffset; // 鼠标相对于 ROI 左上角的偏移
+        private ScriptROI draggingRoi = null;
+        private bool isResizingRoi = false;
+        private ScriptROI resizingRoi = null;
+        private ResizeHandle activeHandle = ResizeHandle.None;
+        private System.Drawing.Point lastMousePos; // 用于计算增量
+        private bool RunFlag = false;
+
+        // 缩放手柄类型（四个角）
+        public enum ResizeHandle
+        {
+            None,
+            TopLeft,
+            TopRight,
+            BottomLeft,
+            BottomRight
+        }
 
         #endregion roi
 
@@ -97,6 +115,7 @@ namespace NetAIVision
         private string saveImgPath = Path.Combine(Application.StartupPath, "VideoCollection");
         private FrameSaver save;
         private bool Collection = false;
+        private bool RoiMoveFlag = false;
 
         public FrmMaster()
         {
@@ -142,7 +161,7 @@ namespace NetAIVision
             this.removeROIToolStripMenuItem.Click += RemoveROIToolStripMenuItem_Click;
             this.QRCodeToolStripMenuItem.Click += QRCodeToolStripMenuItem_Click;
             this.RenameROIToolStripMenuItem.Click += RenameROIToolStripMenuItem_Click;
-
+            this.clearROIToolStripMenuItem.Click += ClearROIToolStripMenuItem_Click;
             this.oCRToolStripMenuItem.Click += OCRToolStripMenuItem_Click;
             //Exit
             this.exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
@@ -167,6 +186,15 @@ namespace NetAIVision
             save = new FrameSaver(saveImgPath);
         }
 
+        private void ClearROIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (rois?.Count > 0)
+            {
+                rois.Clear();
+                logHelper.AppendLog("INFO: Clear scripts ROI Completed...");
+            }
+        }
+
         private void EditScriptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewScriptFlag = true;
@@ -184,18 +212,24 @@ namespace NetAIVision
                {
                    // 耗时操作放后台线程
                    var flag = true;
+                   RunFlag = true;
                    Stopwatch timer = new Stopwatch();
                    timer.Start();
                    foreach (var item in rois)
                    {
                        Rectangle roiRect = item.Rect;
-
+                       if (pictureBox1.Image is null)
+                       {
+                           RunFlag = false;
+                           return;
+                       }
                        // 确保 ROI 在图像范围内
                        if (roiRect.X < 0 || roiRect.Y < 0 ||
                            roiRect.Right > pictureBox1.Image.Width ||
                            roiRect.Bottom > pictureBox1.Image.Height)
                        {
                            MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                           RunFlag = false;
                            return;
                        }
 
@@ -222,6 +256,7 @@ namespace NetAIVision
                        }
                        pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
                    }
+                   RunFlag = false;
                    timer.Stop();
                    TimeSpan elapsed = TimeSpan.FromMilliseconds(timer.ElapsedMilliseconds);
                    txtLengthy.BeginInvoke(new Action(() =>
@@ -760,7 +795,18 @@ namespace NetAIVision
             //var page = engine.Process(img, PageSegMode.SingleLine);
             //string text = page.GetText();
             var text = BitmapProcessorServices.OCRFn(templateImage);
-            logHelper.AppendLog($"OCR Data:{text}");
+            pictureBox2.Invoke(new Action(() =>
+            {
+                if (!(pictureBox2.Image is null))
+                {
+                    pictureBox2.Image.Dispose();
+                }
+                pictureBox2.Image = (templateImage);
+                pictureBox2.Refresh();
+            }));
+            logHelper.AppendLog($"Tessreact OCR Data:{text}");
+            text = PaddleOCRHelper.Recognize(templateImage);
+            logHelper.AppendLog($"Paddle OCR Data:{text}");
         }
 
         /// <summary>
@@ -950,7 +996,7 @@ namespace NetAIVision
                 {
                     Bitmap bmps = new Bitmap(dlg.FileName);
                     Bitmap bmp = new Bitmap(bmps, pictureBox1.Size);
-
+                    ImageAlignment.RecalcEveryNFrames = 1;
                     bmp = ImageAlignment.AlignToTemplate(bmp);
 
                     pictureBox1.Image = bmp;
@@ -1609,18 +1655,22 @@ namespace NetAIVision
                                 //int newWidth = (int)(_originalBitmap.Width * _zoomFactor);
                                 //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
                                 // 清理旧图像，防止内存泄漏
-                                if (pictureBox1.Image != null)
-                                    pictureBox1.Image.Dispose();
-                                //safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
-                                //safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
-                                //safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
-                                safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
-
-                                pictureBox1.Image = safeBitmap;
-                                if (Collection)
+                                if (!RunFlag)
                                 {
-                                    save.SaveFrame(safeBitmap);
+                                    if (pictureBox1.Image != null)
+                                        pictureBox1.Image.Dispose();
+                                    //safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
+                                    //safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
+                                    //safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
+                                    safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
+
+                                    pictureBox1.Image = safeBitmap;
+                                    if (Collection)
+                                    {
+                                        save.SaveFrame(safeBitmap);
+                                    }
                                 }
+
                                 //pictureBox1.Image = m_bitmap;
                             }
                         }));
@@ -1979,10 +2029,49 @@ namespace NetAIVision
             this.ShowErrorDialog("PROMPT", errorMsg);
         }
 
+        //##
+        //        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
+        //        {
+        //            if (e.Button == MouseButtons.Left)
+        //            {
+        //                if (NewScriptFlag)
+        //                {
+        //                    isDrawing = true;
+        //                    startPoint = e.Location;
+        //                    currentROI = new ScriptROI { Name = $"ROI_{roiCounter++}" };
+        //                }
+        //            }
+        //        }
+
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
+                // 1️⃣ 先检查是否点击了某个 ROI 的缩放手柄
+                foreach (var roi in rois)
+                {
+                    var handle = GetHandleAtPoint(roi, e.Location);
+                    if (handle != ResizeHandle.None)
+                    {
+                        isResizingRoi = true;
+                        resizingRoi = roi;
+                        activeHandle = handle;
+                        lastMousePos = e.Location;
+                        return;
+                    }
+                }
+
+                // 2️⃣ 再检查是否点击了 ROI 主体（用于拖动）
+                var clickedRoi = rois.FirstOrDefault(r => r.Rect.Contains(e.Location));
+                if (clickedRoi != null)
+                {
+                    isDraggingRoi = true;
+                    draggingRoi = clickedRoi;
+                    dragOffset = new System.Drawing.Point(e.X - draggingRoi.Rect.X, e.Y - draggingRoi.Rect.Y);
+                    return;
+                }
+
+                // 3️⃣ 否则尝试绘制新 ROI
                 if (NewScriptFlag)
                 {
                     isDrawing = true;
@@ -1992,8 +2081,104 @@ namespace NetAIVision
             }
         }
 
+        //private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (isDrawing && currentROI != null)
+        //    {
+        //        int x = Math.Min(startPoint.X, e.X);
+        //        int y = Math.Min(startPoint.Y, e.Y);
+        //        int w = Math.Abs(e.X - startPoint.X);
+        //        int h = Math.Abs(e.Y - startPoint.Y);
+        //        currentROI.Rect = new Rectangle(x, y, w, h);
+        //        pictureBox1.Invalidate();
+        //    }
+        //}
+        //private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (isDraggingRoi && draggingRoi != null)
+        //    {
+        //        // 计算新的 ROI 位置（保持 dragOffset 不变）
+        //        int newX = e.X - dragOffset.X;
+        //        int newY = e.Y - dragOffset.Y;
+
+        //        // 可选：限制 ROI 不超出图片边界
+        //        // newX = Math.Max(0, Math.Min(newX, pictureBox1.ClientSize.Width - draggingRoi.Rect.Width));
+        //        // newY = Math.Max(0, Math.Min(newY, pictureBox1.ClientSize.Height - draggingRoi.Rect.Height));
+
+        //        draggingRoi.Rect = new Rectangle(newX, newY, draggingRoi.Rect.Width, draggingRoi.Rect.Height);
+        //        pictureBox1.Invalidate();
+        //    }
+        //    else if (isDrawing && currentROI != null)
+        //    {
+        //        int x = Math.Min(startPoint.X, e.X);
+        //        int y = Math.Min(startPoint.Y, e.Y);
+        //        int w = Math.Abs(e.X - startPoint.X);
+        //        int h = Math.Abs(e.Y - startPoint.Y);
+        //        currentROI.Rect = new Rectangle(x, y, w, h);
+        //        pictureBox1.Invalidate();
+        //    }
+        //}
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            // 缩放模式
+            if (isResizingRoi && resizingRoi != null)
+            {
+                var rect = resizingRoi.Rect;
+                int dx = e.X - lastMousePos.X;
+                int dy = e.Y - lastMousePos.Y;
+
+                int newX = rect.X, newY = rect.Y, newWidth = rect.Width, newHeight = rect.Height;
+
+                switch (activeHandle)
+                {
+                    case ResizeHandle.TopLeft:
+                        newX += dx; newWidth -= dx;
+                        newY += dy; newHeight -= dy;
+                        break;
+
+                    case ResizeHandle.TopRight:
+                        newWidth += dx;
+                        newY += dy; newHeight -= dy;
+                        break;
+
+                    case ResizeHandle.BottomLeft:
+                        newX += dx; newWidth -= dx;
+                        newHeight += dy;
+                        break;
+
+                    case ResizeHandle.BottomRight:
+                        newWidth += dx;
+                        newHeight += dy;
+                        break;
+                }
+
+                // 确保宽度/高度 >= 最小值（比如 10）
+                if (newWidth < 10) { newWidth = 10; if (activeHandle == ResizeHandle.TopLeft || activeHandle == ResizeHandle.BottomLeft) newX = rect.Right - newWidth; }
+                if (newHeight < 10) { newHeight = 10; if (activeHandle == ResizeHandle.TopLeft || activeHandle == ResizeHandle.TopRight) newY = rect.Bottom - newHeight; }
+
+                // 可选：限制不能拖出 PictureBox 边界
+                newX = Math.Max(0, newX);
+                newY = Math.Max(0, newY);
+                newWidth = Math.Min(newWidth, pictureBox1.ClientSize.Width - newX);
+                newHeight = Math.Min(newHeight, pictureBox1.ClientSize.Height - newY);
+
+                resizingRoi.Rect = new Rectangle(newX, newY, newWidth, newHeight);
+                lastMousePos = e.Location;
+                pictureBox1.Invalidate();
+                return;
+            }
+
+            // 拖动模式
+            if (isDraggingRoi && draggingRoi != null)
+            {
+                int newX = e.X - dragOffset.X;
+                int newY = e.Y - dragOffset.Y;
+                draggingRoi.Rect = new Rectangle(newX, newY, draggingRoi.Rect.Width, draggingRoi.Rect.Height);
+                pictureBox1.Invalidate();
+                return;
+            }
+
+            // 绘制模式
             if (isDrawing && currentROI != null)
             {
                 int x = Math.Min(startPoint.X, e.X);
@@ -2003,10 +2188,50 @@ namespace NetAIVision
                 currentROI.Rect = new Rectangle(x, y, w, h);
                 pictureBox1.Invalidate();
             }
+
+            // 👆 可选：改变鼠标样式（悬停在手柄上时显示 SizeNWSE 等）
         }
 
+        //private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
+        //{
+        //    if (isDraggingRoi)
+        //    {
+        //        isDraggingRoi = false;
+        //        draggingRoi = null;
+        //        pictureBox1.Invalidate();
+        //        return;
+        //    }
+
+        //    if (isDrawing && currentROI != null)
+        //    {
+        //        isDrawing = false;
+        //        if (currentROI.Rect.Width > 10 && currentROI.Rect.Height > 10)
+        //        {
+        //            rois.Add(currentROI);
+        //        }
+        //        currentROI = null;
+        //        pictureBox1.Invalidate();
+        //    }
+        //}
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
+            if (isResizingRoi)
+            {
+                isResizingRoi = false;
+                resizingRoi = null;
+                activeHandle = ResizeHandle.None;
+                pictureBox1.Invalidate();
+                return;
+            }
+
+            if (isDraggingRoi)
+            {
+                isDraggingRoi = false;
+                draggingRoi = null;
+                pictureBox1.Invalidate();
+                return;
+            }
+
             if (isDrawing && currentROI != null)
             {
                 isDrawing = false;
@@ -2018,6 +2243,20 @@ namespace NetAIVision
                 pictureBox1.Invalidate();
             }
         }
+
+        //private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
+        //{
+        //    if (isDrawing && currentROI != null)
+        //    {
+        //        isDrawing = false;
+        //        if (currentROI.Rect.Width > 10 && currentROI.Rect.Height > 10)
+        //        {
+        //            rois.Add(currentROI);
+        //        }
+        //        currentROI = null;
+        //        pictureBox1.Invalidate();
+        //    }
+        //}
 
         private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -2064,6 +2303,14 @@ namespace NetAIVision
 
                         // 绘制文字
                         g.DrawString($"{roi.Name} {roi.msg}", font, roi.Brushes_color, new PointF(textX, textY));
+                        // ... 已有繪製矩形和文字的代碼 ...
+
+                        // 畫中心 "+"
+                        var center = new System.Drawing.Point(roi.Rect.X + roi.Rect.Width / 2, roi.Rect.Y + roi.Rect.Height / 2);
+                        int crossSize = 5; // 十字長度
+
+                        g.DrawLine(Pens.Red, center.X - crossSize, center.Y, center.X + crossSize, center.Y); // 橫線
+                        g.DrawLine(Pens.Red, center.X, center.Y - crossSize, center.X, center.Y + crossSize); // 直線
                     }
                 }
 
@@ -2089,6 +2336,22 @@ namespace NetAIVision
 
             // 绘制文本
             e.Graphics.DrawString(currentTime, font1, brush, x, y);
+            // 绘制所有 ROI 的缩放手柄（仅当不是正在绘制新 ROI 时）
+            if (!isDrawing)
+            {
+                //var g = e.Graphics;
+                foreach (var roi in rois)
+                {
+                    // 四个角的手柄
+                    var handles = new[] { ResizeHandle.TopLeft, ResizeHandle.TopRight, ResizeHandle.BottomLeft, ResizeHandle.BottomRight };
+                    foreach (var handle in handles)
+                    {
+                        var handleRect = GetHandleRect(roi.Rect, handle);
+                        g.FillRectangle(Brushes.White, handleRect);      // 白色填充
+                        g.DrawRectangle(Pens.Black, handleRect);         // 黑边框
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -2188,9 +2451,20 @@ namespace NetAIVision
                         case "YS101":
                             {
                                 var result = BitmapProcessorServices.OCRFn(_bitmap_with);
+                                //var result = PaddleOCRHelper.Recognize(_bitmap_with);
                                 //logHelper.AppendLog($"INFO :OCR Data:{result}");
                                 list.Add((i, result));
                                 _withRoi.msg = result;
+                                // cv2.Show(_bitmap_with);
+                                pictureBox2.Invoke(new Action(() =>
+                                {
+                                    if (!(pictureBox2.Image is null))
+                                    {
+                                        pictureBox2.Image.Dispose();
+                                    }
+                                    pictureBox2.Image = (_bitmap_with);
+                                    pictureBox2.Refresh();
+                                }));
                                 logHelper.AppendLog($"INFO :Step{i} OCR 文字提取 OCR Data:{result}");
                                 break;
                             }
@@ -2198,19 +2472,21 @@ namespace NetAIVision
                         case "YS102":
                             {
                                 var step = int.Parse(itemString.Split("->")[3].ToString());
-                                var base_string = itemString.Split("->")[4].ToString();
+                                var base_string = itemString.Split("->")[4].ToString().Trim();
                                 var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
-                                logHelper.AppendLog($"INFO :Step{i} 文字比对 OCR Data：{ocr_string}");
+                                logHelper.AppendLog($"INFO :Step{i} OCR 文字提取 OCR Data:{ocr_string}");
+                                logHelper.AppendLog($"INFO :Step{i} OCR 文字比对 OCR Data:{base_string}");
+                                logHelper.AppendLog($"INFO :Step{i} BaseLen:{base_string.Length} OCRLen:{ocr_string?.Length}");
 
                                 if (base_string == ocr_string)
                                 {
                                     _withRoi.msg = "内容一致";
-                                    logHelper.AppendLog($"SUCCESS:文字比对成功，内容一致");
+                                    logHelper.AppendLog($"SUCCESS:{base_string}");
                                 }
                                 else
                                 {
                                     _withRoi.msg = "内容不一致";
-                                    logHelper.AppendLog($"ERROR:文字比对失败，内容不一致");
+                                    logHelper.AppendLog($"ERROR:文字比对失败，内容不一致:{ocr_string}");
                                     return false;
                                 }
 
@@ -2500,6 +2776,49 @@ namespace NetAIVision
         private void 目标ROI显示DToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Collection = 目标ROI显示DToolStripMenuItem.Checked;
+        }
+
+        // 手柄大小（像素）
+        private const int HANDLE_SIZE = 8;
+
+        // 根据 ROI 和手柄类型，返回手柄的绘制区域
+        private Rectangle GetHandleRect(Rectangle roiRect, ResizeHandle handle)
+        {
+            int x = 0, y = 0;
+            switch (handle)
+            {
+                case ResizeHandle.TopLeft:
+                    x = roiRect.X - HANDLE_SIZE / 2;
+                    y = roiRect.Y - HANDLE_SIZE / 2;
+                    break;
+
+                case ResizeHandle.TopRight:
+                    x = roiRect.Right - HANDLE_SIZE / 2;
+                    y = roiRect.Y - HANDLE_SIZE / 2;
+                    break;
+
+                case ResizeHandle.BottomLeft:
+                    x = roiRect.X - HANDLE_SIZE / 2;
+                    y = roiRect.Bottom - HANDLE_SIZE / 2;
+                    break;
+
+                case ResizeHandle.BottomRight:
+                    x = roiRect.Right - HANDLE_SIZE / 2;
+                    y = roiRect.Bottom - HANDLE_SIZE / 2;
+                    break;
+            }
+            return new Rectangle(x, y, HANDLE_SIZE, HANDLE_SIZE);
+        }
+
+        // 检查鼠标位置是否落在某个手柄上
+        private ResizeHandle GetHandleAtPoint(ScriptROI roi, System.Drawing.Point point)
+        {
+            var rect = roi.Rect;
+            if (GetHandleRect(rect, ResizeHandle.TopLeft).Contains(point)) return ResizeHandle.TopLeft;
+            if (GetHandleRect(rect, ResizeHandle.TopRight).Contains(point)) return ResizeHandle.TopRight;
+            if (GetHandleRect(rect, ResizeHandle.BottomLeft).Contains(point)) return ResizeHandle.BottomLeft;
+            if (GetHandleRect(rect, ResizeHandle.BottomRight).Contains(point)) return ResizeHandle.BottomRight;
+            return ResizeHandle.None;
         }
     }
 

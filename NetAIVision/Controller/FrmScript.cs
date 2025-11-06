@@ -481,6 +481,7 @@ namespace NetAIVision.Controller
                         case "YS101":
                             {
                                 var result = BitmapProcessorServices.OCRFn(_bitmap_with);
+                                //var result = PaddleOCRHelper.Recognize(_bitmap_with);
                                 //logHelper.AppendLog($"INFO :OCR Data:{result}");
                                 list.Add((i, result));
                                 logHelper.AppendLog($"INFO :Step{i} OCR 文字提取 OCR Data:{result}");

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Sdcb.PaddleInference.runtime.win64.mkl.3.1.0.54\build\net45\Sdcb.PaddleInference.runtime.win64.mkl.props" Condition="Exists('..\packages\Sdcb.PaddleInference.runtime.win64.mkl.3.1.0.54\build\net45\Sdcb.PaddleInference.runtime.win64.mkl.props')" />
   <Import Project="..\packages\OpenCvSharp4.runtime.win.4.11.0.20250507\build\net48\OpenCvSharp4.runtime.win.props" Condition="Exists('..\packages\OpenCvSharp4.runtime.win.4.11.0.20250507\build\net48\OpenCvSharp4.runtime.win.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -39,6 +40,15 @@
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MvCameraControl.Net, Version=4.5.0.2, Culture=neutral, PublicKeyToken=a3c7c5e3a730cd12, processorArchitecture=AMD64">
@@ -53,6 +63,34 @@
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenCvSharp4.4.11.0.20250507\lib\net48\OpenCvSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdcb.PaddleInference, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleInference.3.0.1\lib\net45\Sdcb.PaddleInference.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sdcb.PaddleOCR, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleOCR.3.0.1\lib\netstandard2.0\Sdcb.PaddleOCR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sdcb.PaddleOCR.Models.Local, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleOCR.Models.Local.3.0.1\lib\netstandard2.0\Sdcb.PaddleOCR.Models.Local.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sdcb.PaddleOCR.Models.LocalV3, Version=2.7.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleOCR.Models.LocalV3.2.7.0.1\lib\netstandard2.0\Sdcb.PaddleOCR.Models.LocalV3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sdcb.PaddleOCR.Models.LocalV4, Version=2.7.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleOCR.Models.LocalV4.2.7.0.1\lib\netstandard2.0\Sdcb.PaddleOCR.Models.LocalV4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sdcb.PaddleOCR.Models.LocalV5, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleOCR.Models.LocalV5.3.0.0\lib\netstandard2.0\Sdcb.PaddleOCR.Models.LocalV5.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Sdcb.PaddleOCR.Models.Shared, Version=2.7.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdcb.PaddleOCR.Models.Shared.2.7.0.1\lib\netstandard2.0\Sdcb.PaddleOCR.Models.Shared.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb, processorArchitecture=MSIL">
       <HintPath>..\packages\SunnyUI.3.8.8\lib\net472\SunnyUI.dll</HintPath>
@@ -76,6 +114,10 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -90,6 +132,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tesseract">
       <HintPath>..\..\..\..\Software_Devlopment\Software_Devlopment\NET\api.com\api.com\bin\Debug\net8.0\Tesseract.dll</HintPath>
+    </Reference>
+    <Reference Include="YamlDotNet, Version=16.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.16.3.0\lib\net47\YamlDotNet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="zxing, Version=0.16.10.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.10\lib\net48\zxing.dll</HintPath>
@@ -173,6 +219,7 @@
     <Compile Include="Services\ImageSimilarityHelper.cs" />
     <Compile Include="Services\LogFileHelper.cs" />
     <Compile Include="Services\MES\MES_Service.cs" />
+    <Compile Include="Services\PaddleOCRHelper.cs" />
     <Compile Include="Services\SpellChecker.cs" />
     <EmbeddedResource Include="Controller\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
@@ -291,5 +338,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
     <Error Condition="!Exists('..\packages\OpenCvSharp4.runtime.win.4.11.0.20250507\build\net48\OpenCvSharp4.runtime.win.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenCvSharp4.runtime.win.4.11.0.20250507\build\net48\OpenCvSharp4.runtime.win.props'))" />
+    <Error Condition="!Exists('..\packages\Sdcb.PaddleInference.runtime.win64.mkl.3.1.0.54\build\net45\Sdcb.PaddleInference.runtime.win64.mkl.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sdcb.PaddleInference.runtime.win64.mkl.3.1.0.54\build\net45\Sdcb.PaddleInference.runtime.win64.mkl.props'))" />
   </Target>
 </Project>

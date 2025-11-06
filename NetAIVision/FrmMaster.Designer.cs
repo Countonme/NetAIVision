@@ -125,6 +125,7 @@
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.clearROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.grouplogs.SuspendLayout();
@@ -280,7 +281,8 @@
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewlogToolStripMenuItem,
-            this.chearLogToolStripMenuItem});
+            this.chearLogToolStripMenuItem,
+            this.clearROIToolStripMenuItem});
             resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             this.viewToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
@@ -802,6 +804,11 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // clearROIToolStripMenuItem
+            // 
+            this.clearROIToolStripMenuItem.Name = "clearROIToolStripMenuItem";
+            resources.ApplyResources(this.clearROIToolStripMenuItem, "clearROIToolStripMenuItem");
+            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -938,6 +945,7 @@
         private System.Windows.Forms.TextBox tbFrameRate;
         private System.Windows.Forms.PictureBox pictureBox3;
         private Sunny.UI.UILine uiLine3;
+        private System.Windows.Forms.ToolStripMenuItem clearROIToolStripMenuItem;
     }
 }
 
