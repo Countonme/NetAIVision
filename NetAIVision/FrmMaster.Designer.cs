@@ -80,36 +80,25 @@
             this.二维码读取QToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guidelineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.目标ROI显示DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.原圖ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lauToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.縮小ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.原圖ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.角度ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.角度ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.上移動ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.下移動ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbDeviceList = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbFrameRate = new System.Windows.Forms.TextBox();
-            this.tbGain = new System.Windows.Forms.TextBox();
-            this.tbExposure = new System.Windows.Forms.TextBox();
-            this.uiGroupBox1 = new Sunny.UI.UIGroupBox();
             this.grouplogs = new Sunny.UI.UIGroupBox();
             this.richboxLogs = new System.Windows.Forms.RichTextBox();
             this.groupSetting = new Sunny.UI.UIGroupBox();
+            this.uiLine3 = new Sunny.UI.UILine();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.uiLedBulb2 = new Sunny.UI.UILedBulb();
             this.uiLabel6 = new Sunny.UI.UILabel();
             this.uiLedBulb1 = new Sunny.UI.UILedBulb();
-            this.flowLayoutPanel1 = new Sunny.UI.UIFlowLayoutPanel();
             this.txtscriptName = new Sunny.UI.UITextBox();
             this.uiLabel5 = new Sunny.UI.UILabel();
-            this.uiGroupBox2 = new Sunny.UI.UIGroupBox();
-            this.uiLabel7 = new Sunny.UI.UILabel();
-            this.switchMES = new Sunny.UI.UISwitch();
-            this.RadioDebugMode = new Sunny.UI.UIRadioButton();
-            this.RadioBtnProductionMode = new Sunny.UI.UIRadioButton();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.uiLine1 = new Sunny.UI.UILine();
             this.txtLengthy = new Sunny.UI.UITextBox();
             this.uiLabel4 = new Sunny.UI.UILabel();
             this.uiTextBox2 = new Sunny.UI.UITextBox();
@@ -117,19 +106,30 @@
             this.txtSerialNumber = new Sunny.UI.UITextBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
             this.uiLabel2 = new Sunny.UI.UILabel();
+            this.uiGroupBox2 = new Sunny.UI.UIGroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbExposure = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbGain = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbFrameRate = new System.Windows.Forms.TextBox();
+            this.uiLabel7 = new Sunny.UI.UILabel();
+            this.switchMES = new Sunny.UI.UISwitch();
+            this.RadioDebugMode = new Sunny.UI.UIRadioButton();
+            this.RadioBtnProductionMode = new Sunny.UI.UIRadioButton();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.uiLine1 = new Sunny.UI.UILine();
             this.uiLine2 = new Sunny.UI.UILine();
             this.mlabEmp = new Sunny.UI.UIMarkLabel();
             this.uiMarkLabel2 = new Sunny.UI.UIMarkLabel();
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.上移動ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.下移動ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.uiGroupBox1.SuspendLayout();
             this.grouplogs.SuspendLayout();
             this.groupSetting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.uiGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -465,8 +465,16 @@
             // 
             // 目标ROI显示DToolStripMenuItem
             // 
+            this.目标ROI显示DToolStripMenuItem.CheckOnClick = true;
             this.目标ROI显示DToolStripMenuItem.Name = "目标ROI显示DToolStripMenuItem";
             resources.ApplyResources(this.目标ROI显示DToolStripMenuItem, "目标ROI显示DToolStripMenuItem");
+            this.目标ROI显示DToolStripMenuItem.Click += new System.EventHandler(this.目标ROI显示DToolStripMenuItem_Click);
+            // 
+            // 原圖ToolStripMenuItem
+            // 
+            this.原圖ToolStripMenuItem.Name = "原圖ToolStripMenuItem";
+            resources.ApplyResources(this.原圖ToolStripMenuItem, "原圖ToolStripMenuItem");
+            this.原圖ToolStripMenuItem.Click += new System.EventHandler(this.原圖ToolStripMenuItem_Click);
             // 
             // lauToolStripMenuItem
             // 
@@ -480,12 +488,6 @@
             resources.ApplyResources(this.縮小ToolStripMenuItem, "縮小ToolStripMenuItem");
             this.縮小ToolStripMenuItem.Click += new System.EventHandler(this.縮小ToolStripMenuItem_Click);
             // 
-            // 原圖ToolStripMenuItem
-            // 
-            this.原圖ToolStripMenuItem.Name = "原圖ToolStripMenuItem";
-            resources.ApplyResources(this.原圖ToolStripMenuItem, "原圖ToolStripMenuItem");
-            this.原圖ToolStripMenuItem.Click += new System.EventHandler(this.原圖ToolStripMenuItem_Click);
-            // 
             // 角度ToolStripMenuItem
             // 
             this.角度ToolStripMenuItem.Name = "角度ToolStripMenuItem";
@@ -498,6 +500,18 @@
             resources.ApplyResources(this.角度ToolStripMenuItem1, "角度ToolStripMenuItem1");
             this.角度ToolStripMenuItem1.Click += new System.EventHandler(this.角度ToolStripMenuItem1_Click);
             // 
+            // 上移動ToolStripMenuItem
+            // 
+            this.上移動ToolStripMenuItem.Name = "上移動ToolStripMenuItem";
+            resources.ApplyResources(this.上移動ToolStripMenuItem, "上移動ToolStripMenuItem");
+            this.上移動ToolStripMenuItem.Click += new System.EventHandler(this.上移動ToolStripMenuItem_Click);
+            // 
+            // 下移動ToolStripMenuItem
+            // 
+            this.下移動ToolStripMenuItem.Name = "下移動ToolStripMenuItem";
+            resources.ApplyResources(this.下移動ToolStripMenuItem, "下移動ToolStripMenuItem");
+            this.下移動ToolStripMenuItem.Click += new System.EventHandler(this.下移動ToolStripMenuItem_Click);
+            // 
             // aboutAToolStripMenuItem
             // 
             resources.ApplyResources(this.aboutAToolStripMenuItem, "aboutAToolStripMenuItem");
@@ -509,48 +523,6 @@
             resources.ApplyResources(this.cbDeviceList, "cbDeviceList");
             this.cbDeviceList.FormattingEnabled = true;
             this.cbDeviceList.Name = "cbDeviceList";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // tbFrameRate
-            // 
-            resources.ApplyResources(this.tbFrameRate, "tbFrameRate");
-            this.tbFrameRate.Name = "tbFrameRate";
-            // 
-            // tbGain
-            // 
-            resources.ApplyResources(this.tbGain, "tbGain");
-            this.tbGain.Name = "tbGain";
-            // 
-            // tbExposure
-            // 
-            resources.ApplyResources(this.tbExposure, "tbExposure");
-            this.tbExposure.Name = "tbExposure";
-            // 
-            // uiGroupBox1
-            // 
-            this.uiGroupBox1.Controls.Add(this.label1);
-            this.uiGroupBox1.Controls.Add(this.tbExposure);
-            this.uiGroupBox1.Controls.Add(this.label3);
-            this.uiGroupBox1.Controls.Add(this.tbGain);
-            this.uiGroupBox1.Controls.Add(this.label2);
-            this.uiGroupBox1.Controls.Add(this.tbFrameRate);
-            resources.ApplyResources(this.uiGroupBox1, "uiGroupBox1");
-            this.uiGroupBox1.Name = "uiGroupBox1";
-            this.uiGroupBox1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // grouplogs
             // 
@@ -567,16 +539,13 @@
             // 
             // groupSetting
             // 
+            this.groupSetting.Controls.Add(this.uiLine3);
+            this.groupSetting.Controls.Add(this.pictureBox3);
             this.groupSetting.Controls.Add(this.uiLedBulb2);
             this.groupSetting.Controls.Add(this.uiLabel6);
             this.groupSetting.Controls.Add(this.uiLedBulb1);
-            this.groupSetting.Controls.Add(this.flowLayoutPanel1);
             this.groupSetting.Controls.Add(this.txtscriptName);
             this.groupSetting.Controls.Add(this.uiLabel5);
-            this.groupSetting.Controls.Add(this.uiGroupBox2);
-            this.groupSetting.Controls.Add(this.pictureBox2);
-            this.groupSetting.Controls.Add(this.uiLine1);
-            this.groupSetting.Controls.Add(this.uiGroupBox1);
             this.groupSetting.Controls.Add(this.txtLengthy);
             this.groupSetting.Controls.Add(this.uiLabel4);
             this.groupSetting.Controls.Add(this.uiTextBox2);
@@ -588,12 +557,29 @@
             this.groupSetting.Name = "groupSetting";
             this.groupSetting.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // uiLine3
+            // 
+            this.uiLine3.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.uiLine3, "uiLine3");
+            this.uiLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLine3.Name = "uiLine3";
+            this.uiLine3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            resources.ApplyResources(this.pictureBox3, "pictureBox3");
+            this.pictureBox3.InitialImage = global::NetAIVision.Properties.Resources.fail;
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.TabStop = false;
+            // 
             // uiLedBulb2
             // 
             this.uiLedBulb2.Blink = true;
             this.uiLedBulb2.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb2, "uiLedBulb2");
             this.uiLedBulb2.Name = "uiLedBulb2";
+            this.uiLedBulb2.On = false;
             // 
             // uiLabel6
             // 
@@ -607,13 +593,7 @@
             this.uiLedBulb1.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb1, "uiLedBulb1");
             this.uiLedBulb1.Name = "uiLedBulb1";
-            // 
-            // flowLayoutPanel1
-            // 
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.ShowText = false;
-            this.flowLayoutPanel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.uiLedBulb1.On = false;
             // 
             // txtscriptName
             // 
@@ -631,60 +611,6 @@
             resources.ApplyResources(this.uiLabel5, "uiLabel5");
             this.uiLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.uiLabel5.Name = "uiLabel5";
-            // 
-            // uiGroupBox2
-            // 
-            this.uiGroupBox2.Controls.Add(this.uiLabel7);
-            this.uiGroupBox2.Controls.Add(this.switchMES);
-            this.uiGroupBox2.Controls.Add(this.RadioDebugMode);
-            this.uiGroupBox2.Controls.Add(this.RadioBtnProductionMode);
-            resources.ApplyResources(this.uiGroupBox2, "uiGroupBox2");
-            this.uiGroupBox2.Name = "uiGroupBox2";
-            this.uiGroupBox2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uiLabel7
-            // 
-            resources.ApplyResources(this.uiLabel7, "uiLabel7");
-            this.uiLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.uiLabel7.Name = "uiLabel7";
-            // 
-            // switchMES
-            // 
-            this.switchMES.ActiveColor = System.Drawing.Color.Blue;
-            resources.ApplyResources(this.switchMES, "switchMES");
-            this.switchMES.InActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.switchMES.Name = "switchMES";
-            this.switchMES.SwitchShape = Sunny.UI.UISwitch.UISwitchShape.Square;
-            // 
-            // RadioDebugMode
-            // 
-            this.RadioDebugMode.Checked = true;
-            this.RadioDebugMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.RadioDebugMode, "RadioDebugMode");
-            this.RadioDebugMode.Name = "RadioDebugMode";
-            // 
-            // RadioBtnProductionMode
-            // 
-            this.RadioBtnProductionMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.RadioBtnProductionMode, "RadioBtnProductionMode");
-            this.RadioBtnProductionMode.Name = "RadioBtnProductionMode";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.pictureBox2.Image = global::NetAIVision.Properties.Resources.fail;
-            resources.ApplyResources(this.pictureBox2, "pictureBox2");
-            this.pictureBox2.InitialImage = global::NetAIVision.Properties.Resources.fail;
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.TabStop = false;
-            // 
-            // uiLine1
-            // 
-            this.uiLine1.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.uiLine1, "uiLine1");
-            this.uiLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.uiLine1.Name = "uiLine1";
-            this.uiLine1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtLengthy
             // 
@@ -743,6 +669,95 @@
             this.uiLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.uiLabel2.Name = "uiLabel2";
             // 
+            // uiGroupBox2
+            // 
+            this.uiGroupBox2.Controls.Add(this.label1);
+            this.uiGroupBox2.Controls.Add(this.tbExposure);
+            this.uiGroupBox2.Controls.Add(this.label3);
+            this.uiGroupBox2.Controls.Add(this.tbGain);
+            this.uiGroupBox2.Controls.Add(this.label2);
+            this.uiGroupBox2.Controls.Add(this.tbFrameRate);
+            this.uiGroupBox2.Controls.Add(this.uiLabel7);
+            this.uiGroupBox2.Controls.Add(this.switchMES);
+            this.uiGroupBox2.Controls.Add(this.RadioDebugMode);
+            this.uiGroupBox2.Controls.Add(this.RadioBtnProductionMode);
+            resources.ApplyResources(this.uiGroupBox2, "uiGroupBox2");
+            this.uiGroupBox2.Name = "uiGroupBox2";
+            this.uiGroupBox2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // tbExposure
+            // 
+            resources.ApplyResources(this.tbExposure, "tbExposure");
+            this.tbExposure.Name = "tbExposure";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // tbGain
+            // 
+            resources.ApplyResources(this.tbGain, "tbGain");
+            this.tbGain.Name = "tbGain";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // tbFrameRate
+            // 
+            resources.ApplyResources(this.tbFrameRate, "tbFrameRate");
+            this.tbFrameRate.Name = "tbFrameRate";
+            // 
+            // uiLabel7
+            // 
+            resources.ApplyResources(this.uiLabel7, "uiLabel7");
+            this.uiLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLabel7.Name = "uiLabel7";
+            // 
+            // switchMES
+            // 
+            this.switchMES.ActiveColor = System.Drawing.Color.Blue;
+            resources.ApplyResources(this.switchMES, "switchMES");
+            this.switchMES.InActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.switchMES.Name = "switchMES";
+            this.switchMES.SwitchShape = Sunny.UI.UISwitch.UISwitchShape.Square;
+            // 
+            // RadioDebugMode
+            // 
+            this.RadioDebugMode.Checked = true;
+            this.RadioDebugMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.RadioDebugMode, "RadioDebugMode");
+            this.RadioDebugMode.Name = "RadioDebugMode";
+            // 
+            // RadioBtnProductionMode
+            // 
+            this.RadioBtnProductionMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.RadioBtnProductionMode, "RadioBtnProductionMode");
+            this.RadioBtnProductionMode.Name = "RadioBtnProductionMode";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            resources.ApplyResources(this.pictureBox2, "pictureBox2");
+            this.pictureBox2.InitialImage = global::NetAIVision.Properties.Resources.fail;
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.TabStop = false;
+            // 
+            // uiLine1
+            // 
+            this.uiLine1.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.uiLine1, "uiLine1");
+            this.uiLine1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.uiLine1.Name = "uiLine1";
+            this.uiLine1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // uiLine2
             // 
             this.uiLine2.BackColor = System.Drawing.Color.Transparent;
@@ -787,18 +802,6 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // 上移動ToolStripMenuItem
-            // 
-            this.上移動ToolStripMenuItem.Name = "上移動ToolStripMenuItem";
-            resources.ApplyResources(this.上移動ToolStripMenuItem, "上移動ToolStripMenuItem");
-            this.上移動ToolStripMenuItem.Click += new System.EventHandler(this.上移動ToolStripMenuItem_Click);
-            // 
-            // 下移動ToolStripMenuItem
-            // 
-            this.下移動ToolStripMenuItem.Name = "下移動ToolStripMenuItem";
-            resources.ApplyResources(this.下移動ToolStripMenuItem, "下移動ToolStripMenuItem");
-            this.下移動ToolStripMenuItem.Click += new System.EventHandler(this.下移動ToolStripMenuItem_Click);
-            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -808,6 +811,9 @@
             this.Controls.Add(this.uiGifAvatar1);
             this.Controls.Add(this.uiLine2);
             this.Controls.Add(this.groupSetting);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.uiLine1);
+            this.Controls.Add(this.uiGroupBox2);
             this.Controls.Add(this.grouplogs);
             this.Controls.Add(this.cbDeviceList);
             this.Controls.Add(this.pictureBox1);
@@ -822,12 +828,12 @@
             this.StepMenuStrip.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.uiGroupBox1.ResumeLayout(false);
-            this.uiGroupBox1.PerformLayout();
             this.grouplogs.ResumeLayout(false);
             this.groupSetting.ResumeLayout(false);
             this.groupSetting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.uiGroupBox2.ResumeLayout(false);
+            this.uiGroupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -852,12 +858,6 @@
         private System.Windows.Forms.ComboBox cbDeviceList;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbFrameRate;
-        private System.Windows.Forms.TextBox tbGain;
-        private System.Windows.Forms.TextBox tbExposure;
         private System.Windows.Forms.ToolStripMenuItem 功能ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 原圖OToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 灰度GToolStripMenuItem;
@@ -876,7 +876,6 @@
         private System.Windows.Forms.ToolStripMenuItem 目标ROI显示DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutAToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
-        private Sunny.UI.UIGroupBox uiGroupBox1;
         private Sunny.UI.UIGroupBox grouplogs;
         private Sunny.UI.UIGroupBox groupSetting;
         private Sunny.UI.UITextBox txtSerialNumber;
@@ -907,7 +906,6 @@
         private System.Windows.Forms.ToolStripMenuItem SavepNGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SavetIFFToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richboxLogs;
-        private Sunny.UI.UIFlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem importImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveTempToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewRoiScriptToolStripMenuItem;
@@ -932,6 +930,14 @@
         private System.Windows.Forms.ToolStripMenuItem 角度ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 上移動ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 下移動ToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbExposure;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tbGain;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbFrameRate;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private Sunny.UI.UILine uiLine3;
     }
 }
 

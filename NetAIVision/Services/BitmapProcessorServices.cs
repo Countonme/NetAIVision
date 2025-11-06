@@ -97,7 +97,7 @@ namespace NetAIVision.Services
             return ProcessPixelByPixel(bitmap, c => Color.FromArgb(c.A, 255 - c.R, 255 - c.G, 255 - c.B));
         }
 
-        public static string OCRFn(Bitmap bitmap)
+        public static string OCRFn2(Bitmap bitmap)
         {
             // 圖像預處理
             Bitmap processed = bitmap;
@@ -127,10 +127,9 @@ namespace NetAIVision.Services
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        public static string OCRFn1(Bitmap bitmap)
+        public static string OCRFn(Bitmap bitmap)
         {
-            // 使用 Tesseract 进行 OCR 识别
-            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.TesseractOnly);
+            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
             // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
             var ms = new MemoryStream();
             bitmap = PreprocessForOCR(bitmap);
@@ -138,51 +137,133 @@ namespace NetAIVision.Services
             ms.Position = 0;
 
             var img = Pix.LoadFromMemory(ms.ToArray());
-            //var page = engine.Process(img);
-            //string text = page.GetText();
-            //return text;
-            using (var page = engine.Process(img, PageSegMode.SingleBlock))
-            {
-                string text = page.GetText();
-
-                // 清理文本：去除所有换行、回车、制表符，并压缩空白
-                string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", " ", RegexOptions.None);
-                cleaned = Regex.Replace(cleaned, @"\s+", " "); // 多个空格合并为一个
-                cleaned = cleaned.Trim();
-
-                return cleaned;
-            }
+            var page = engine.Process(img);
+            string text = page.GetText();
+            // 清理文本：去除所有换行、回车、制表符，并压缩空白
+            string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", " ", RegexOptions.None);
+            cleaned = Regex.Replace(cleaned, @"\s+", " "); // 多个空格合并为一个
+            cleaned = cleaned.Trim();
+            return cleaned;
         }
 
         public static Bitmap PreprocessForOCR(Bitmap src)
         {
-            // Step 1: 放大原圖（例如 2x）
-            int newWidth = src.Width * 1;
-            int newHeight = src.Height * 1;
-
-            Bitmap enlarged = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
-
-            using (var g = Graphics.FromImage(enlarged))
+            // Step 1: 放大
+            int newWidth = src.Width * 2;
+            int newHeight = src.Height * 2;
+            Bitmap resized = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+            using (Graphics g = Graphics.FromImage(resized))
             {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 g.DrawImage(src, 0, 0, newWidth, newHeight);
             }
 
-            // Step 2: 轉灰度
-            for (int y = 0; y < enlarged.Height; y++)
+            // Step 2: 灰度化
+            Bitmap gray = new Bitmap(resized.Width, resized.Height, PixelFormat.Format24bppRgb);
+            using (Graphics g = Graphics.FromImage(gray))
             {
-                for (int x = 0; x < enlarged.Width; x++)
+                var colorMatrix = new ColorMatrix(new float[][]
                 {
-                    Color c = enlarged.GetPixel(x, y);
-                    int l = (int)(0.299 * c.R + 0.587 * c.G + 0.114 * c.B);
-                    enlarged.SetPixel(x, y, Color.FromArgb(l, l, l));
+            new float[]{0.299f, 0.299f, 0.299f, 0, 0},
+            new float[]{0.587f, 0.587f, 0.587f, 0, 0},
+            new float[]{0.114f, 0.114f, 0.114f, 0, 0},
+            new float[]{0, 0, 0, 1, 0},
+            new float[]{0, 0, 0, 0, 1}
+                });
+                var attributes = new ImageAttributes();
+                attributes.SetColorMatrix(colorMatrix);
+                g.DrawImage(resized, new Rectangle(0, 0, gray.Width, gray.Height),
+                    0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel, attributes);
+            }
+            resized.Dispose();
+
+            // Step 3: Otsu 二值化（在 24bpp 图上）
+            int threshold = GetOtsuThreshold(gray);
+            for (int y = 0; y < gray.Height; y++)
+            {
+                for (int x = 0; x < gray.Width; x++)
+                {
+                    Color c = gray.GetPixel(x, y);
+                    Color newColor = (c.R > threshold) ? Color.White : Color.Black;
+                    gray.SetPixel(x, y, newColor);
                 }
             }
 
-            return enlarged;
+            // Step 4: 将灰度图转为 1bpp（安全方式）
+            Bitmap binary = ConvertTo1Bpp(gray);
+            gray.Dispose();
+
+            return binary;
+        }
+
+        private static Bitmap ConvertTo1Bpp(Bitmap img)
+        {
+            int w = img.Width;
+            int h = img.Height;
+            Bitmap bmp = new Bitmap(w, h, PixelFormat.Format1bppIndexed);
+
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.WriteOnly, PixelFormat.Format1bppIndexed);
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    Color c = img.GetPixel(x, y);
+                    if (c.R < 128)
+                    {
+                        int index = y * data.Stride + (x >> 3);
+                        byte mask = (byte)(0x80 >> (x & 0x7));
+                        unsafe
+                        {
+                            byte* p = (byte*)data.Scan0.ToPointer();
+                            p[index] |= mask;
+                        }
+                    }
+                }
+            }
+            bmp.UnlockBits(data);
+            return bmp;
+        }
+
+        private static int GetOtsuThreshold(Bitmap bmp)
+        {
+            int[] hist = new int[256];
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    int l = bmp.GetPixel(x, y).R;
+                    hist[l]++;
+                }
+            }
+
+            int total = bmp.Width * bmp.Height;
+            float sum = 0;
+            for (int i = 0; i < 256; i++)
+                sum += i * hist[i];
+
+            float sumB = 0, wB = 0, wF = 0, varMax = 0;
+            int threshold = 0;
+
+            for (int i = 0; i < 256; i++)
+            {
+                wB += hist[i];
+                if (wB == 0) continue;
+                wF = total - wB;
+                if (wF == 0) break;
+
+                sumB += (float)(i * hist[i]);
+                float mB = sumB / wB;
+                float mF = (sum - sumB) / wF;
+                float varBetween = wB * wF * (mB - mF) * (mB - mF);
+                if (varBetween > varMax)
+                {
+                    varMax = varBetween;
+                    threshold = i;
+                }
+            }
+            return threshold;
         }
 
         //public static Bitmap PreprocessForOCR(Bitmap src)

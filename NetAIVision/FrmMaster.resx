@@ -187,6 +187,60 @@
   <data name="menuStrip1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft JhengHei, 14.25pt</value>
   </data>
+  <data name="newScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="newScriptsToolStripMenuItem.Text" xml:space="preserve">
+    <value>➕ New Scripts</value>
+  </data>
+  <data name="editScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="editScriptsToolStripMenuItem.Text" xml:space="preserve">
+    <value>✏️ Edit Scripts</value>
+  </data>
+  <data name="saveingScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="saveingScriptsToolStripMenuItem.Text" xml:space="preserve">
+    <value>💾 Save Script</value>
+  </data>
+  <data name="openScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="openScriptToolStripMenuItem.Text" xml:space="preserve">
+    <value>📜 Open Script</value>
+  </data>
+  <data name="openLogsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="openLogsToolStripMenuItem.Text" xml:space="preserve">
+    <value>📄 Open Logs</value>
+  </data>
+  <data name="openImagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="openImagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>🖼️ Open Images</value>
+  </data>
+  <data name="importImageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="importImageToolStripMenuItem.Text" xml:space="preserve">
+    <value>🖼️ Import Image</value>
+  </data>
+  <data name="importScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="importScriptToolStripMenuItem.Text" xml:space="preserve">
+    <value>📄 Import Script</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 28</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>❌ Exit</value>
+  </data>
   <data name="fileToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft JhengHei, 14.25pt</value>
   </data>
@@ -195,6 +249,18 @@
   </data>
   <data name="fileToolStripMenuItem.Text" xml:space="preserve">
     <value>📁 文件</value>
+  </data>
+  <data name="viewlogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 28</value>
+  </data>
+  <data name="viewlogToolStripMenuItem.Text" xml:space="preserve">
+    <value>📄 Log</value>
+  </data>
+  <data name="chearLogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 28</value>
+  </data>
+  <data name="chearLogToolStripMenuItem.Text" xml:space="preserve">
+    <value>📄 Clear Log</value>
   </data>
   <data name="viewToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft JhengHei, 14.25pt</value>
@@ -257,6 +323,30 @@
   <data name="RunningScriptToolStripMenuItem.Text" xml:space="preserve">
     <value>▶️ 运行(&amp;F5)</value>
   </data>
+  <data name="SavebmpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 28</value>
+  </data>
+  <data name="SavebmpToolStripMenuItem.Text" xml:space="preserve">
+    <value>🖼️ *.Bmp</value>
+  </data>
+  <data name="SavejPGToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 28</value>
+  </data>
+  <data name="SavejPGToolStripMenuItem.Text" xml:space="preserve">
+    <value>🖼️ *.JPG</value>
+  </data>
+  <data name="SavepNGToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 28</value>
+  </data>
+  <data name="SavepNGToolStripMenuItem.Text" xml:space="preserve">
+    <value>🖼️ *.PNG</value>
+  </data>
+  <data name="SavetIFFToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 28</value>
+  </data>
+  <data name="SavetIFFToolStripMenuItem.Text" xml:space="preserve">
+    <value>🖼️ *.TIFF</value>
+  </data>
   <data name="保存图像ToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft JhengHei, 14.25pt</value>
   </data>
@@ -267,139 +357,139 @@
     <value>💾 保存图像</value>
   </data>
   <data name="原圖OToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="原圖OToolStripMenuItem.Text" xml:space="preserve">
     <value>🖼️ 原圖(&amp;O)</value>
   </data>
   <data name="灰度GToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="灰度GToolStripMenuItem.Text" xml:space="preserve">
     <value>🔳 灰度(&amp;G)</value>
   </data>
   <data name="二值化BToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="二值化BToolStripMenuItem.Text" xml:space="preserve">
     <value>⚖️ 二值化(&amp;B)</value>
   </data>
   <data name="反色IToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="反色IToolStripMenuItem.Text" xml:space="preserve">
     <value>🔄 反色(&amp;I)</value>
   </data>
   <data name="高斯模糊UToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="高斯模糊UToolStripMenuItem.Text" xml:space="preserve">
     <value>🌀 高斯模糊(&amp;U)</value>
   </data>
   <data name="边缘检测EToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="边缘检测EToolStripMenuItem.Text" xml:space="preserve">
     <value>🔍 边缘检测(&amp;E)</value>
   </data>
   <data name="水平翻转FToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="水平翻转FToolStripMenuItem.Text" xml:space="preserve">
     <value>↔️ 水平翻转(&amp;F)</value>
   </data>
   <data name="垂直翻转VToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="垂直翻转VToolStripMenuItem.Text" xml:space="preserve">
     <value>↕️ 垂直翻转(&amp;V)</value>
   </data>
   <data name="亮度LToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="亮度LToolStripMenuItem.Text" xml:space="preserve">
     <value>🔆 亮度 + (&amp;L)</value>
   </data>
   <data name="亮度MToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="亮度MToolStripMenuItem.Text" xml:space="preserve">
     <value>🔅 亮度 -(&amp;M)</value>
   </data>
   <data name="对比度CToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="对比度CToolStripMenuItem.Text" xml:space="preserve">
     <value>📈 对比度 +(&amp;C)</value>
   </data>
   <data name="对比度TToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="对比度TToolStripMenuItem.Text" xml:space="preserve">
     <value>📉 对比度 -(&amp;T)</value>
   </data>
   <data name="oCRRToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="oCRRToolStripMenuItem.Text" xml:space="preserve">
     <value>🔤 OCR(&amp;R)</value>
   </data>
   <data name="二维码读取QToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="二维码读取QToolStripMenuItem.Text" xml:space="preserve">
     <value>🧩 二维码读取(&amp;Q)</value>
   </data>
   <data name="guidelineToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="guidelineToolStripMenuItem.Text" xml:space="preserve">
     <value>➕ 参考线(&amp;N)</value>
   </data>
   <data name="目标ROI显示DToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="目标ROI显示DToolStripMenuItem.Text" xml:space="preserve">
-    <value>🔲 目标ROI显示(&amp;D)</value>
+    <value>采集图片</value>
   </data>
   <data name="原圖ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="原圖ToolStripMenuItem.Text" xml:space="preserve">
     <value>原圖</value>
   </data>
   <data name="lauToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="lauToolStripMenuItem.Text" xml:space="preserve">
     <value>左移動</value>
   </data>
   <data name="縮小ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="縮小ToolStripMenuItem.Text" xml:space="preserve">
     <value>右移動</value>
   </data>
   <data name="角度ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="角度ToolStripMenuItem.Text" xml:space="preserve">
     <value>角度+</value>
   </data>
   <data name="角度ToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="角度ToolStripMenuItem1.Text" xml:space="preserve">
     <value>角度-</value>
   </data>
   <data name="上移動ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="上移動ToolStripMenuItem.Text" xml:space="preserve">
     <value>上移動</value>
   </data>
   <data name="下移動ToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 28</value>
+    <value>228, 28</value>
   </data>
   <data name="下移動ToolStripMenuItem.Text" xml:space="preserve">
     <value>下移動</value>
@@ -448,97 +538,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="newScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="newScriptsToolStripMenuItem.Text" xml:space="preserve">
-    <value>➕ New Scripts</value>
-  </data>
-  <data name="editScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="editScriptsToolStripMenuItem.Text" xml:space="preserve">
-    <value>✏️ Edit Scripts</value>
-  </data>
-  <data name="saveingScriptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="saveingScriptsToolStripMenuItem.Text" xml:space="preserve">
-    <value>💾 Save Script</value>
-  </data>
-  <data name="openScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="openScriptToolStripMenuItem.Text" xml:space="preserve">
-    <value>📜 Open Script</value>
-  </data>
-  <data name="openLogsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="openLogsToolStripMenuItem.Text" xml:space="preserve">
-    <value>📄 Open Logs</value>
-  </data>
-  <data name="openImagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="openImagesToolStripMenuItem.Text" xml:space="preserve">
-    <value>🖼️ Open Images</value>
-  </data>
-  <data name="importImageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="importImageToolStripMenuItem.Text" xml:space="preserve">
-    <value>🖼️ Import Image</value>
-  </data>
-  <data name="importScriptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="importScriptToolStripMenuItem.Text" xml:space="preserve">
-    <value>📄 Import Script</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 28</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>❌ Exit</value>
-  </data>
-  <data name="viewlogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 28</value>
-  </data>
-  <data name="viewlogToolStripMenuItem.Text" xml:space="preserve">
-    <value>📄 Log</value>
-  </data>
-  <data name="chearLogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 28</value>
-  </data>
-  <data name="chearLogToolStripMenuItem.Text" xml:space="preserve">
-    <value>📄 Clear Log</value>
-  </data>
-  <data name="SavebmpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 28</value>
-  </data>
-  <data name="SavebmpToolStripMenuItem.Text" xml:space="preserve">
-    <value>🖼️ *.Bmp</value>
-  </data>
-  <data name="SavejPGToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 28</value>
-  </data>
-  <data name="SavejPGToolStripMenuItem.Text" xml:space="preserve">
-    <value>🖼️ *.JPG</value>
-  </data>
-  <data name="SavepNGToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 28</value>
-  </data>
-  <data name="SavepNGToolStripMenuItem.Text" xml:space="preserve">
-    <value>🖼️ *.PNG</value>
-  </data>
-  <data name="SavetIFFToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 28</value>
-  </data>
-  <data name="SavetIFFToolStripMenuItem.Text" xml:space="preserve">
-    <value>🖼️ *.TIFF</value>
+    <value>12</value>
   </data>
   <data name="cbDeviceList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -562,205 +562,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cbDeviceList.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="richboxLogs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="richboxLogs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 32</value>
   </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 103</value>
+  <data name="richboxLogs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1377, 45</value>
   </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 16</value>
-  </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>帧率</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 72</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 16</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>增益</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 41</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 16</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>曝光</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+  <data name="richboxLogs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="tbFrameRate.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="tbFrameRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 98</value>
-  </data>
-  <data name="tbFrameRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 27</value>
-  </data>
-  <data name="tbFrameRate.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="&gt;&gt;tbFrameRate.Name" xml:space="preserve">
-    <value>tbFrameRate</value>
-  </data>
-  <data name="&gt;&gt;tbFrameRate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbFrameRate.Parent" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbFrameRate.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="tbGain.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="tbGain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 67</value>
-  </data>
-  <data name="tbGain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 27</value>
-  </data>
-  <data name="tbGain.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
-  </data>
-  <data name="&gt;&gt;tbGain.Name" xml:space="preserve">
-    <value>tbGain</value>
-  </data>
-  <data name="&gt;&gt;tbGain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbGain.Parent" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbGain.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tbExposure.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="tbExposure.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 36</value>
-  </data>
-  <data name="tbExposure.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 27</value>
-  </data>
-  <data name="tbExposure.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="&gt;&gt;tbExposure.Name" xml:space="preserve">
-    <value>tbExposure</value>
-  </data>
-  <data name="&gt;&gt;tbExposure.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbExposure.Parent" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;tbExposure.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="uiGroupBox1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>PMingLiU, 12pt</value>
-  </data>
-  <data name="uiGroupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>449, 196</value>
-  </data>
-  <data name="uiGroupBox1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="uiGroupBox1.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 1</value>
-  </data>
-  <data name="uiGroupBox1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 32, 0, 0</value>
-  </data>
-  <data name="uiGroupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 135</value>
-  </data>
-  <data name="uiGroupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
-  </data>
-  <data name="uiGroupBox1.Text" xml:space="preserve">
-    <value>相机参数</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox1.Name" xml:space="preserve">
-    <value>uiGroupBox1</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox1.Type" xml:space="preserve">
-    <value>Sunny.UI.UIGroupBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox1.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="richboxLogs.Text" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;richboxLogs.Name" xml:space="preserve">
     <value>richboxLogs</value>
@@ -811,265 +628,67 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grouplogs.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
-  <data name="richboxLogs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="uiLine3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
   </data>
-  <data name="richboxLogs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 32</value>
+  <data name="uiLine3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>229, 23</value>
   </data>
-  <data name="richboxLogs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1377, 45</value>
+  <data name="uiLine3.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
   </data>
-  <data name="richboxLogs.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="uiLine3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>512, 20</value>
   </data>
-  <data name="richboxLogs.Text" xml:space="preserve">
-    <value />
+  <data name="uiLine3.TabIndex" type="System.Int32, mscorlib">
+    <value>57</value>
   </data>
-  <data name="&gt;&gt;richboxLogs.Name" xml:space="preserve">
-    <value>richboxLogs</value>
+  <data name="uiLine3.Text" xml:space="preserve">
+    <value>良品模板圖（樣機）</value>
   </data>
-  <data name="&gt;&gt;richboxLogs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;uiLine3.Name" xml:space="preserve">
+    <value>uiLine3</value>
   </data>
-  <data name="&gt;&gt;richboxLogs.Parent" xml:space="preserve">
-    <value>grouplogs</value>
-  </data>
-  <data name="&gt;&gt;richboxLogs.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb2.Name" xml:space="preserve">
-    <value>uiLedBulb2</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb2.Type" xml:space="preserve">
-    <value>Sunny.UI.UILedBulb, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;uiLabel6.Name" xml:space="preserve">
-    <value>uiLabel6</value>
-  </data>
-  <data name="&gt;&gt;uiLabel6.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel6.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel6.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb1.Name" xml:space="preserve">
-    <value>uiLedBulb1</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb1.Type" xml:space="preserve">
-    <value>Sunny.UI.UILedBulb, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLedBulb1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
-    <value>Sunny.UI.UIFlowLayoutPanel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;txtscriptName.Name" xml:space="preserve">
-    <value>txtscriptName</value>
-  </data>
-  <data name="&gt;&gt;txtscriptName.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;txtscriptName.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;txtscriptName.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;uiLabel5.Name" xml:space="preserve">
-    <value>uiLabel5</value>
-  </data>
-  <data name="&gt;&gt;uiLabel5.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel5.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel5.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox2.Name" xml:space="preserve">
-    <value>uiGroupBox2</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox2.Type" xml:space="preserve">
-    <value>Sunny.UI.UIGroupBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox2.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Name" xml:space="preserve">
-    <value>pictureBox2</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;uiLine1.Name" xml:space="preserve">
-    <value>uiLine1</value>
-  </data>
-  <data name="&gt;&gt;uiLine1.Type" xml:space="preserve">
+  <data name="&gt;&gt;uiLine3.Type" xml:space="preserve">
     <value>Sunny.UI.UILine, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
   </data>
-  <data name="&gt;&gt;uiLine1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;uiLine3.Parent" xml:space="preserve">
     <value>groupSetting</value>
   </data>
-  <data name="&gt;&gt;uiLine1.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="&gt;&gt;uiLine3.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;txtLengthy.Name" xml:space="preserve">
-    <value>txtLengthy</value>
+  <data name="pictureBox3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;txtLengthy.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  <data name="pictureBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>238, 58</value>
   </data>
-  <data name="&gt;&gt;txtLengthy.Parent" xml:space="preserve">
+  <data name="pictureBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>213, 193</value>
+  </data>
+  <data name="pictureBox3.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Name" xml:space="preserve">
+    <value>pictureBox3</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Parent" xml:space="preserve">
     <value>groupSetting</value>
   </data>
-  <data name="&gt;&gt;txtLengthy.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.Name" xml:space="preserve">
-    <value>uiLabel4</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.Name" xml:space="preserve">
-    <value>uiTextBox2</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.Name" xml:space="preserve">
-    <value>uiLabel3</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.Name" xml:space="preserve">
-    <value>txtSerialNumber</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.Name" xml:space="preserve">
-    <value>uiLabel1</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.Name" xml:space="preserve">
-    <value>uiLabel2</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="groupSetting.Font" type="System.Drawing.Font, System.Drawing">
-    <value>PMingLiU, 12pt</value>
-  </data>
-  <data name="groupSetting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 170</value>
-  </data>
-  <data name="groupSetting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="groupSetting.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 1</value>
-  </data>
-  <data name="groupSetting.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 32, 0, 0</value>
-  </data>
-  <data name="groupSetting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>683, 563</value>
-  </data>
-  <data name="groupSetting.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
-  </data>
-  <data name="groupSetting.Text" xml:space="preserve">
-    <value>系统参数</value>
-  </data>
-  <data name="&gt;&gt;groupSetting.Name" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;groupSetting.Type" xml:space="preserve">
-    <value>Sunny.UI.UIGroupBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;groupSetting.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupSetting.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;pictureBox3.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="uiLedBulb2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 145</value>
+    <value>139, 23</value>
   </data>
   <data name="uiLedBulb2.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 32</value>
@@ -1090,7 +709,7 @@
     <value>groupSetting</value>
   </data>
   <data name="&gt;&gt;uiLedBulb2.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="uiLabel6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1099,7 +718,7 @@
     <value>SimSun, 12pt</value>
   </data>
   <data name="uiLabel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>191, 154</value>
+    <value>10, 34</value>
   </data>
   <data name="uiLabel6.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 16</value>
@@ -1123,10 +742,10 @@
     <value>groupSetting</value>
   </data>
   <data name="&gt;&gt;uiLabel6.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="uiLedBulb1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 146</value>
+    <value>139, 61</value>
   </data>
   <data name="uiLedBulb1.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 32</value>
@@ -1147,49 +766,13 @@
     <value>groupSetting</value>
   </data>
   <data name="&gt;&gt;uiLedBulb1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="flowLayoutPanel1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>PMingLiU, 12pt</value>
-  </data>
-  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>448, 47</value>
-  </data>
-  <data name="flowLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="flowLayoutPanel1.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 1</value>
-  </data>
-  <data name="flowLayoutPanel1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 151</value>
-  </data>
-  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="flowLayoutPanel1.Text" xml:space="preserve">
-    <value>uiFlowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
-    <value>Sunny.UI.UIFlowLayoutPanel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="txtscriptName.Font" type="System.Drawing.Font, System.Drawing">
     <value>SimSun, 12pt</value>
   </data>
   <data name="txtscriptName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>100, 108</value>
+    <value>89, 105</value>
   </data>
   <data name="txtscriptName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
@@ -1201,7 +784,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="txtscriptName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 29</value>
+    <value>142, 29</value>
   </data>
   <data name="txtscriptName.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -1216,7 +799,7 @@
     <value>groupSetting</value>
   </data>
   <data name="&gt;&gt;txtscriptName.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="uiLabel5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1225,7 +808,7 @@
     <value>SimSun, 12pt</value>
   </data>
   <data name="uiLabel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 114</value>
+    <value>15, 111</value>
   </data>
   <data name="uiLabel5.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 16</value>
@@ -1249,91 +832,436 @@
     <value>groupSetting</value>
   </data>
   <data name="&gt;&gt;uiLabel5.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
-  <data name="&gt;&gt;uiLabel7.Name" xml:space="preserve">
-    <value>uiLabel7</value>
+  <data name="txtLengthy.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
   </data>
-  <data name="&gt;&gt;uiLabel7.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  <data name="txtLengthy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 183</value>
   </data>
-  <data name="&gt;&gt;uiLabel7.Parent" xml:space="preserve">
-    <value>uiGroupBox2</value>
-  </data>
-  <data name="&gt;&gt;uiLabel7.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;switchMES.Name" xml:space="preserve">
-    <value>switchMES</value>
-  </data>
-  <data name="&gt;&gt;switchMES.Type" xml:space="preserve">
-    <value>Sunny.UI.UISwitch, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;switchMES.Parent" xml:space="preserve">
-    <value>uiGroupBox2</value>
-  </data>
-  <data name="&gt;&gt;switchMES.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;RadioDebugMode.Name" xml:space="preserve">
-    <value>RadioDebugMode</value>
-  </data>
-  <data name="&gt;&gt;RadioDebugMode.Type" xml:space="preserve">
-    <value>Sunny.UI.UIRadioButton, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;RadioDebugMode.Parent" xml:space="preserve">
-    <value>uiGroupBox2</value>
-  </data>
-  <data name="&gt;&gt;RadioDebugMode.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnProductionMode.Name" xml:space="preserve">
-    <value>RadioBtnProductionMode</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnProductionMode.Type" xml:space="preserve">
-    <value>Sunny.UI.UIRadioButton, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnProductionMode.Parent" xml:space="preserve">
-    <value>uiGroupBox2</value>
-  </data>
-  <data name="&gt;&gt;RadioBtnProductionMode.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="uiGroupBox2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
-  </data>
-  <data name="uiGroupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 28</value>
-  </data>
-  <data name="uiGroupBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="txtLengthy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
   </data>
-  <data name="uiGroupBox2.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 1</value>
+  <data name="txtLengthy.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 16</value>
   </data>
-  <data name="uiGroupBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 32, 0, 0</value>
+  <data name="txtLengthy.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
-  <data name="uiGroupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 69</value>
+  <data name="txtLengthy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 29</value>
   </data>
-  <data name="uiGroupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
+  <data name="txtLengthy.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
   </data>
-  <data name="uiGroupBox2.Text" xml:space="preserve">
-    <value>作业模式</value>
+  <data name="&gt;&gt;txtLengthy.Name" xml:space="preserve">
+    <value>txtLengthy</value>
   </data>
-  <data name="&gt;&gt;uiGroupBox2.Name" xml:space="preserve">
-    <value>uiGroupBox2</value>
+  <data name="&gt;&gt;txtLengthy.Type" xml:space="preserve">
+    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
   </data>
-  <data name="&gt;&gt;uiGroupBox2.Type" xml:space="preserve">
-    <value>Sunny.UI.UIGroupBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiGroupBox2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;txtLengthy.Parent" xml:space="preserve">
     <value>groupSetting</value>
   </data>
-  <data name="&gt;&gt;uiGroupBox2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;txtLengthy.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="uiLabel4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="uiLabel4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
+  </data>
+  <data name="uiLabel4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 189</value>
+  </data>
+  <data name="uiLabel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 16</value>
+  </data>
+  <data name="uiLabel4.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="uiLabel4.Text" xml:space="preserve">
+    <value>检查耗时</value>
+  </data>
+  <data name="uiLabel4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;uiLabel4.Name" xml:space="preserve">
+    <value>uiLabel4</value>
+  </data>
+  <data name="&gt;&gt;uiLabel4.Type" xml:space="preserve">
+    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;uiLabel4.Parent" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;uiLabel4.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="uiTextBox2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
+  </data>
+  <data name="uiTextBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 222</value>
+  </data>
+  <data name="uiTextBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="uiTextBox2.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 16</value>
+  </data>
+  <data name="uiTextBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="uiTextBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 29</value>
+  </data>
+  <data name="uiTextBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;uiTextBox2.Name" xml:space="preserve">
+    <value>uiTextBox2</value>
+  </data>
+  <data name="&gt;&gt;uiTextBox2.Type" xml:space="preserve">
+    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;uiTextBox2.Parent" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;uiTextBox2.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="uiLabel3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="uiLabel3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
+  </data>
+  <data name="uiLabel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 228</value>
+  </data>
+  <data name="uiLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 16</value>
+  </data>
+  <data name="uiLabel3.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="uiLabel3.Text" xml:space="preserve">
+    <value>机种名称</value>
+  </data>
+  <data name="uiLabel3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;uiLabel3.Name" xml:space="preserve">
+    <value>uiLabel3</value>
+  </data>
+  <data name="&gt;&gt;uiLabel3.Type" xml:space="preserve">
+    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;uiLabel3.Parent" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;uiLabel3.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="txtSerialNumber.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
+  </data>
+  <data name="txtSerialNumber.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 144</value>
+  </data>
+  <data name="txtSerialNumber.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="txtSerialNumber.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 16</value>
+  </data>
+  <data name="txtSerialNumber.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="txtSerialNumber.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 29</value>
+  </data>
+  <data name="txtSerialNumber.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;txtSerialNumber.Name" xml:space="preserve">
+    <value>txtSerialNumber</value>
+  </data>
+  <data name="&gt;&gt;txtSerialNumber.Type" xml:space="preserve">
+    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;txtSerialNumber.Parent" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;txtSerialNumber.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="uiLabel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="uiLabel1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
+  </data>
+  <data name="uiLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 150</value>
+  </data>
+  <data name="uiLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 16</value>
+  </data>
+  <data name="uiLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="uiLabel1.Text" xml:space="preserve">
+    <value>条码内容</value>
+  </data>
+  <data name="uiLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;uiLabel1.Name" xml:space="preserve">
+    <value>uiLabel1</value>
+  </data>
+  <data name="&gt;&gt;uiLabel1.Type" xml:space="preserve">
+    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;uiLabel1.Parent" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;uiLabel1.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="uiLabel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="uiLabel2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 12pt</value>
+  </data>
+  <data name="uiLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 72</value>
+  </data>
+  <data name="uiLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 16</value>
+  </data>
+  <data name="uiLabel2.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
+  </data>
+  <data name="uiLabel2.Text" xml:space="preserve">
+    <value>AI 拼詞模型：</value>
+  </data>
+  <data name="uiLabel2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;uiLabel2.Name" xml:space="preserve">
+    <value>uiLabel2</value>
+  </data>
+  <data name="&gt;&gt;uiLabel2.Type" xml:space="preserve">
+    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;uiLabel2.Parent" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;uiLabel2.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="groupSetting.Font" type="System.Drawing.Font, System.Drawing">
+    <value>PMingLiU, 12pt</value>
+  </data>
+  <data name="groupSetting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 288</value>
+  </data>
+  <data name="groupSetting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="groupSetting.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 1</value>
+  </data>
+  <data name="groupSetting.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 32, 0, 0</value>
+  </data>
+  <data name="groupSetting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>744, 284</value>
+  </data>
+  <data name="groupSetting.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="groupSetting.Text" xml:space="preserve">
+    <value>系统参数</value>
+  </data>
+  <data name="&gt;&gt;groupSetting.Name" xml:space="preserve">
+    <value>groupSetting</value>
+  </data>
+  <data name="&gt;&gt;groupSetting.Type" xml:space="preserve">
+    <value>Sunny.UI.UIGroupBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;groupSetting.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupSetting.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 36</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 20</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>105</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>曝光</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbExposure.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tbExposure.Location" type="System.Drawing.Point, System.Drawing">
+    <value>458, 31</value>
+  </data>
+  <data name="tbExposure.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 26</value>
+  </data>
+  <data name="tbExposure.TabIndex" type="System.Int32, mscorlib">
+    <value>102</value>
+  </data>
+  <data name="&gt;&gt;tbExposure.Name" xml:space="preserve">
+    <value>tbExposure</value>
+  </data>
+  <data name="&gt;&gt;tbExposure.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbExposure.Parent" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;tbExposure.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>624, 37</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 20</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>107</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>帧率</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tbGain.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tbGain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>563, 31</value>
+  </data>
+  <data name="tbGain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 26</value>
+  </data>
+  <data name="tbGain.TabIndex" type="System.Int32, mscorlib">
+    <value>103</value>
+  </data>
+  <data name="&gt;&gt;tbGain.Name" xml:space="preserve">
+    <value>tbGain</value>
+  </data>
+  <data name="&gt;&gt;tbGain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbGain.Parent" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;tbGain.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>520, 35</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 20</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>106</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>增益</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tbFrameRate.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tbFrameRate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>669, 32</value>
+  </data>
+  <data name="tbFrameRate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 26</value>
+  </data>
+  <data name="tbFrameRate.TabIndex" type="System.Int32, mscorlib">
+    <value>104</value>
+  </data>
+  <data name="&gt;&gt;tbFrameRate.Name" xml:space="preserve">
+    <value>tbFrameRate</value>
+  </data>
+  <data name="&gt;&gt;tbFrameRate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbFrameRate.Parent" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;tbFrameRate.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="uiLabel7.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
@@ -1363,7 +1291,7 @@
     <value>uiGroupBox2</value>
   </data>
   <data name="&gt;&gt;uiLabel7.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>6</value>
   </data>
   <data name="switchMES.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
@@ -1375,7 +1303,7 @@
     <value>1, 1</value>
   </data>
   <data name="switchMES.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 29</value>
+    <value>69, 29</value>
   </data>
   <data name="switchMES.TabIndex" type="System.Int32, mscorlib">
     <value>100</value>
@@ -1393,7 +1321,7 @@
     <value>uiGroupBox2</value>
   </data>
   <data name="&gt;&gt;switchMES.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="RadioDebugMode.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
@@ -1423,7 +1351,7 @@
     <value>uiGroupBox2</value>
   </data>
   <data name="&gt;&gt;RadioDebugMode.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="RadioBtnProductionMode.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt</value>
@@ -1453,16 +1381,52 @@
     <value>uiGroupBox2</value>
   </data>
   <data name="&gt;&gt;RadioBtnProductionMode.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>9</value>
+  </data>
+  <data name="uiGroupBox2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt</value>
+  </data>
+  <data name="uiGroupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 212</value>
+  </data>
+  <data name="uiGroupBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="uiGroupBox2.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>1, 1</value>
+  </data>
+  <data name="uiGroupBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 32, 0, 0</value>
+  </data>
+  <data name="uiGroupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>743, 71</value>
+  </data>
+  <data name="uiGroupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="uiGroupBox2.Text" xml:space="preserve">
+    <value>作业模式</value>
+  </data>
+  <data name="&gt;&gt;uiGroupBox2.Name" xml:space="preserve">
+    <value>uiGroupBox2</value>
+  </data>
+  <data name="&gt;&gt;uiGroupBox2.Type" xml:space="preserve">
+    <value>Sunny.UI.UIGroupBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
+  </data>
+  <data name="&gt;&gt;uiGroupBox2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;uiGroupBox2.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="pictureBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 347</value>
+    <value>204, 120</value>
   </data>
   <data name="pictureBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>653, 213</value>
+    <value>543, 102</value>
   </data>
   <data name="pictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
@@ -1477,22 +1441,22 @@
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="uiLine1.Font" type="System.Drawing.Font, System.Drawing">
     <value>SimSun, 12pt</value>
   </data>
   <data name="uiLine1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 317</value>
+    <value>204, 94</value>
   </data>
   <data name="uiLine1.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
   </data>
   <data name="uiLine1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>419, 20</value>
+    <value>546, 20</value>
   </data>
   <data name="uiLine1.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -1507,241 +1471,10 @@
     <value>Sunny.UI.UILine, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
   </data>
   <data name="&gt;&gt;uiLine1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;uiLine1.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="txtLengthy.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="txtLengthy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>100, 272</value>
-  </data>
-  <data name="txtLengthy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="txtLengthy.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 16</value>
-  </data>
-  <data name="txtLengthy.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="txtLengthy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 29</value>
-  </data>
-  <data name="txtLengthy.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;txtLengthy.Name" xml:space="preserve">
-    <value>txtLengthy</value>
-  </data>
-  <data name="&gt;&gt;txtLengthy.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;txtLengthy.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;txtLengthy.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="uiLabel4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="uiLabel4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="uiLabel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 278</value>
-  </data>
-  <data name="uiLabel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 16</value>
-  </data>
-  <data name="uiLabel4.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="uiLabel4.Text" xml:space="preserve">
-    <value>检查耗时</value>
-  </data>
-  <data name="uiLabel4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.Name" xml:space="preserve">
-    <value>uiLabel4</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel4.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="uiTextBox2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="uiTextBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>100, 231</value>
-  </data>
-  <data name="uiTextBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="uiTextBox2.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 16</value>
-  </data>
-  <data name="uiTextBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="uiTextBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 29</value>
-  </data>
-  <data name="uiTextBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.Name" xml:space="preserve">
-    <value>uiTextBox2</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiTextBox2.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="uiLabel3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="uiLabel3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="uiLabel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 237</value>
-  </data>
-  <data name="uiLabel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 16</value>
-  </data>
-  <data name="uiLabel3.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="uiLabel3.Text" xml:space="preserve">
-    <value>机种名称</value>
-  </data>
-  <data name="uiLabel3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.Name" xml:space="preserve">
-    <value>uiLabel3</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel3.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="txtSerialNumber.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="txtSerialNumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>100, 190</value>
-  </data>
-  <data name="txtSerialNumber.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="txtSerialNumber.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1, 16</value>
-  </data>
-  <data name="txtSerialNumber.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="txtSerialNumber.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 29</value>
-  </data>
-  <data name="txtSerialNumber.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.Name" xml:space="preserve">
-    <value>txtSerialNumber</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.Type" xml:space="preserve">
-    <value>Sunny.UI.UITextBox, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;txtSerialNumber.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="uiLabel1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="uiLabel1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="uiLabel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 196</value>
-  </data>
-  <data name="uiLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 16</value>
-  </data>
-  <data name="uiLabel1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="uiLabel1.Text" xml:space="preserve">
-    <value>条码内容</value>
-  </data>
-  <data name="uiLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.Name" xml:space="preserve">
-    <value>uiLabel1</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel1.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="uiLabel2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="uiLabel2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun, 12pt</value>
-  </data>
-  <data name="uiLabel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 155</value>
-  </data>
-  <data name="uiLabel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 16</value>
-  </data>
-  <data name="uiLabel2.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="uiLabel2.Text" xml:space="preserve">
-    <value>AI 拼詞模型：</value>
-  </data>
-  <data name="uiLabel2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.Name" xml:space="preserve">
-    <value>uiLabel2</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.Type" xml:space="preserve">
-    <value>Sunny.UI.UILabel, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.Parent" xml:space="preserve">
-    <value>groupSetting</value>
-  </data>
-  <data name="&gt;&gt;uiLabel2.ZOrder" xml:space="preserve">
-    <value>16</value>
   </data>
   <data name="uiLine2.Font" type="System.Drawing.Font, System.Drawing">
     <value>SimSun, 12pt</value>
@@ -1753,7 +1486,7 @@
     <value>16, 16</value>
   </data>
   <data name="uiLine2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>680, 20</value>
+    <value>743, 20</value>
   </data>
   <data name="uiLine2.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -1906,7 +1639,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -4508,6 +4241,12 @@
   <data name="&gt;&gt;目标ROI显示DToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;原圖ToolStripMenuItem.Name" xml:space="preserve">
+    <value>原圖ToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;原圖ToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;lauToolStripMenuItem.Name" xml:space="preserve">
     <value>lauToolStripMenuItem</value>
   </data>
@@ -4518,12 +4257,6 @@
     <value>縮小ToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;縮小ToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;原圖ToolStripMenuItem.Name" xml:space="preserve">
-    <value>原圖ToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;原圖ToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;角度ToolStripMenuItem.Name" xml:space="preserve">
@@ -4538,18 +4271,6 @@
   <data name="&gt;&gt;角度ToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;aboutAToolStripMenuItem.Name" xml:space="preserve">
-    <value>aboutAToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;aboutAToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StyleManager.Name" xml:space="preserve">
-    <value>StyleManager</value>
-  </data>
-  <data name="&gt;&gt;StyleManager.Type" xml:space="preserve">
-    <value>Sunny.UI.UIStyleManager, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
-  </data>
   <data name="&gt;&gt;上移動ToolStripMenuItem.Name" xml:space="preserve">
     <value>上移動ToolStripMenuItem</value>
   </data>
@@ -4561,6 +4282,18 @@
   </data>
   <data name="&gt;&gt;下移動ToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;aboutAToolStripMenuItem.Name" xml:space="preserve">
+    <value>aboutAToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;aboutAToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StyleManager.Name" xml:space="preserve">
+    <value>StyleManager</value>
+  </data>
+  <data name="&gt;&gt;StyleManager.Type" xml:space="preserve">
+    <value>Sunny.UI.UIStyleManager, SunnyUI, Version=3.8.8.0, Culture=neutral, PublicKeyToken=27d7d2e821d97aeb</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FrmMaster</value>

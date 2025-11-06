@@ -24,12 +24,12 @@ namespace NetAIVision.Controller
     {
         private Bitmap _bitmap;
         private Bitmap _bitmap_with;
-        public ROI _roi;
+        public ScriptROI _roi;
 
         // 初始化日志控件
         private ConsoleStyleLogHelper logHelper;
 
-        public FrmScript(Bitmap bitmap, ROI roi)
+        public FrmScript(Bitmap bitmap, ScriptROI roi)
         {
             InitializeComponent();
             logHelper = new ConsoleStyleLogHelper(richboxLogs, 50);
@@ -492,7 +492,7 @@ namespace NetAIVision.Controller
                                 var step = int.Parse(itemString.Split("->")[3].ToString());
                                 var base_string = itemString.Split("->")[4].ToString();
                                 var ocr_string = list.Where(x => x.step == step).FirstOrDefault().text;
-                                logHelper.AppendLog($"INFO :Step{i} 文字比对 OCR Data：{ocr_string}");
+                                logHelper.AppendLog($"INFO :Step{i} OCR 文字比对 OCR Data:{ocr_string}");
                                 if (base_string == ocr_string)
                                 {
                                     logHelper.AppendLog($"SUCCESS:文字比对成功，内容一致");

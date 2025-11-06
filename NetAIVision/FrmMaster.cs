@@ -4,6 +4,7 @@ using NetAIVision.Controller;
 using NetAIVision.Model;
 using NetAIVision.Model.FrmResult;
 using NetAIVision.Model.ROI;
+using NetAIVision.Model.Scripts;
 using NetAIVision.Services;
 using NetAIVision.Services.MES;
 using Newtonsoft.Json;
@@ -58,6 +59,7 @@ namespace NetAIVision
         // ch:Bitmap及其像素格式 | en:Bitmap and Pixel Format
         private Bitmap m_bitmap = null;
 
+        private Bitmap templateBitmap = null;
         private PixelFormat m_bitmapPixelFormat = PixelFormat.DontCare;
         private IntPtr m_ConvertDstBuf = IntPtr.Zero;
         private UInt32 m_nConvertDstBufLen = 0;
@@ -75,12 +77,12 @@ namespace NetAIVision
 
         #region roi
 
-        private List<ROI> rois = new List<ROI>(); // 保存ROI的列表
-        private ROI currentROI = null;            // 当前正在绘制的ROI
+        private List<ScriptROI> rois = new List<ScriptROI>(); // 保存ROI的列表
+        private ScriptROI currentROI = null;            // 当前正在绘制的ROI
         private bool isDrawing = false;           // 是否正在绘制
         private System.Drawing.Point startPoint;                 // 起点
         private int roiCounter = 1;               // ROI编号计数
-        private ROI selectedRoi;
+        private ScriptROI selectedRoi;
 
         #endregion roi
 
@@ -92,6 +94,9 @@ namespace NetAIVision
         private string QrcodeString = string.Empty;
         private float Goal_rotationAngle = 0;
         private int Goal_MoveCount = 0;
+        private string saveImgPath = Path.Combine(Application.StartupPath, "VideoCollection");
+        private FrameSaver save;
+        private bool Collection = false;
 
         public FrmMaster()
         {
@@ -155,6 +160,11 @@ namespace NetAIVision
             this.openScriptToolStripMenuItem.Click += OpenScriptToolStripMenuItem_Click;
             //单步运行脚本
             this.runScriptToolStripMenuItem.Click += RunScriptToolStripMenuItem_Click;
+            if (!Directory.Exists(saveImgPath))
+            {
+                Directory.CreateDirectory(saveImgPath);
+            }
+            save = new FrameSaver(saveImgPath);
         }
 
         private void EditScriptsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -349,25 +359,35 @@ namespace NetAIVision
                             string scriptContent = System.IO.File.ReadAllText(filePath);
 
                             // 反序列化 JSON 到 rois 列表
-                            var loadedRois = JsonConvert.DeserializeObject<List<ROI>>(scriptContent);
+                            var loadedRois = JsonConvert.DeserializeObject<OBAScripts>(scriptContent);
 
-                            if (loadedRois == null || loadedRois.Count == 0)
+                            if (loadedRois == null || loadedRois.scripts.Count == 0)
                             {
                                 logHelper.AppendLog("ERROR: 脚本文件为空或无效");
                                 this.ShowWarningNotifier("脚本文件为空或无效。");
                                 return;
                             }
-
+                            if (!File.Exists(loadedRois.modelTemplate))
+                            {
+                                logHelper.AppendLog("ERROR: 没有参考模板");
+                                this.ShowWarningNotifier("脚本文件没有参考模板或无效。");
+                                return;
+                            }
+                            pictureBox3.Image?.Dispose();
+                            var bim = new Bitmap(loadedRois.modelTemplate);
+                            pictureBox3.Image = (bim);
                             // 成功加载，替换当前 rois
                             rois.Clear();
-                            rois.AddRange(loadedRois);
+                            rois.AddRange(loadedRois.scripts);
                             //初始化
                             initRoIAndCheckResult();
                             // 重置为已加载状态（非新建）
                             NewScriptFlag = false;
 
+                            // 初始化模板，只需调用一次
+                            ImageAlignment.InitTemplate(bim);
                             // 可选：刷新 UI（如 ROI 列表、图像显示等）
-                            pictureBox1.Invalidate(); ; // 重绘图像区域以显示 ROI
+                            pictureBox1.Invalidate();  // 重绘图像区域以显示 ROI
 
                             // 提示成功
                             logHelper.AppendLog("脚本加载成功！");
@@ -402,8 +422,12 @@ namespace NetAIVision
                 this.ShowErrorNotifier("没有可用的脚本信息");
                 return;
             }
+            if (pictureBox1.Image is null)
+            {
+                this.ShowErrorNotifier("没有可用的参考图信息");
+                return;
+            }
 
-            var scriptContent = JsonConvert.SerializeObject(rois, Newtonsoft.Json.Formatting.Indented);
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
                 // 设置默认扩展名和过滤器
@@ -413,11 +437,16 @@ namespace NetAIVision
                 // 获取程序根目录下的 BNXScripts 文件夹路径
                 string appPath = Application.StartupPath;
                 string defaultFolder = Path.Combine(appPath, "Scripts");
+                string defaultImgFolder = Path.Combine(appPath, "Scripts", "ScriptTempleteImages");
 
                 // 如果文件夹不存在，则创建
                 if (!Directory.Exists(defaultFolder))
                 {
                     Directory.CreateDirectory(defaultFolder);
+                }
+                if (!Directory.Exists(defaultImgFolder))
+                {
+                    Directory.CreateDirectory(defaultImgFolder);
                 }
 
                 // 设置初始目录为 BNXScripts 文件夹
@@ -433,6 +462,12 @@ namespace NetAIVision
 
                     try
                     {
+                        var imgpath = $"{defaultImgFolder}\\{Guid.NewGuid().ToString()}.png";
+                        pictureBox1.Image.Save(imgpath);
+                        OBAScripts scripts = new OBAScripts();
+                        scripts.modelTemplate = imgpath;
+                        scripts.scripts = rois;
+                        var scriptContent = JsonConvert.SerializeObject(scripts, Newtonsoft.Json.Formatting.Indented);
                         // 写入内容到文件
                         System.IO.File.WriteAllText(filePath, scriptContent);
 
@@ -713,18 +748,18 @@ namespace NetAIVision
                             roiRect,
                             GraphicsUnit.Pixel);
             }
-            // 使用 Tesseract 进行 OCR 识别
-            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
-            // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
-            var ms = new MemoryStream();
-            templateImage = BitmapProcessorServices.PreprocessForOCR(templateImage);
-            templateImage.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
-            ms.Position = 0;
+            //// 使用 Tesseract 进行 OCR 识别
+            //var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
+            //// 将 Bitmap 转为 Pix（内存中完成，不保存文件）
+            //var ms = new MemoryStream();
+            //templateImage = BitmapProcessorServices.PreprocessForOCR(templateImage);
+            //templateImage.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
+            //ms.Position = 0;
 
-            var img = Pix.LoadFromMemory(ms.ToArray());
-            var page = engine.Process(img, PageSegMode.SingleLine);
-            string text = page.GetText();
-
+            //var img = Pix.LoadFromMemory(ms.ToArray());
+            //var page = engine.Process(img, PageSegMode.SingleLine);
+            //string text = page.GetText();
+            var text = BitmapProcessorServices.OCRFn(templateImage);
             logHelper.AppendLog($"OCR Data:{text}");
         }
 
@@ -915,6 +950,8 @@ namespace NetAIVision
                 {
                     Bitmap bmps = new Bitmap(dlg.FileName);
                     Bitmap bmp = new Bitmap(bmps, pictureBox1.Size);
+
+                    bmp = ImageAlignment.AlignToTemplate(bmp);
 
                     pictureBox1.Image = bmp;
 
@@ -1205,15 +1242,16 @@ namespace NetAIVision
         private void FrmMaster_Shown(object sender, EventArgs e)
         {
             pictureBox1.Size = new System.Drawing.Size(1024, 768);
+            pictureBox3.Size = new System.Drawing.Size(640, 480);
             //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 100);
             cbDeviceList.Width = 1024;
             cbDeviceList.Location = new System.Drawing.Point(this.Width - 1028, 70);
             grouplogs.Height = this.Height - pictureBox1.Height - 100;
-            groupSetting.Height = this.Height - groupSetting.Height + 42;
+            groupSetting.Height = this.Height - groupSetting.Height - 335;
             groupSetting.Width = this.Width - pictureBox1.Width - 10;
             uiLine2.Width = groupSetting.Width - 10;
-            logHelper.AppendLog("INFO: 程序启动");
+            logHelper.AppendLog("INFO: 初始化完成 程序启动");
             LoadControllerSetting();
             UIStyles.CultureInfo = CultureInfos.en_US;
             //if (pageIndex < UIStyle.Colorful.Value())
@@ -1573,10 +1611,16 @@ namespace NetAIVision
                                 // 清理旧图像，防止内存泄漏
                                 if (pictureBox1.Image != null)
                                     pictureBox1.Image.Dispose();
-                                safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
-                                safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
-                                safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
+                                //safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
+                                //safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
+                                //safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
+                                safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
+
                                 pictureBox1.Image = safeBitmap;
+                                if (Collection)
+                                {
+                                    save.SaveFrame(safeBitmap);
+                                }
                                 //pictureBox1.Image = m_bitmap;
                             }
                         }));
@@ -1645,6 +1689,10 @@ namespace NetAIVision
         /// <returns></returns>
         public Bitmap TranslateImage(Bitmap img, int offsetX)
         {
+            if (offsetX == 0)
+            {
+                return img;
+            }
             // 创建一个新的空白位图以放置平移后的图像
             Bitmap bmp = new Bitmap(img.Width + Math.Abs(offsetX), img.Height);
             bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
@@ -1672,6 +1720,10 @@ namespace NetAIVision
         /// <returns></returns>
         public Bitmap TranslateImageVertically(Bitmap img, int offsetY)
         {
+            if (offsetY == 0)
+            {
+                return img;
+            }
             // 创建一个新的空白位图以放置平移后的图像
             Bitmap bmp = new Bitmap(img.Width, img.Height + Math.Abs(offsetY));
             bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
@@ -1935,7 +1987,7 @@ namespace NetAIVision
                 {
                     isDrawing = true;
                     startPoint = e.Location;
-                    currentROI = new ROI { Name = $"ROI_{roiCounter++}" };
+                    currentROI = new ScriptROI { Name = $"ROI_{roiCounter++}" };
                 }
             }
         }
@@ -2120,7 +2172,7 @@ namespace NetAIVision
         /// <summary>
         /// 执行处理步骤
         /// </summary>
-        private bool runProcessStep(Bitmap _bitmap, ROI _withRoi)
+        private bool runProcessStep(Bitmap _bitmap, ScriptROI _withRoi)
         {
             var _bitmap_with = _bitmap;
             if (!(_withRoi.step_script is null) && _withRoi.step_script.Count > 0)
@@ -2210,6 +2262,7 @@ namespace NetAIVision
                                          logHelper.AppendLog($"INFO :Step{i} 图像QR Code:Data{text}");
                                          if (text.flag)
                                          {
+                                             _withRoi.msg = $"{text.txt}";
                                              txtSerialNumber.Text = text.txt;
                                              //MES 检测
                                              //
@@ -2293,12 +2346,12 @@ namespace NetAIVision
                                 }
                                 if (ocr_string == QrcodeString)
                                 {
-                                    logHelper.AppendLog("SUECCES: 同QR CODE 一致");
-                                    _withRoi.msg = "同QRCode 一致";
+                                    logHelper.AppendLog($"SUECCES: 同QR CODE 一致 {ocr_string}");
+                                    _withRoi.msg = $"同QRCode 一致 {ocr_string}";
                                     return true;
                                 }
                                 logHelper.AppendLog("ERROR: 同QR Code 不一致");
-                                _withRoi.msg = "同QRCode 不一致";
+                                _withRoi.msg = $"同QRCode 不一致 {ocr_string}";
                                 return false;
                             }
                     }
@@ -2442,6 +2495,11 @@ namespace NetAIVision
         private void 下移動ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Goal_MoveCount -= 1;
+        }
+
+        private void 目标ROI显示DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Collection = 目标ROI显示DToolStripMenuItem.Checked;
         }
     }
 

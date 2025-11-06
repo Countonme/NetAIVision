@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetAIVision.Model.ROI
 {
-    public class ROI
+    public class ScriptROI
     {
         /// <summary>
         /// ROI 名称

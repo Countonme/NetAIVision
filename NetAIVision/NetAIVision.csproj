@@ -159,13 +159,16 @@
     <Compile Include="Model\PicSimilarity.cs" />
     <Compile Include="Model\QRCode.cs" />
     <Compile Include="Model\QRCodeHelper.cs" />
-    <Compile Include="Model\ROI\ROI.cs" />
+    <Compile Include="Model\ROI\ScriptROI.cs" />
+    <Compile Include="Model\Scripts\OBAScripts.cs" />
     <Compile Include="Model\SettingSpellCheck.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BitmapProcessorServices.cs" />
     <Compile Include="Services\ConsoleStyleLogHelper.cs" />
+    <Compile Include="Services\FrameSaver.cs" />
     <Compile Include="Services\HikMVS\MyCamera.cs" />
+    <Compile Include="Services\ImageAlignment.cs" />
     <Compile Include="Services\ImageCorrection.cs" />
     <Compile Include="Services\ImageSimilarityHelper.cs" />
     <Compile Include="Services\LogFileHelper.cs" />
