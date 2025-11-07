@@ -203,6 +203,7 @@ namespace NetAIVision
 
         private void RunningScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            logHelper.AppendLog($"Info: 自動校準狀態 {RunFlag}");
             if (!(rois is null) && rois.Count > 0)
             {   ///每次檢查前 初始化檢查結果
                 initRoIAndCheckResult();
@@ -805,8 +806,8 @@ namespace NetAIVision
                 pictureBox2.Refresh();
             }));
             logHelper.AppendLog($"Tessreact OCR Data:{text}");
-            text = PaddleOCRHelper.Recognize(templateImage);
-            logHelper.AppendLog($"Paddle OCR Data:{text}");
+            //text = PaddleOCRHelper.Recognize(templateImage);
+            //logHelper.AppendLog($"Paddle OCR Data:{text}");
         }
 
         /// <summary>
@@ -1655,6 +1656,7 @@ namespace NetAIVision
                                 //int newWidth = (int)(_originalBitmap.Width * _zoomFactor);
                                 //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
                                 // 清理旧图像，防止内存泄漏
+
                                 if (!RunFlag)
                                 {
                                     if (pictureBox1.Image != null)
@@ -1663,12 +1665,21 @@ namespace NetAIVision
                                     //safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
                                     //safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
                                     safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
-
                                     pictureBox1.Image = safeBitmap;
-                                    if (Collection)
-                                    {
-                                        save.SaveFrame(safeBitmap);
-                                    }
+                                }
+                                else
+                                {
+                                    if (pictureBox1.Image != null)
+                                        pictureBox1.Image.Dispose();
+                                    safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
+                                    pictureBox1.Image = safeBitmap;
+                                    pictureBox1.Refresh();
+                                    logHelper.AppendLog("INFO: 程序開始處理步驟啓動 原幀鎖定 ");
+                                }
+                                ///樣本采集
+                                if (Collection)
+                                {
+                                    save.SaveFrame(safeBitmap);
                                 }
 
                                 //pictureBox1.Image = m_bitmap;
@@ -2567,6 +2578,10 @@ namespace NetAIVision
                                 _bitmap_with.Save(_basePath);
                                 //var value = BitmapProcessorServices.CompareWithSIFT(_basePath, path);
                                 var value = ImageSimilarityHelper.CompareImageSimilarityHybrid(_basePath, path);
+                                if (File.Exists(_basePath))
+                                {
+                                    File.Delete(_basePath);
+                                }
                                 _withRoi.msg = $"相似度:{(value * 100).ToString("F2")}%";
                                 if (value >= threshold)
                                 {
