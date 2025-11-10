@@ -7,6 +7,7 @@ using NetAIVision.Model.ROI;
 using NetAIVision.Model.Scripts;
 using NetAIVision.Services;
 using NetAIVision.Services.MES;
+using NetAIVision.Services.OnnxServices;
 using Newtonsoft.Json;
 using OpenCvSharp;
 using OpenCvSharp.Internal.Vectors;
@@ -117,6 +118,9 @@ namespace NetAIVision
         private bool Collection = false;
         private bool RoiMoveFlag = false;
 
+        //AI Model
+        private OnnxDetector detector;
+
         public FrmMaster()
         {
             InitializeComponent();
@@ -124,6 +128,8 @@ namespace NetAIVision
             InitSpellChecker();
             //OCR 初始化
             InitOCR();
+            //Init Model
+            InitDetector();
             this.Load += FrmMaster_Load;
             //About
             this.aboutAToolStripMenuItem.Click += AboutAToolStripMenuItem_Click;
@@ -184,6 +190,13 @@ namespace NetAIVision
                 Directory.CreateDirectory(saveImgPath);
             }
             save = new FrameSaver(saveImgPath);
+        }
+
+        public void InitDetector()
+        {
+            var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "UK5W.onnx");
+
+            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.35f);
         }
 
         private void ClearROIToolStripMenuItem_Click(object sender, EventArgs e)
@@ -996,11 +1009,15 @@ namespace NetAIVision
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     Bitmap bmps = new Bitmap(dlg.FileName);
-                    Bitmap bmp = new Bitmap(bmps, pictureBox1.Size);
+                    Bitmap bmp = new Bitmap(bmps);
                     ImageAlignment.RecalcEveryNFrames = 1;
                     bmp = ImageAlignment.AlignToTemplate(bmp);
-
-                    pictureBox1.Image = bmp;
+                    Detect(bmp);
+                    // 绘制结果
+                    //Bitmap resultImage = detector.DrawDetections(bmp, result);
+                    pictureBox1.Image = bmp; // 显示在 UI
+                                             //Console.WriteLine("✅ 检测完成，结果已保存到 " + outputPath);
+                                             //pictureBox1.Image = result;
 
                     //var (text, points) = QRCodeHelper.ReturnBarcodeCoordinates(bmp);
 
@@ -1669,12 +1686,15 @@ namespace NetAIVision
                                 }
                                 else
                                 {
-                                    if (pictureBox1.Image != null)
-                                        pictureBox1.Image.Dispose();
-                                    safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
-                                    pictureBox1.Image = safeBitmap;
-                                    pictureBox1.Refresh();
+                                    //if (pictureBox1.Image != null)
+                                    //    pictureBox1.Image.Dispose();
+                                    //safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
+                                    // pictureBox1.Image = safeBitmap;
+                                    // pictureBox1.Refresh();
+
                                     logHelper.AppendLog("INFO: 程序開始處理步驟啓動 原幀鎖定 ");
+                                    //bmp = ImageAlignment.AlignToTemplate(bmp);
+                                    Detect(safeBitmap);
                                 }
                                 ///樣本采集
                                 if (Collection)
@@ -1703,7 +1723,24 @@ namespace NetAIVision
                 }
                 else
                 {
+                    logHelper.AppendLog("Error: 相机连接失败");
                 }
+            }
+        }
+        /// <summary>
+        /// 预测
+        /// </summary>
+        /// <param name="safeBitmap"></param>
+        private void Detect(Bitmap safeBitmap)
+        {
+            var result = detector.Detect(safeBitmap);
+            rois?.Clear();
+            foreach (var item in result)
+            {
+                var roi = new ScriptROI();
+                roi.Rect = item.Box;
+                roi.msg = $"{item.ClassId}->{item.Confidence}";
+                rois.Add(roi);
             }
         }
 

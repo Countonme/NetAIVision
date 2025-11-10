@@ -150,8 +150,8 @@ namespace NetAIVision.Services
         public static Bitmap PreprocessForOCR(Bitmap src)
         {
             // Step 1: 放大
-            int newWidth = src.Width * 2;
-            int newHeight = src.Height * 2;
+            int newWidth = src.Width * 1;
+            int newHeight = src.Height * 1;
             Bitmap resized = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
             using (Graphics g = Graphics.FromImage(resized))
             {

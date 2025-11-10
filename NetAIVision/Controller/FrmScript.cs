@@ -1,5 +1,6 @@
 ﻿using NetAIVision.Model.ROI;
 using NetAIVision.Services;
+using OpenCvSharp;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,13 @@ namespace NetAIVision.Controller
             this.MeanBlurToolStripMenuItem.Click += MeanBlurToolStripMenuItem_Click;
             //锐化
             this.EnhanceSharpnessToolStripMenuItem.Click += EnhanceSharpnessToolStripMenuItem_Click;
+            //
+            this.Shown += FrmScript_Shown1;
+        }
+
+        private void FrmScript_Shown1(object sender, EventArgs e)
+        {
+            treeVFn.ExpandAll();
         }
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -454,6 +462,13 @@ namespace NetAIVision.Controller
                         }
                         break;
                     }
+
+                case "YS115":
+                    {
+                        uiListBox1.Items.Add($"YS115->{uiListBox1.Items.Count}->文字水平矫正");
+                        logHelper.AppendLog("INFO: 添加图像  文字水平矫正 处理步骤");
+                        break;
+                    }
             }
         }
 
@@ -595,8 +610,45 @@ namespace NetAIVision.Controller
                                 logHelper.AppendLog($"WARN :Step{i} 启用二维码内容识别比对,此步骤在该页面没有实际处理逻辑，保存步骤在主界面执行");
                                 break;
                             }
+
+                        case "YS115":  //文字水平矫正处理
+                            {
+                                _bitmap_with = TextOrientationCorrector.RemoveBorderSymbols(_bitmap_with);
+                                logHelper.AppendLog($"INFO :Step{i} 图像理文字水平矫正完成");
+                                PictureRefresh();
+                                break;
+                            }
                     }
                 }
+            }
+        }
+
+        public static Bitmap ClearBorderToWhite(Bitmap src, int borderSize = 20)
+        {
+            if (src == null) throw new ArgumentNullException(nameof(src));
+            if (borderSize <= 0) return (Bitmap)src.Clone();
+
+            using (var mat = ImageAlignment.BitmapToMat(src))
+            {
+                // 背景色（你可以改成其他颜色）
+                Scalar bgColor = new Scalar(255, 255, 255); // 白色
+
+                int rows = mat.Rows;
+                int cols = mat.Cols;
+
+                // 防止越界
+                borderSize = Math.Min(borderSize, Math.Min(rows / 2, cols / 2));
+
+                // 填充上边框
+                Cv2.Rectangle(mat, new OpenCvSharp.Rect(0, 0, cols, borderSize), bgColor, -1);
+                // 填充下边框
+                Cv2.Rectangle(mat, new OpenCvSharp.Rect(0, rows - borderSize, cols, borderSize), bgColor, -1);
+                // 填充左边框
+                Cv2.Rectangle(mat, new OpenCvSharp.Rect(0, 0, borderSize, rows), bgColor, -1);
+                // 填充右边框
+                Cv2.Rectangle(mat, new OpenCvSharp.Rect(cols - borderSize, 0, borderSize, rows), bgColor, -1);
+
+                return ImageAlignment.MatToBitmap(mat);
             }
         }
 
@@ -604,6 +656,122 @@ namespace NetAIVision.Controller
         {
             this.pictureBox1.Image = _bitmap_with;
             this.pictureBox1.Refresh();
+        }
+
+        public static Bitmap EnlargeImage(Bitmap src, double scale = 2.0)
+        {
+            if (src == null) throw new ArgumentNullException(nameof(src));
+
+            using (var mat = ImageAlignment.BitmapToMat(src))
+            {
+                Mat enlarged = new Mat();
+                // 改用線性插值，防止文字邊緣傾斜
+                Cv2.Resize(mat, enlarged, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Linear);
+
+                // 可選：邊緣銳化
+                Mat blur = new Mat();
+                Cv2.GaussianBlur(enlarged, blur, new OpenCvSharp.Size(0, 0), 1.2);
+                Cv2.AddWeighted(enlarged, 1.4, blur, -0.4, 0, enlarged);
+
+                return ImageAlignment.MatToBitmap(enlarged);
+            }
+        }
+
+        /// <summary>
+        /// 自動修正文字方向、清除邊緣並放大圖片（OCR 前最佳化）
+        /// </summary>
+        public static Bitmap AutoFixTextImage(Bitmap srcBitmap, double scale = 2.0, int borderSize = 10)
+        {
+            if (srcBitmap == null)
+                throw new ArgumentNullException(nameof(srcBitmap));
+
+            using (var src = ImageAlignment.BitmapToMat(srcBitmap))
+            {
+                // Step 1️⃣ 灰階化
+                using (Mat gray = new Mat())
+                {
+                    Cv2.CvtColor(src, gray, ColorConversionCodes.BGR2GRAY);
+
+                    // Step 2️⃣ 二值化（反相文字）
+                    using (Mat binary = new Mat())
+                    {
+                        Cv2.Threshold(gray, binary, 0, 255, ThresholdTypes.BinaryInv | ThresholdTypes.Otsu);
+
+                        // Step 3️⃣ 找出非零點（新版 API 兩個參數）
+                        using (Mat nonZero = new Mat())
+                        {
+                            Cv2.FindNonZero(binary, nonZero);
+                            if (nonZero.Empty())
+                                return EnlargeOnly(src, scale);
+
+                            // nonZero 是 Nx1 的 Vec2i
+                            int n = nonZero.Rows;
+                            var points = new OpenCvSharp.Point[n];
+                            for (int i = 0; i < n; i++)
+                            {
+                                Vec2i v = nonZero.Get<Vec2i>(i, 0);
+                                points[i] = new OpenCvSharp.Point(v.Item0, v.Item1);
+                            }
+
+                            // Step 4️⃣ 最小外接矩形求角度
+                            RotatedRect box = Cv2.MinAreaRect(points);
+                            double angle = box.Angle;
+                            if (angle < -45) angle += 90;
+
+                            // 小角度不旋轉，避免模糊
+                            if (Math.Abs(angle) < 1.0)
+                                angle = 0;
+
+                            // Step 5️⃣ 旋轉修正
+                            Point2f center = new Point2f(src.Width / 2f, src.Height / 2f);
+                            Mat rotationMatrix = Cv2.GetRotationMatrix2D(center, angle, 1.0);
+                            Mat rotated = new Mat();
+                            Cv2.WarpAffine(src, rotated, rotationMatrix, new OpenCvSharp.Size(src.Width, src.Height),
+                                           InterpolationFlags.Cubic, BorderTypes.Reflect);
+
+                            // Step 6️⃣ 邊緣白化
+                            ClearBorder(rotated, borderSize);
+
+                            // Step 7️⃣ 放大
+                            Mat enlarged = new Mat();
+                            Cv2.Resize(rotated, enlarged, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Cubic);
+
+                            return ImageAlignment.MatToBitmap(enlarged);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 單純放大圖像
+        /// </summary>
+        private static Bitmap EnlargeOnly(Mat src, double scale)
+        {
+            Mat enlarged = new Mat();
+            Cv2.Resize(src, enlarged, new OpenCvSharp.Size(), scale, scale, InterpolationFlags.Cubic);
+            return ImageAlignment.MatToBitmap(enlarged);
+        }
+
+        /// <summary>
+        /// 將圖像邊緣區域同化成白色背景
+        /// </summary>
+        private static void ClearBorder(Mat img, int borderSize)
+        {
+            if (borderSize <= 0) return;
+
+            int w = img.Cols;
+            int h = img.Rows;
+            borderSize = Math.Min(borderSize, Math.Min(w, h) / 2 - 1);
+
+            // 上
+            img[new OpenCvSharp.Rect(0, 0, w, borderSize)].SetTo(new Scalar(255, 255, 255));
+            // 下
+            img[new OpenCvSharp.Rect(0, h - borderSize, w, borderSize)].SetTo(new Scalar(255, 255, 255));
+            // 左
+            img[new OpenCvSharp.Rect(0, 0, borderSize, h)].SetTo(new Scalar(255, 255, 255));
+            // 右
+            img[new OpenCvSharp.Rect(w - borderSize, 0, borderSize, h)].SetTo(new Scalar(255, 255, 255));
         }
     }
 }

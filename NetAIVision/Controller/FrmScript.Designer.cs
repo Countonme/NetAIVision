@@ -35,33 +35,35 @@
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("🔍 彩色边缘检测");
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("✨ 锐化");
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("🖼️ 图像相似度比对");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("🖼️ 图像处理", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("  文字方向矫正");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("🖼️ 图像处理", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
             treeNode3,
             treeNode4,
             treeNode5,
             treeNode6,
-            treeNode7});
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("🔤  文字提取（OCR）");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("🤖 AI 拼詞檢查");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("🔤 文字处理", new System.Windows.Forms.TreeNode[] {
-            treeNode9,
-            treeNode10});
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("🧩 条码识别");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("🧩 条码处理", new System.Windows.Forms.TreeNode[] {
-            treeNode12});
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("🆚 字符串比对");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("🆚 数值比对");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("🆚 启用二维码比对");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
-            treeNode14,
+            treeNode7,
+            treeNode8});
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("🔤  文字提取（OCR）");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("🤖 AI 拼詞檢查");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("🔤 文字处理", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode11});
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("🧩 条码识别");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("🧩 条码处理", new System.Windows.Forms.TreeNode[] {
+            treeNode13});
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("🆚 字符串比对");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("🆚 数值比对");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("🆚 启用二维码比对");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("🔢 运算处理", new System.Windows.Forms.TreeNode[] {
             treeNode15,
-            treeNode16});
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Node0");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("结果返回", new System.Windows.Forms.TreeNode[] {
-            treeNode18});
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Node1");
+            treeNode16,
+            treeNode17});
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Node0");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("结果返回", new System.Windows.Forms.TreeNode[] {
+            treeNode19});
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Node1");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmScript));
             this.uiSplitContainer1 = new Sunny.UI.UISplitContainer();
             this.treeVFn = new Sunny.UI.UITreeView();
@@ -152,39 +154,41 @@
             treeNode6.Text = "✨ 锐化";
             treeNode7.Name = "YS112";
             treeNode7.Text = "🖼️ 图像相似度比对";
-            treeNode8.Name = "Node0";
-            treeNode8.Text = "🖼️ 图像处理";
-            treeNode9.Name = "YS101";
-            treeNode9.Text = "🔤  文字提取（OCR）";
-            treeNode10.Name = "YS113";
-            treeNode10.Text = "🤖 AI 拼詞檢查";
-            treeNode11.Name = "Node4";
-            treeNode11.Text = "🔤 文字处理";
-            treeNode12.Name = "YS111";
-            treeNode12.Text = "🧩 条码识别";
-            treeNode13.Name = "Node5";
-            treeNode13.Text = "🧩 条码处理";
-            treeNode14.Name = "YS102";
-            treeNode14.Text = "🆚 字符串比对";
-            treeNode15.Name = "Node3";
-            treeNode15.Text = "🆚 数值比对";
-            treeNode16.Name = "YS114";
-            treeNode16.Text = "🆚 启用二维码比对";
-            treeNode17.Name = "Node6";
-            treeNode17.Text = "🔢 运算处理";
-            treeNode18.Name = "Node0";
-            treeNode18.Text = "Node0";
+            treeNode8.Name = "YS115";
+            treeNode8.Text = "  文字方向矫正";
+            treeNode9.Name = "Node0";
+            treeNode9.Text = "🖼️ 图像处理";
+            treeNode10.Name = "YS101";
+            treeNode10.Text = "🔤  文字提取（OCR）";
+            treeNode11.Name = "YS113";
+            treeNode11.Text = "🤖 AI 拼詞檢查";
+            treeNode12.Name = "Node4";
+            treeNode12.Text = "🔤 文字处理";
+            treeNode13.Name = "YS111";
+            treeNode13.Text = "🧩 条码识别";
+            treeNode14.Name = "Node5";
+            treeNode14.Text = "🧩 条码处理";
+            treeNode15.Name = "YS102";
+            treeNode15.Text = "🆚 字符串比对";
+            treeNode16.Name = "Node3";
+            treeNode16.Text = "🆚 数值比对";
+            treeNode17.Name = "YS114";
+            treeNode17.Text = "🆚 启用二维码比对";
+            treeNode18.Name = "Node6";
+            treeNode18.Text = "🔢 运算处理";
             treeNode19.Name = "Node0";
-            treeNode19.Text = "结果返回";
-            treeNode20.Name = "Node1";
-            treeNode20.Text = "Node1";
+            treeNode19.Text = "Node0";
+            treeNode20.Name = "Node0";
+            treeNode20.Text = "结果返回";
+            treeNode21.Name = "Node1";
+            treeNode21.Text = "Node1";
             this.treeVFn.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode8,
-            treeNode11,
-            treeNode13,
-            treeNode17,
-            treeNode19,
-            treeNode20});
+            treeNode9,
+            treeNode12,
+            treeNode14,
+            treeNode18,
+            treeNode20,
+            treeNode21});
             this.treeVFn.ScrollBarStyleInherited = false;
             this.treeVFn.ShowText = false;
             this.treeVFn.Size = new System.Drawing.Size(210, 694);
