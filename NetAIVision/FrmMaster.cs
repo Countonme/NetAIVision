@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.Logging;
 using MvCamCtrl.NET;
 using NetAIVision.Controller;
 using NetAIVision.Model;
@@ -19,6 +20,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -34,6 +36,7 @@ using Tesseract;
 using ZXing;
 using ZXing.Common;
 using static MvCamCtrl.NET.MyCamera;
+using static NetAIVision.Services.BitmapProcessorServices;
 
 namespace NetAIVision
 {
@@ -92,6 +95,7 @@ namespace NetAIVision
         private ResizeHandle activeHandle = ResizeHandle.None;
         private System.Drawing.Point lastMousePos; // 用于计算增量
         private bool RunFlag = false;
+        private DateTime LastrunTime;
 
         // 缩放手柄类型（四个角）
         public enum ResizeHandle
@@ -109,8 +113,11 @@ namespace NetAIVision
         public readonly string _lang = "chi_sim"; // 可改为 eng, chi_tra 等
 
         public string _tessDataPath;
-        public bool OCRReadyFlag = false;
+        public bool OCRReadyFlag = false, HasPrintDefect = false;
+
         private string QrcodeString = string.Empty;
+        private string OcrSNString = string.Empty;
+        private bool PowerCheckFlag = false, IndoorUseOnlyFlag = false;
         private float Goal_rotationAngle = 0;
         private int Goal_MoveCount = 0;
         private string saveImgPath = Path.Combine(Application.StartupPath, "VideoCollection");
@@ -194,9 +201,10 @@ namespace NetAIVision
 
         public void InitDetector()
         {
-            var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "UK5W.onnx");
+            //var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "UK5W.onnx");
+            var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "LA36UK.onnx");
 
-            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.35f);
+            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.30f);
         }
 
         private void ClearROIToolStripMenuItem_Click(object sender, EventArgs e)
@@ -737,7 +745,7 @@ namespace NetAIVision
             SaveControllerSetting();
             if (this.ShowAskDialog("您確定要退出系統嗎?"))
             {
-                MES_Service.MesDisConnect();
+                // MES_Service.MesDisConnect();
                 // DisConnectionHardwareDevice();
                 Environment.Exit(0);
             }
@@ -1012,12 +1020,13 @@ namespace NetAIVision
                     Bitmap bmp = new Bitmap(bmps);
                     ImageAlignment.RecalcEveryNFrames = 1;
                     bmp = ImageAlignment.AlignToTemplate(bmp);
+                    pictureBox1.Image = bmp;
                     Detect(bmp);
                     // 绘制结果
                     //Bitmap resultImage = detector.DrawDetections(bmp, result);
-                    pictureBox1.Image = bmp; // 显示在 UI
-                                             //Console.WriteLine("✅ 检测完成，结果已保存到 " + outputPath);
-                                             //pictureBox1.Image = result;
+                    // 显示在 UI
+                    //Console.WriteLine("✅ 检测完成，结果已保存到 " + outputPath);
+                    //pictureBox1.Image = result;
 
                     //var (text, points) = QRCodeHelper.ReturnBarcodeCoordinates(bmp);
 
@@ -1674,28 +1683,27 @@ namespace NetAIVision
                                 //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
                                 // 清理旧图像，防止内存泄漏
 
-                                if (!RunFlag)
+                                //safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
+                                //safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
+                                //safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
+
+                                var nowDate = DateTime.Now;
+                                if (LastrunTime == null)
+                                {
+                                    LastrunTime = nowDate;
+                                }
+                                var time = nowDate - LastrunTime;
+                                //10 ssssss秒检测一次
+                                if (time.Seconds > 3)
                                 {
                                     if (pictureBox1.Image != null)
                                         pictureBox1.Image.Dispose();
-                                    //safeBitmap = RotateImage(safeBitmap, Goal_rotationAngle);
-                                    //safeBitmap = TranslateImage(safeBitmap, _zoomFactor);
-                                    //safeBitmap = TranslateImageVertically(safeBitmap, Goal_MoveCount);
                                     safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
                                     pictureBox1.Image = safeBitmap;
-                                }
-                                else
-                                {
-                                    //if (pictureBox1.Image != null)
-                                    //    pictureBox1.Image.Dispose();
-                                    //safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
-                                    // pictureBox1.Image = safeBitmap;
-                                    // pictureBox1.Refresh();
-
-                                    logHelper.AppendLog("INFO: 程序開始處理步驟啓動 原幀鎖定 ");
-                                    //bmp = ImageAlignment.AlignToTemplate(bmp);
                                     Detect(safeBitmap);
+                                    LastrunTime = nowDate;
                                 }
+
                                 ///樣本采集
                                 if (Collection)
                                 {
@@ -1727,21 +1735,544 @@ namespace NetAIVision
                 }
             }
         }
+
         /// <summary>
         /// 预测
         /// </summary>
         /// <param name="safeBitmap"></param>
         private void Detect(Bitmap safeBitmap)
         {
+            PowerCheckFlag = false;
+            IndoorUseOnlyFlag = false;
+            HasPrintDefect = false;
+            // 执行检测
             var result = detector.Detect(safeBitmap);
             rois?.Clear();
+
+            // 需要漏缺检测的类别
+            var Rac = new string[] { "CE", "DOELevelVI", "DoubleInsulated", "IndoorUseOnly", "Power", "QRCode", "SNLine", "UKCA", "WEEE", "RightArrow" };
+
+            // 找出检测结果中属于漏缺类别的项目
+            var filteredResults = result
+                .Where(e => e.ClassId >= 0 && e.ClassId < ProducitonModelClassName.UK36classNames.Length &&
+                            Rac.Contains(ProducitonModelClassName.UK36classNames[e.ClassId]))
+                .ToList();
+
+            // 判断是否有漏检类别（Rac中有但没被检测到的）
+            var detectedClasses = filteredResults
+                .Select(e => ProducitonModelClassName.UK36classNames[e.ClassId])
+                .Distinct()
+                .ToList();
+
+            var missedClasses = Rac.Except(detectedClasses).ToList();
+            //没有找到产品信息
+            if (result.Count == 0)
+            {
+                DrawErrorTextSingleLine(safeBitmap, "没有检测到产品", new System.Drawing.Point(10, 10));
+
+                return;
+            }
+            // 遍历检测结果，生成ROI并处理
             foreach (var item in result)
             {
-                var roi = new ScriptROI();
-                roi.Rect = item.Box;
-                roi.msg = $"{item.ClassId}->{item.Confidence}";
+                // 防止越界
+                if (item.ClassId < 0 || item.ClassId >= ProducitonModelClassName.UK36classNames.Length)
+                    continue;
+
+                var roi = new ScriptROI
+                {
+                    Rect = item.Box,
+                    msg = $"{ProducitonModelClassName.UK36classNames[item.ClassId]} -> {item.Confidence:F3}"
+                };
+                roi.id = $"{item.ClassId}";
+                roi.pen_color = Color.LimeGreen; // 绿色表示通过
+                roi.Brushes_color = Brushes.LimeGreen;
+                // 根据类别处理
+                WithProcess(item.ClassId, ref roi);
+
                 rois.Add(roi);
             }
+            var flag = true;
+            //绘制目标检测失败
+            int height = 10;
+            if (missedClasses.Any())
+            {
+                flag = false;
+
+                foreach (var item in missedClasses)
+                {
+                    logHelper.AppendLog("ERROR: 未检测到以下类别: " + item);
+                    DrawErrorTextSingleLine(safeBitmap, $"未检测到: {item}", new System.Drawing.Point(10, height));
+                    height += 40;
+                }
+            }
+            //绘制QRCode 与SN 检测结果
+            if (QrcodeString != OcrSNString)
+            {
+                flag = false;
+                height += 40;
+                //設定ROI Color 為 Red
+                var snLineRoi = rois?.FirstOrDefault(e => e.id == "6");
+                if (snLineRoi != null)
+                {
+                    snLineRoi.msg = $"QRCode / SN 不一致 {OcrSNString}";
+                    snLineRoi.pen_color = Color.Red; // 红色表示不通过
+                    snLineRoi.Brushes_color = Brushes.Red;
+                }
+                DrawErrorTextSingleLine(safeBitmap, $"QRCode({QrcodeString}) 与SN({OcrSNString}) 不一致", new System.Drawing.Point(10, height));
+            }
+            //功率识别
+            if (!PowerCheckFlag)
+            {
+                flag = false;
+                height += 40;
+                DrawErrorTextSingleLine(safeBitmap, $"Power Error", new System.Drawing.Point(10, height));
+            }
+            //IndoorUseOnlyFlag
+            if (!IndoorUseOnlyFlag)
+            {
+                flag = false;
+                height += 40;
+                DrawErrorTextSingleLine(safeBitmap, $"Indoor Use Only' region is too small", new System.Drawing.Point(10, height));
+            }
+            //文字絲印破損或模糊
+            if (!HasPrintDefect)
+            {
+                flag = false;
+                height += 40;
+                DrawErrorTextSingleLine(safeBitmap, $"文字絲印缺損", new System.Drawing.Point(10, height));
+            }
+            //显示结果
+            ShowResult(flag);
+        }
+
+        /// <summary>
+        /// 显示结果
+        /// </summary>
+        /// <param name="flag"></param>
+        private void ShowResult(bool flag)
+        {
+            this.Invoke(new Action(() =>
+            {
+                if (flag)
+                {
+                    StyleManager.Style = UIStyle.LayuiGreen;
+                    RefreshProcess(Properties.Resources.pass);
+                    var frm = new FrmResult(ResultEnum.Pass, 1);
+                    frm.Show();
+                    // 把阻塞操作放到后台线程
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(1000); // 等待1秒
+                        frm.Invoke(new Action(() =>
+                        {
+                            frm.Close();
+                            StyleManager.Style = UIStyle.Blue;
+                        })); // 回到UI线程关闭
+                    });
+
+                    // this.ShowSuccessNotifier("所有检测通过！");
+                }
+                else
+                {
+                    StyleManager.Style = UIStyle.Red;
+                    RefreshProcess(Properties.Resources.fail);
+                    var frm = new FrmResult(ResultEnum.Fail, 1);
+                    frm.Show();
+                    // 把阻塞操作放到后台线程
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(1000); // 等待3秒
+                        frm.Invoke(new Action(() =>
+                        {
+                            frm.Close();
+                            StyleManager.Style = UIStyle.Blue;
+                        })); // 回到UI线程关闭
+                    });
+                    // this.ShowErrorNotifier("检测失败，请检查！");
+                }
+            }));
+        }
+
+        /// <summary>
+        /// 在图像上绘制错误信息（红色）
+        /// </summary>
+        private void DrawErrorText(Bitmap bitmap, string text, System.Drawing.Point position)
+        {
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+
+                using (Font font = new Font("Arial", 16, FontStyle.Bold))
+                using (SolidBrush brush = new SolidBrush(Color.Red))
+                using (Pen outline = new Pen(Color.Black, 2))
+                {
+                    // 为了保证可见性，可以画个阴影背景
+                    var rect = new RectangleF(position, g.MeasureString(text, font));
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(180, Color.White)), rect);
+
+                    // 绘制红色文字
+                    g.DrawString(text, font, brush, position);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 在图像左上角单行绘制错误信息：会自动缩放字体或在必要时截断并加省略号，保证不换行且不超出图片宽度
+        /// </summary>
+        private void DrawErrorTextSingleLine(Bitmap bitmap, string text, System.Drawing.Point position)
+        {
+            if (bitmap == null || string.IsNullOrEmpty(text)) return;
+
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+
+                // 最大可用宽度（右边留点边距）
+                float maxWidth = bitmap.Width - position.X - 10;
+                if (maxWidth <= 20) return; // 空间太小，直接返回
+
+                // 选定字体族（中文用 Microsoft YaHei 更清晰）
+                string fontFamily = "Microsoft YaHei";
+                float fontSize = 12f;
+                const float minFontSize = 8f;
+
+                // 先尝试不断减小字体直到宽度合适或到最小字体
+                Font font = new Font(fontFamily, fontSize, FontStyle.Bold);
+                SizeF measured = g.MeasureString(text, font);
+
+                while (measured.Width > maxWidth && fontSize > minFontSize)
+                {
+                    font.Dispose();
+                    fontSize -= 1f;
+                    font = new Font(fontFamily, fontSize, FontStyle.Bold);
+                    measured = g.MeasureString(text, font);
+                }
+
+                string drawText = text;
+
+                // 如果缩到最小字体仍不够宽度，就截断并加省略号
+                if (measured.Width > maxWidth)
+                {
+                    // 逐字符裁剪直到可放下 "...":
+                    string ellipsis = "...";
+                    int len = drawText.Length;
+                    // 保证至少留几个字符再加省略号
+                    while (len > 0)
+                    {
+                        len--;
+                        string candidate = drawText.Substring(0, len) + ellipsis;
+                        measured = g.MeasureString(candidate, font);
+                        if (measured.Width <= maxWidth) { drawText = candidate; break; }
+                    }
+                    if (len == 0)
+                    {
+                        // 极端情况：连一个字符都放不下，直接用省略号
+                        drawText = ellipsis;
+                    }
+                }
+
+                // 背景矩形（半透明）
+                var textSize = g.MeasureString(drawText, font);
+                RectangleF bgRect = new RectangleF(position.X - 4, position.Y - 2, textSize.Width + 8, textSize.Height + 4);
+                using (Brush bgBrush = new SolidBrush(Color.FromArgb(200, Color.White)))
+                {
+                    g.FillRectangle(bgBrush, bgRect);
+                }
+
+                // 绘制文本（先画黑色阴影，再画红色文本）
+                using (Brush shadow = new SolidBrush(Color.FromArgb(200, Color.Black)))
+                using (Brush fore = new SolidBrush(Color.Red))
+                {
+                    // shadow offset
+                    g.DrawString(drawText, font, shadow, position.X + 1, position.Y + 1);
+                    g.DrawString(drawText, font, fore, position.X, position.Y);
+                }
+
+                font.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// 处理过程
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="roi"></param>
+        private void WithProcess(int id, ref ScriptROI roi)
+        {
+            switch (id)
+            {
+                default:
+                    break;
+
+                case 3: //IndoorUseOnly
+                    {
+                        // 定义最小允许的宽度和高度（根据你的场景调整）
+                        const int MinWidth = 80;
+                        const int MinHeight = 80;
+                        logHelper.AppendLog($"INFO: IndoorUseOnly Size {roi.Rect.Width}X{roi.Rect.Height}");
+                        // 判断是否太小
+                        if (roi.Rect.Width < MinWidth || roi.Rect.Height < MinHeight)
+                        {
+                            IndoorUseOnlyFlag = false;
+                            roi.msg = "IndoorUseOnly ICO 过小";
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            logHelper.AppendLog($"Error: 'Indoor Use Only' region is too small: {roi.Rect.Width} x {roi.Rect.Height}");
+                            break;
+                        }
+                        IndoorUseOnlyFlag = true;
+                        break;
+                    }
+
+                case 4:
+                    {
+                        var img = getImageRec(roi.Rect);
+
+                        if (img is null)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            break;
+                        }
+
+                        //锐化
+                        img = BitmapProcessorServices.EnhanceSharpness(img, 3);
+                        //二值化
+                        //img = BitmapProcessorServices.Threshold(img);
+                        //反色
+                        img = BitmapProcessorServices.Invert(img);
+                        //灰度
+                        img = BitmapProcessorServices.ToGrayscale(img);
+                        var result = PaddleOCRHelper.Recognize(img);
+                        roi.msg = result;
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            result = result.Trim();
+                            roi.msg = result;
+                            if (result == "5.0W")
+                            {
+                                PowerCheckFlag = true;
+                                break;
+                            }
+                            else
+                            {
+                                roi.pen_color = Color.Red; // 红色表示不通过
+                                roi.Brushes_color = Brushes.Red;
+                                roi.msg = $"功率文字镭射错误 {result},请您检测";
+                                break;
+                            }
+                        }
+                        roi.pen_color = Color.Red; // 红色表示不通过
+                        roi.Brushes_color = Brushes.Red;
+                        roi.msg = $"OCR 失败 {result}";
+                        break;
+                    }
+
+                case 5:
+                    {
+                        QrcodeString = string.Empty;
+                        txtSerialNumber.Text = string.Empty;
+                        var img = getImageRec(roi.Rect);
+                        if (img is null)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            break;
+                        }
+
+                        RefreshProcess(img);
+
+                        var text = BitmapProcessorServices.QR_Code(img);
+                        logHelper.AppendLog($"INFO : 图像QR Code:Data{text}");
+                        if (text.flag)
+                        {
+                            roi.msg = $"{text.txt}";
+                            txtSerialNumber.Text = text.txt;
+                            {
+                                roi.pen_color = Color.LimeGreen; // 绿色表示通过
+                                roi.Brushes_color = Brushes.LimeGreen;
+                            }
+
+                            //MES 检测
+                            QrcodeString = text.txt;
+                        }
+                        else
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            logHelper.AppendLog($"ERROR: 无法识别二维码,{text.message}");
+                        }
+
+                        break;
+                    }
+                case 6:
+                    {
+                        var img = getImageRec(roi.Rect);
+
+                        if (img is null)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            break;
+                        }
+
+                        //锐化
+                        img = BitmapProcessorServices.EnhanceSharpness(img, 3);
+                        //二值化
+                        // img = BitmapProcessorServices.Threshold(img);
+                        //反色
+                        //img = BitmapProcessorServices.Invert(img);
+                        //灰度
+                        img = BitmapProcessorServices.ToGrayscale(img);
+                        // img = BitmapProcessorServices.();
+                        //OCR
+                        var result = PaddleOCRHelper.Recognize(img);
+                        //var result = BitmapProcessorServices.OCRFn(img);
+                        RefreshProcess(img);
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            roi.msg = result;
+                            OcrSNString = result;
+                            break;
+                        }
+                        roi.pen_color = Color.Red; // 红色表示不通过
+                        roi.Brushes_color = Brushes.Red;
+                        roi.msg = "OCR 失败";
+                        break;
+                    }
+                case 7:
+                    {
+                        var img = getImageRec(roi.Rect);
+                        if (img is null)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            break;
+                        }
+                        var result = BitmapProcessorServices.DetectStainsAndBlur(img, 50, 50, 100);
+                        if (result.HasBlurs)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            roi.msg = "文字絲印模糊或破損";
+                            break;
+                        }
+                        HasPrintDefect = true;
+                        break;
+                    }
+            }
+        }
+
+        public static Bitmap DrawDetectionOverlay(Bitmap src, StainDetectionResult result, int strokeWidth = 2)
+        {
+            if (src == null) throw new ArgumentNullException(nameof(src));
+            // 复制一份返回，避免修改原图
+            Bitmap outBmp = (Bitmap)src.Clone();
+
+            using (Graphics g = Graphics.FromImage(outBmp))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+
+                // Pens / brushes
+                using (var stainPen = new Pen(Color.FromArgb(220, 200, 30, 30), strokeWidth)) // 红边
+                using (var blurPen = new Pen(Color.FromArgb(220, 30, 80, 200), strokeWidth)) // 蓝边
+                using (var stainFill = new SolidBrush(Color.FromArgb(60, 200, 30, 30))) // 红半透明填充
+                using (var blurFill = new SolidBrush(Color.FromArgb(60, 30, 80, 200))) // 蓝半透明填充
+                using (var textBrush = new SolidBrush(Color.FromArgb(230, 255, 255, 255)))
+                using (var textBgBrush = new SolidBrush(Color.FromArgb(160, 0, 0, 0)))
+                using (var font = new Font("Arial", Math.Max(10, src.Width / 80f), FontStyle.Bold, GraphicsUnit.Pixel))
+                {
+                    // 先画脏污区域（红）
+                    if (result?.StainRegions != null)
+                    {
+                        foreach (var r in result.StainRegions)
+                        {
+                            var rect = r;
+                            // 填充
+                            g.FillRectangle(stainFill, rect);
+                            // 边框
+                            g.DrawRectangle(stainPen, rect);
+                            // 标签
+                            string label = "STAIN";
+                            var labelSize = g.MeasureString(label, font);
+                            var labelRect = new Rectangle(rect.X, Math.Max(0, rect.Y - (int)labelSize.Height - 2), (int)labelSize.Width + 6, (int)labelSize.Height + 2);
+                            g.FillRectangle(textBgBrush, labelRect);
+                            g.DrawString(label, font, textBrush, labelRect.X + 3, labelRect.Y + 1);
+                        }
+                    }
+
+                    // 再画模糊区域（蓝）
+                    if (result?.BlurRegions != null)
+                    {
+                        foreach (var r in result.BlurRegions)
+                        {
+                            var rect = r;
+                            // 填充
+                            g.FillRectangle(blurFill, rect);
+                            // 边框
+                            g.DrawRectangle(blurPen, rect);
+                            // 标签
+                            string label = "BLUR";
+                            var labelSize = g.MeasureString(label, font);
+                            var labelRect = new Rectangle(rect.X, Math.Max(0, rect.Y - (int)labelSize.Height - 2), (int)labelSize.Width + 6, (int)labelSize.Height + 2);
+                            g.FillRectangle(textBgBrush, labelRect);
+                            g.DrawString(label, font, textBrush, labelRect.X + 3, labelRect.Y + 1);
+                        }
+                    }
+                }
+            }
+
+            return outBmp;
+        }
+
+        /// <summary>
+        /// 刷新处理过程步骤
+        /// </summary>
+        /// <param name="img"></param>
+        private void RefreshProcess(Bitmap img)
+        {
+            pictureBox2.Invoke(new Action(() =>
+            {
+                if (!(pictureBox2.Image is null))
+                {
+                    pictureBox2.Image.Dispose();
+                }
+                pictureBox2.Image = (img);
+                pictureBox2.Refresh();
+            }));
+        }
+
+        /// <summary>
+        /// 获取ROI 对应的图像位置
+        /// </summary>
+        /// <param name="roiRect"></param>
+        /// <returns></returns>
+        private Bitmap getImageRec(Rectangle roiRect)
+        {
+            // 确保 ROI 在图像范围内
+            if (roiRect.X < 0 || roiRect.Y < 0 ||
+                roiRect.Right > pictureBox1.Image.Width ||
+                roiRect.Bottom > pictureBox1.Image.Height)
+            {
+                MessageBox.Show("ROI区域超出图像范围，无法分析。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            // 1. 创建 ROI 区域的位图
+            Bitmap templateImage = new Bitmap(roiRect.Width, roiRect.Height);
+            using (Graphics g = Graphics.FromImage(templateImage))
+            {
+                g.DrawImage(pictureBox1.Image,
+                            new Rectangle(0, 0, roiRect.Width, roiRect.Height),
+                            roiRect,
+                            GraphicsUnit.Pixel);
+            }
+            return templateImage;
         }
 
         /// <summary>
@@ -2333,7 +2864,7 @@ namespace NetAIVision
                 // 绘制所有已存在的 ROI
                 foreach (var roi in rois)
                 {
-                    // 设置画笔颜色（注意：你这里用了两个 pen，建议优化）
+                    // 设置画笔颜色（注意：这里用了两个 pen，建议优化）
                     using (var pen1 = new Pen(roi.pen_color, 2))
                     {
                         g.DrawRectangle(pen1, roi.Rect);
@@ -2357,8 +2888,8 @@ namespace NetAIVision
                         var center = new System.Drawing.Point(roi.Rect.X + roi.Rect.Width / 2, roi.Rect.Y + roi.Rect.Height / 2);
                         int crossSize = 5; // 十字長度
 
-                        g.DrawLine(Pens.Red, center.X - crossSize, center.Y, center.X + crossSize, center.Y); // 橫線
-                        g.DrawLine(Pens.Red, center.X, center.Y - crossSize, center.X, center.Y + crossSize); // 直線
+                        g.DrawLine(Pens.Blue, center.X - crossSize, center.Y, center.X + crossSize, center.Y); // 橫線
+                        g.DrawLine(Pens.Blue, center.X, center.Y - crossSize, center.X, center.Y + crossSize); // 直線
                     }
                 }
 

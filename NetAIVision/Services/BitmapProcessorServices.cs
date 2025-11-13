@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -97,6 +98,32 @@ namespace NetAIVision.Services
             return ProcessPixelByPixel(bitmap, c => Color.FromArgb(c.A, 255 - c.R, 255 - c.G, 255 - c.B));
         }
 
+        /// <summary>
+        /// OCR
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <returns></returns>
+        public static string OCRFn3(Bitmap bitmap)
+        {
+            // return  PaddleOCRHelper.Recognize(bitmap);
+            var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
+            engine.SetVariable("user_words_suffix", "my_words"); // 对应 my_words.txt
+            // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
+            var ms = new MemoryStream();
+            bitmap = PreprocessForOCR(bitmap);
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff); // 推荐 TIFF，支持灰度/二值化
+            ms.Position = 0;
+
+            var img = Pix.LoadFromMemory(ms.ToArray());
+            var page = engine.Process(img, PageSegMode.SingleBlock);
+            string text = page.GetText();
+            // 清理文本：去除所有换行、回车、制表符，并压缩空白
+            string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", "", RegexOptions.None);
+            cleaned = Regex.Replace(cleaned, @"\s+", " "); // 多个空格合并为一个
+            cleaned = cleaned.Trim();
+            return cleaned;
+        }
+
         public static string OCRFn2(Bitmap bitmap)
         {
             // 圖像預處理
@@ -131,6 +158,7 @@ namespace NetAIVision.Services
         {
             // return  PaddleOCRHelper.Recognize(bitmap);
             var engine = new TesseractEngine(_tessDataPath, _lang, EngineMode.Default);
+            engine.SetVariable("user_words_suffix", "my_words"); // 对应 my_words.txt
             // 将 Bitmap 转为 Pix（内存中完成，不保存文件）
             var ms = new MemoryStream();
             bitmap = PreprocessForOCR(bitmap);
@@ -138,10 +166,10 @@ namespace NetAIVision.Services
             ms.Position = 0;
 
             var img = Pix.LoadFromMemory(ms.ToArray());
-            var page = engine.Process(img);
+            var page = engine.Process(img, PageSegMode.SingleLine);
             string text = page.GetText();
             // 清理文本：去除所有换行、回车、制表符，并压缩空白
-            string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", " ", RegexOptions.None);
+            string cleaned = Regex.Replace(text, @"[\r\n\t\f]+", "", RegexOptions.None);
             cleaned = Regex.Replace(cleaned, @"\s+", " "); // 多个空格合并为一个
             cleaned = cleaned.Trim();
             return cleaned;
@@ -322,7 +350,7 @@ namespace NetAIVision.Services
             }
             else
             {
-                return (false, result.Text, $"未识别到二维码，请确保该区域包含清晰的二维码。");
+                return (false, string.Empty, $"未识别到二维码，请确保该区域包含清晰的二维码。");
                 //logHelper.AppendLog($"ERROR:{selectedRoi.Name} 未识别到二维码，请确保该区域包含清晰的二维码");
                 //MessageBox.Show("未识别到二维码，请确保该区域包含清晰的二维码。", "识别失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -953,9 +981,12 @@ namespace NetAIVision.Services
         /// </summary>
         public class StainDetectionResult
         {
+            public bool HasBlurs { get; set; }
             public bool HasStains { get; set; }
             public List<Rectangle> StainRegions { get; set; } = new List<Rectangle>();
+            public List<Rectangle> BlurRegions { get; set; } = new List<Rectangle>();
             public int TotalStainPixels { get; set; }
+            public int TotalBlurPixels { get; set; }
 
             public string Summary => HasStains
                 ? $"检测到脏污：{StainRegions.Count} 个区域，共 {TotalStainPixels} 像素"
@@ -1036,6 +1067,157 @@ namespace NetAIVision.Services
         }
 
         #endregion 脏污检测
+
+        /// <summary>
+        /// 脏污与丝印模糊检测（灰度+方差+锐度）
+        /// </summary>
+        /// <param name="bitmap">输入图像</param>
+        /// <param name="blockSize">分块大小（如 32x32）</param>
+        /// <param name="darkThreshold">灰度低于此值认为是脏污</param>
+        /// <param name="varianceThreshold">方差高于此值认为纹理复杂（可能为污渍）</param>
+        /// <param name="blurThreshold">拉普拉斯方差低于此值认为模糊</param>
+        public static StainDetectionResult DetectStainsAndBlur(Bitmap bitmap, int blockSize = 32, byte darkThreshold = 50, double varianceThreshold = 100, double blurThreshold = 30)
+        {
+            var result = new StainDetectionResult();
+            var stains = new List<Rectangle>();
+            var blurs = new List<Rectangle>();
+
+            // ✅ 现代版本 Bitmap → Mat 转换（无 Extensions）
+            using (var mat = BitmapToMat(bitmap))
+            using (var gray = new Mat())
+            {
+                Cv2.CvtColor(mat, gray, ColorConversionCodes.BGR2GRAY);
+
+                int blocksX = (int)Math.Ceiling((double)bitmap.Width / blockSize);
+                int blocksY = (int)Math.Ceiling((double)bitmap.Height / blockSize);
+
+                int totalStainPixels = 0;
+                int totalBlurPixels = 0;
+
+                for (int by = 0; by < blocksY; by++)
+                {
+                    for (int bx = 0; bx < blocksX; bx++)
+                    {
+                        int x = bx * blockSize;
+                        int y = by * blockSize;
+                        int w = Math.Min(blockSize, bitmap.Width - x);
+                        int h = Math.Min(blockSize, bitmap.Height - y);
+
+                        var roi = new OpenCvSharp.Rect(x, y, w, h);
+                        using (var block = new Mat(gray, roi))
+                        {                    // 正确调用 MeanStdDev：out Scalar mean, out Scalar stddev
+                            Cv2.MeanStdDev(block, out Scalar meanScalar, out Scalar stddevScalar);
+                            double mean = meanScalar.Val0;
+                            double stddev = stddevScalar.Val0;
+                            double variance = stddev * stddev;
+
+                            // Laplacian 方差（作为模糊判定），注意输出类型用 CV_64F
+                            using (var lap = new Mat())
+                            {
+                                Cv2.Laplacian(block, lap, MatType.CV_64F);
+                                Cv2.MeanStdDev(lap, out _, out Scalar lapStd);
+                                double lapVar = lapStd.Val0 * lapStd.Val0;
+
+                                // 脏污判断
+                                if (mean < darkThreshold && variance > varianceThreshold)
+                                {
+                                    stains.Add(new Rectangle(x, y, w, h));
+                                    totalStainPixels += w * h;
+                                }
+
+                                // 模糊判断（丝印不清晰）
+                                if (lapVar < blurThreshold)
+                                {
+                                    blurs.Add(new Rectangle(x, y, w, h));
+                                    totalBlurPixels += w * h;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                result.HasStains = stains.Count > 0;
+                result.HasBlurs = blurs.Count > 0;
+                result.StainRegions = stains;
+                result.BlurRegions = blurs;
+                result.TotalStainPixels = totalStainPixels;
+                result.TotalBlurPixels = totalBlurPixels;
+            }
+
+            return result;
+        }
+
+        #region Bitmap <-> Mat (优化)
+
+        /// <summary>
+        /// 将 Bitmap 解码为 Mat（使用内存流，兼容性高）。
+        /// 若性能成为瓶颈，请改为直接从相机 SDK 获取 byte[] 并使用 Cv2.ImDecode 或 Cv2.CvtColor/Cv2.Merge 构造 Mat。
+        /// </summary>
+        public static Mat BitmapToMat(Bitmap bitmap)
+        {
+            using (var ms = new System.IO.MemoryStream())
+            {
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                byte[] bytes = ms.ToArray();
+                return Cv2.ImDecode(bytes, ImreadModes.Color);
+            }
+        }
+
+        /// <summary>
+        /// 将 Mat 转为 Bitmap（返回新 Bitmap 副本）
+        /// </summary>
+        public static Bitmap MatToBitmap(Mat mat)
+        {
+            if (mat == null || mat.Empty())
+                return null;
+
+            Bitmap bmp;
+
+            if (mat.Channels() == 1)
+            {
+                // 灰度图
+                bmp = new Bitmap(mat.Width, mat.Height, PixelFormat.Format8bppIndexed);
+                BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height),
+                    ImageLockMode.WriteOnly, bmp.PixelFormat);
+
+                int length = mat.Width * mat.Height;
+                byte[] buffer = new byte[length];
+                Marshal.Copy(mat.Data, buffer, 0, length);
+                Marshal.Copy(buffer, 0, data.Scan0, length);
+                bmp.UnlockBits(data);
+
+                // 设置灰度调色板
+                ColorPalette palette = bmp.Palette;
+                for (int i = 0; i < 256; i++)
+                    palette.Entries[i] = Color.FromArgb(i, i, i);
+                bmp.Palette = palette;
+            }
+            else if (mat.Channels() == 3)
+            {
+                // BGR -> RGB
+                using (var rgbMat = new Mat())
+                {
+                    Cv2.CvtColor(mat, rgbMat, ColorConversionCodes.BGR2RGB);
+                    bmp = new Bitmap(rgbMat.Width, rgbMat.Height, PixelFormat.Format24bppRgb);
+                    BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height),
+                        ImageLockMode.WriteOnly, bmp.PixelFormat);
+
+                    int length = (int)rgbMat.Step() * rgbMat.Rows;
+                    byte[] buffer = new byte[length];
+                    Marshal.Copy(rgbMat.Data, buffer, 0, length);
+                    Marshal.Copy(buffer, 0, data.Scan0, length);
+                    bmp.UnlockBits(data);
+                }
+            }
+            else
+            {
+                throw new NotSupportedException("Unsupported Mat format: channels=" + mat.Channels());
+            }
+
+            return new Bitmap(bmp); // 返回安全副本
+        }
+
+        #endregion Bitmap <-> Mat (优化)
 
         ///// <summary>
         ///// 模板比对函数 图片比对函数
