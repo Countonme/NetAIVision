@@ -34,7 +34,7 @@ namespace NetAIVision.Services
                 Console.WriteLine("🔍 初始化 PaddleOCR 模型...");
 
                 // var model = LocalFullModels.ChineseV3;   // 中文+英文模型
-                var model = LocalFullModels.EnglishV3;   // 中文+英文模型
+                var model = LocalFullModels.ChineseV5;   // 中文+英文模型
                 var device = PaddleDevice.Mkldnn();      // CPU 加速
 
                 _ocr = new PaddleOcrAll(model, device)

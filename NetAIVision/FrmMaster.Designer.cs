@@ -53,6 +53,7 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewlogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -125,7 +126,6 @@
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.clearROIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.grouplogs.SuspendLayout();
@@ -296,6 +296,11 @@
             // 
             this.chearLogToolStripMenuItem.Name = "chearLogToolStripMenuItem";
             resources.ApplyResources(this.chearLogToolStripMenuItem, "chearLogToolStripMenuItem");
+            // 
+            // clearROIToolStripMenuItem
+            // 
+            this.clearROIToolStripMenuItem.Name = "clearROIToolStripMenuItem";
+            resources.ApplyResources(this.clearROIToolStripMenuItem, "clearROIToolStripMenuItem");
             // 
             // refreshToolStripMenuItem
             // 
@@ -581,7 +586,6 @@
             this.uiLedBulb2.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb2, "uiLedBulb2");
             this.uiLedBulb2.Name = "uiLedBulb2";
-            this.uiLedBulb2.On = false;
             // 
             // uiLabel6
             // 
@@ -595,7 +599,6 @@
             this.uiLedBulb1.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb1, "uiLedBulb1");
             this.uiLedBulb1.Name = "uiLedBulb1";
-            this.uiLedBulb1.On = false;
             // 
             // txtscriptName
             // 
@@ -803,11 +806,6 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
-            // 
-            // clearROIToolStripMenuItem
-            // 
-            this.clearROIToolStripMenuItem.Name = "clearROIToolStripMenuItem";
-            resources.ApplyResources(this.clearROIToolStripMenuItem, "clearROIToolStripMenuItem");
             // 
             // FrmMaster
             // 

@@ -204,7 +204,7 @@ namespace NetAIVision
             //var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "UK5W.onnx");
             var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "LA36UK.onnx");
 
-            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.30f);
+            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.32f);
         }
 
         private void ClearROIToolStripMenuItem_Click(object sender, EventArgs e)
@@ -224,7 +224,9 @@ namespace NetAIVision
 
         private void RunningScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            RunFlag = true;
             logHelper.AppendLog($"Info: 自動校準狀態 {RunFlag}");
+            return;
             if (!(rois is null) && rois.Count > 0)
             {   ///每次檢查前 初始化檢查結果
                 initRoIAndCheckResult();
@@ -1678,7 +1680,10 @@ namespace NetAIVision
                                 // ✅ 关键：生成安全副本（与 SDK 内存分离）  适应 PictureBox 大小
                                 Bitmap safeBitmap = new Bitmap(m_bitmap, pictureBox1.Size);
                                 // Bitmap safeBitmap1 = new Bitmap(safeBitmap, new System.Drawing.Size(1024 * _zoomFactor, 768 * _zoomFactor));
-
+                                if (pictureBox1.Image != null)
+                                    pictureBox1.Image.Dispose();
+                                safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
+                                pictureBox1.Image = safeBitmap;
                                 //int newWidth = (int)(_originalBitmap.Width * _zoomFactor);
                                 //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
                                 // 清理旧图像，防止内存泄漏
@@ -1692,14 +1697,13 @@ namespace NetAIVision
                                 {
                                     LastrunTime = nowDate;
                                 }
+
                                 var time = nowDate - LastrunTime;
                                 //10 ssssss秒检测一次
-                                if (time.Seconds > 3)
+                                //     if (time.Seconds > 2)
+                                if (RunFlag)
                                 {
-                                    if (pictureBox1.Image != null)
-                                        pictureBox1.Image.Dispose();
-                                    safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
-                                    pictureBox1.Image = safeBitmap;
+                                    RunFlag = false;
                                     Detect(safeBitmap);
                                     LastrunTime = nowDate;
                                 }
@@ -1778,15 +1782,20 @@ namespace NetAIVision
                 // 防止越界
                 if (item.ClassId < 0 || item.ClassId >= ProducitonModelClassName.UK36classNames.Length)
                     continue;
-
+                if (item.ClassId == 7)
+                {
+                    item.Box.Y = item.Box.Y - 4;
+                }
                 var roi = new ScriptROI
                 {
                     Rect = item.Box,
-                    msg = $"{ProducitonModelClassName.UK36classNames[item.ClassId]} -> {item.Confidence:F3}"
+                    //msg = $"{ProducitonModelClassName.UK36classNames[item.ClassId]} -> {item.Confidence:F3}"
+                    msg = $"OK:{ProducitonModelClassName.UK36classNames[item.ClassId]}"
                 };
                 roi.id = $"{item.ClassId}";
                 roi.pen_color = Color.LimeGreen; // 绿色表示通过
                 roi.Brushes_color = Brushes.LimeGreen;
+
                 // 根据类别处理
                 WithProcess(item.ClassId, ref roi);
 
@@ -1819,29 +1828,31 @@ namespace NetAIVision
                     snLineRoi.pen_color = Color.Red; // 红色表示不通过
                     snLineRoi.Brushes_color = Brushes.Red;
                 }
-                DrawErrorTextSingleLine(safeBitmap, $"QRCode({QrcodeString}) 与SN({OcrSNString}) 不一致", new System.Drawing.Point(10, height));
+                DrawErrorTextSingleLine(safeBitmap, $"NG:QRCode({QrcodeString}) 与SN({OcrSNString}) 不一致", new System.Drawing.Point(10, height));
             }
             //功率识别
             if (!PowerCheckFlag)
             {
                 flag = false;
                 height += 40;
-                DrawErrorTextSingleLine(safeBitmap, $"Power Error", new System.Drawing.Point(10, height));
+                DrawErrorTextSingleLine(safeBitmap, $"NG:Power Error", new System.Drawing.Point(10, height));
             }
             //IndoorUseOnlyFlag
             if (!IndoorUseOnlyFlag)
             {
                 flag = false;
                 height += 40;
-                DrawErrorTextSingleLine(safeBitmap, $"Indoor Use Only' region is too small", new System.Drawing.Point(10, height));
+                DrawErrorTextSingleLine(safeBitmap, $"NG:Indoor Use Only' region is too small", new System.Drawing.Point(10, height));
             }
             //文字絲印破損或模糊
             if (!HasPrintDefect)
             {
                 flag = false;
                 height += 40;
-                DrawErrorTextSingleLine(safeBitmap, $"文字絲印缺損", new System.Drawing.Point(10, height));
+                DrawErrorTextSingleLine(safeBitmap, $"NG:文字絲印缺損", new System.Drawing.Point(10, height));
             }
+            var shosafeBitmap = new Bitmap(safeBitmap);
+            pictureBox3.Image = shosafeBitmap;
             //显示结果
             ShowResult(flag);
         }
@@ -2010,14 +2021,14 @@ namespace NetAIVision
                 case 3: //IndoorUseOnly
                     {
                         // 定义最小允许的宽度和高度（根据你的场景调整）
-                        const int MinWidth = 80;
-                        const int MinHeight = 80;
+                        const int MinWidth = 78;
+                        const int MinHeight = 78;
                         logHelper.AppendLog($"INFO: IndoorUseOnly Size {roi.Rect.Width}X{roi.Rect.Height}");
                         // 判断是否太小
-                        if (roi.Rect.Width < MinWidth || roi.Rect.Height < MinHeight)
+                        if (roi.Rect.Width <= MinWidth || roi.Rect.Height <= MinHeight)
                         {
                             IndoorUseOnlyFlag = false;
-                            roi.msg = "IndoorUseOnly ICO 过小";
+                            roi.msg = "NG: ICO 过小";
                             roi.pen_color = Color.Red; // 红色表示不通过
                             roi.Brushes_color = Brushes.Red;
                             logHelper.AppendLog($"Error: 'Indoor Use Only' region is too small: {roi.Rect.Width} x {roi.Rect.Height}");
@@ -2061,7 +2072,7 @@ namespace NetAIVision
                             {
                                 roi.pen_color = Color.Red; // 红色表示不通过
                                 roi.Brushes_color = Brushes.Red;
-                                roi.msg = $"功率文字镭射错误 {result},请您检测";
+                                roi.msg = $"NG:功率文字镭射错误 {result},请您检测";
                                 break;
                             }
                         }
@@ -2152,12 +2163,71 @@ namespace NetAIVision
                             roi.Brushes_color = Brushes.Red;
                             break;
                         }
-                        var result = BitmapProcessorServices.DetectStainsAndBlur(img, 50, 50, 100);
-                        if (result.HasBlurs)
+
+                        //锐化
+                        img = BitmapProcessorServices.EnhanceSharpness(img, 5);
+                        //二值化
+                        img = BitmapProcessorServices.Threshold(img);
+                        //反色
+                        //img = BitmapProcessorServices.Invert(img);
+                        //灰度
+                        img = BitmapProcessorServices.ToGrayscale(img);
+                        var resultString = PaddleOCRHelper.Recognize(img);
+                        var resultStringCount = resultString.Split("\n");
+                        //var result = BitmapProcessorServices.DetectStainsAndBlur(img, 160, 50, 100);
+                        //if (result.HasBlurs)
+                        //{
+                        //    roi.pen_color = Color.Red; // 红色表示不通过
+                        //    roi.Brushes_color = Brushes.Red;
+                        //    roi.msg = "文字絲印模糊或破損";
+                        //    break;
+                        //}
+                        if (resultStringCount.Length != 4)
                         {
                             roi.pen_color = Color.Red; // 红色表示不通过
                             roi.Brushes_color = Brushes.Red;
-                            roi.msg = "文字絲印模糊或破損";
+                            roi.msg = "文字提取失败";
+                            break;
+                        }
+                        //  "MODEL NO. LA36UK AMAZON.COM SERVICES LLC"
+                        string line1 = "MODEL NO. LA36UK AMAZON.COM SERVICES LLC";
+                        string line2 = "AC ADAPTER AMAZON EU(UK) LONDON EC2A 2FA";
+                        string line3 = "AMAZON EU L-1855 LUXEMBOURG MADE IN CHINA";
+                        string line4 = "INPUT: 100-240V~0.15A 50/60Hz OUTPUT: 5.0V⎓1.0A 5.0W";
+                        logHelper.AppendLog($"INFO: Line1 OCR String：{resultStringCount[0]}");
+                        if (resultStringCount[0].ToUpper() != line1)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            roi.msg = $"第1行内容错误 {resultStringCount[0]}";
+                            break;
+                        }
+                        logHelper.AppendLog($"INFO: Line2 OCR String：{resultStringCount[1]}");
+                        if (resultStringCount[1].ToUpper() != line2)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            roi.msg = $"第2行内容错误 {resultStringCount[1]}";
+                            break;
+                        }
+                        logHelper.AppendLog($"INFO: Line3 OCR String：{resultStringCount[2]}");
+                        if (resultStringCount[2].ToUpper() != line3)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            roi.msg = $"第3行内容错误 {resultStringCount[2]}";
+                            break;
+                        }
+                        //string pattern = @"(\d+\.\d+V)[=\-二日H]([0-9]\.[0-9]+A)";
+                        //string pattern = @"(\d+(?:\.\d+)?V)\s*[-=]{1,4}\s*(\d+(?:\.\d+)?A)";
+                        string pattern = @"(\d+(?:\.\d+)?V)\s*[-=]{1,4}:?\s*(\d+(?:\.\d+)?A)";
+                        resultStringCount[3] = Regex.Replace(resultStringCount[3], pattern, "$1⎓$2", RegexOptions.IgnoreCase);
+                        logHelper.AppendLog($"INFO: Line4 OCR String：{resultStringCount[3]}");
+                        if (resultStringCount[3] != line4)
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            roi.msg = $"第4行内容错误 {resultStringCount[3]}";
                             break;
                         }
                         HasPrintDefect = true;

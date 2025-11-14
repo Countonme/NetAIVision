@@ -21,7 +21,7 @@ namespace NetAIVision.Services
         #region 可调参数
 
         // 每 N 帧重新计算一次 homography（减小抖动与计算量）
-        public static int RecalcEveryNFrames = 60;
+        public static int RecalcEveryNFrames = 3;
 
         // 用于筛选最优匹配的数量上限
         private static int MaxGoodMatches = 80;
