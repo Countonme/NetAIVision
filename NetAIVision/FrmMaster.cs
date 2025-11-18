@@ -1317,19 +1317,19 @@ namespace NetAIVision
         private void FrmMaster_Shown(object sender, EventArgs e)
         {
             pictureBox1.Size = new System.Drawing.Size(1024, 768);
+            //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.Size = new System.Drawing.Size(640, 480);
             //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 100);
             cbDeviceList.Width = 1024;
             cbDeviceList.Location = new System.Drawing.Point(this.Width - 1028, 70);
-            grouplogs.Height = this.Height - pictureBox1.Height - 100;
+            grouplogs.Height = this.Height - pictureBox1.Height - 200;
             groupSetting.Height = this.Height - groupSetting.Height - 335;
             groupSetting.Width = this.Width - pictureBox1.Width - 10;
             uiLine2.Width = groupSetting.Width - 10;
             logHelper.AppendLog("INFO: 初始化完成 程序启动");
             LoadControllerSetting();
             UIStyles.CultureInfo = CultureInfos.en_US;
-            //if (pageIndex < UIStyle.Colorful.Value())
         }
 
         /// <summary>
@@ -1754,7 +1754,7 @@ namespace NetAIVision
             rois?.Clear();
 
             // 需要漏缺检测的类别
-            var Rac = RecModel();
+            var Rac = getRecModel();
             // 找出检测结果中属于漏缺类别的项目
             var filteredResults = result
                 .Where(e => e.ClassId >= 0 && e.ClassId < ProducitonModelClassName.ModelList.Length &&
@@ -1856,7 +1856,11 @@ namespace NetAIVision
             ShowResult(flag);
         }
 
-        private string[] RecModel()
+        /// <summary>
+        /// 獲取幾種要檢查的區域
+        /// </summary>
+        /// <returns></returns>
+        private string[] getRecModel()
         {
             switch (uiComboBox1.Text)
             {
@@ -1864,11 +1868,31 @@ namespace NetAIVision
                     {
                         return new string[] { };
                     }
-                case "UK36":
-                    return ProducitonModelClassName.UK36classNames;
+                case "PA-1050-36AU":
+                    return ProducitonModelClassName.PA_1050_36AU;
 
                 case "PA-1150-16VN":
                     return ProducitonModelClassName.PA_1150_16VN;
+            }
+        }
+
+        /// <summary>
+        /// 獲取幾種功率設定
+        /// </summary>
+        /// <returns></returns>
+        private string getModelPowerGoal()
+        {
+            switch (uiComboBox1.Text)
+            {
+                default:
+                    {
+                        return "Error,未設定";
+                    }
+                case "PA-1050-36AU":
+                    return "5.0W";
+
+                case "PA-1150-16VN":
+                    return "15.0W";
             }
         }
 
@@ -2078,7 +2102,8 @@ namespace NetAIVision
                         {
                             result = result.Trim();
                             roi.msg = result;
-                            if (result == "15.0W")
+                            var powerGoal = getModelPowerGoal();
+                            if (result == powerGoal)
                             {
                                 PowerCheckFlag = true;
                                 break;
@@ -2087,7 +2112,7 @@ namespace NetAIVision
                             {
                                 roi.pen_color = Color.Red; // 红色表示不通过
                                 roi.Brushes_color = Brushes.Red;
-                                roi.msg = $"NG:功率文字镭射错误 {result},请您检测";
+                                roi.msg = $"NG:功率文字镭射错误 {result},请您检测 標準{powerGoal}";
                                 break;
                             }
                         }

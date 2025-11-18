@@ -9,7 +9,7 @@ namespace NetAIVision.Model
     public class ProducitonModelClassName
     {
         // 定义所有类别名称（下标与 ClassId 对应）
-        public static string[] UK36classNames = new string[]
+        public static string[] PA_1050_36AU = new string[]
            {
                 "CE",
                 "DOELevelVI",
@@ -17,11 +17,11 @@ namespace NetAIVision.Model
                 "IndoorUseOnly",
                 "Power",
                 "QRCode",
-                "SNLine",
+                "SnLine:",
                 "StandardText",
                 "UKCA",
                 "WEEE",
-                "RightArrow"
+                "rightArrow"
            };
 
         public static string[] PA_1150_16VN = new string[]
