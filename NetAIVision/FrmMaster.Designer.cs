@@ -102,7 +102,6 @@
             this.uiLabel5 = new Sunny.UI.UILabel();
             this.txtLengthy = new Sunny.UI.UITextBox();
             this.uiLabel4 = new Sunny.UI.UILabel();
-            this.uiTextBox2 = new Sunny.UI.UITextBox();
             this.uiLabel3 = new Sunny.UI.UILabel();
             this.txtSerialNumber = new Sunny.UI.UITextBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
@@ -126,6 +125,7 @@
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
             this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.uiComboBox1 = new Sunny.UI.UIComboBox();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.grouplogs.SuspendLayout();
@@ -546,16 +546,16 @@
             // 
             // groupSetting
             // 
+            this.groupSetting.Controls.Add(this.uiComboBox1);
             this.groupSetting.Controls.Add(this.uiLine3);
-            this.groupSetting.Controls.Add(this.pictureBox3);
-            this.groupSetting.Controls.Add(this.uiLedBulb2);
-            this.groupSetting.Controls.Add(this.uiLabel6);
             this.groupSetting.Controls.Add(this.uiLedBulb1);
+            this.groupSetting.Controls.Add(this.uiLedBulb2);
+            this.groupSetting.Controls.Add(this.pictureBox3);
+            this.groupSetting.Controls.Add(this.uiLabel6);
             this.groupSetting.Controls.Add(this.txtscriptName);
             this.groupSetting.Controls.Add(this.uiLabel5);
             this.groupSetting.Controls.Add(this.txtLengthy);
             this.groupSetting.Controls.Add(this.uiLabel4);
-            this.groupSetting.Controls.Add(this.uiTextBox2);
             this.groupSetting.Controls.Add(this.uiLabel3);
             this.groupSetting.Controls.Add(this.txtSerialNumber);
             this.groupSetting.Controls.Add(this.uiLabel1);
@@ -586,6 +586,7 @@
             this.uiLedBulb2.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb2, "uiLedBulb2");
             this.uiLedBulb2.Name = "uiLedBulb2";
+            this.uiLedBulb2.On = false;
             // 
             // uiLabel6
             // 
@@ -599,6 +600,7 @@
             this.uiLedBulb1.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb1, "uiLedBulb1");
             this.uiLedBulb1.Name = "uiLedBulb1";
+            this.uiLedBulb1.On = false;
             // 
             // txtscriptName
             // 
@@ -633,17 +635,6 @@
             resources.ApplyResources(this.uiLabel4, "uiLabel4");
             this.uiLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.uiLabel4.Name = "uiLabel4";
-            // 
-            // uiTextBox2
-            // 
-            this.uiTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.uiTextBox2.EnterAsTab = true;
-            resources.ApplyResources(this.uiTextBox2, "uiTextBox2");
-            this.uiTextBox2.Name = "uiTextBox2";
-            this.uiTextBox2.ReadOnly = true;
-            this.uiTextBox2.ShowText = false;
-            this.uiTextBox2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            this.uiTextBox2.Watermark = "";
             // 
             // uiLabel3
             // 
@@ -807,6 +798,22 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // uiComboBox1
+            // 
+            this.uiComboBox1.DataSource = null;
+            this.uiComboBox1.FillColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.uiComboBox1, "uiComboBox1");
+            this.uiComboBox1.ItemHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
+            this.uiComboBox1.Items.AddRange(new object[] {
+            resources.GetString("uiComboBox1.Items"),
+            resources.GetString("uiComboBox1.Items1"),
+            resources.GetString("uiComboBox1.Items2")});
+            this.uiComboBox1.ItemSelectForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(255)))));
+            this.uiComboBox1.Name = "uiComboBox1";
+            this.uiComboBox1.SymbolSize = 24;
+            this.uiComboBox1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiComboBox1.Watermark = "";
+            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -888,7 +895,6 @@
         private Sunny.UI.UILabel uiLabel2;
         private Sunny.UI.UITextBox txtLengthy;
         private Sunny.UI.UILabel uiLabel4;
-        private Sunny.UI.UITextBox uiTextBox2;
         private Sunny.UI.UILabel uiLabel3;
         private Sunny.UI.UILine uiLine1;
         private System.Windows.Forms.PictureBox pictureBox2;
@@ -944,6 +950,7 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private Sunny.UI.UILine uiLine3;
         private System.Windows.Forms.ToolStripMenuItem clearROIToolStripMenuItem;
+        private Sunny.UI.UIComboBox uiComboBox1;
     }
 }
 

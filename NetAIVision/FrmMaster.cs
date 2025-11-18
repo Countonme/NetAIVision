@@ -202,7 +202,7 @@ namespace NetAIVision
         public void InitDetector()
         {
             //var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "UK5W.onnx");
-            var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "LA36UK.onnx");
+            var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "ASiModelV1.onnx");
 
             detector = new OnnxDetector(modelPath, confidenceThreshold: 0.32f);
         }
@@ -1754,17 +1754,16 @@ namespace NetAIVision
             rois?.Clear();
 
             // 需要漏缺检测的类别
-            var Rac = new string[] { "CE", "DOELevelVI", "DoubleInsulated", "IndoorUseOnly", "Power", "QRCode", "SNLine", "UKCA", "WEEE", "RightArrow" };
-
+            var Rac = RecModel();
             // 找出检测结果中属于漏缺类别的项目
             var filteredResults = result
-                .Where(e => e.ClassId >= 0 && e.ClassId < ProducitonModelClassName.UK36classNames.Length &&
-                            Rac.Contains(ProducitonModelClassName.UK36classNames[e.ClassId]))
+                .Where(e => e.ClassId >= 0 && e.ClassId < ProducitonModelClassName.ModelList.Length &&
+                            Rac.Contains(ProducitonModelClassName.ModelList[e.ClassId]))
                 .ToList();
 
             // 判断是否有漏检类别（Rac中有但没被检测到的）
             var detectedClasses = filteredResults
-                .Select(e => ProducitonModelClassName.UK36classNames[e.ClassId])
+                .Select(e => ProducitonModelClassName.ModelList[e.ClassId])
                 .Distinct()
                 .ToList();
 
@@ -1780,9 +1779,9 @@ namespace NetAIVision
             foreach (var item in result)
             {
                 // 防止越界
-                if (item.ClassId < 0 || item.ClassId >= ProducitonModelClassName.UK36classNames.Length)
+                if (item.ClassId < 0 || item.ClassId >= ProducitonModelClassName.ModelList.Length)
                     continue;
-                if (item.ClassId == 7)
+                if (item.ClassId == 10)
                 {
                     item.Box.Y = item.Box.Y - 4;
                 }
@@ -1790,7 +1789,7 @@ namespace NetAIVision
                 {
                     Rect = item.Box,
                     //msg = $"{ProducitonModelClassName.UK36classNames[item.ClassId]} -> {item.Confidence:F3}"
-                    msg = $"OK:{ProducitonModelClassName.UK36classNames[item.ClassId]}"
+                    msg = $"OK:{ProducitonModelClassName.ModelList[item.ClassId]}"
                 };
                 roi.id = $"{item.ClassId}";
                 roi.pen_color = Color.LimeGreen; // 绿色表示通过
@@ -1855,6 +1854,22 @@ namespace NetAIVision
             pictureBox3.Image = shosafeBitmap;
             //显示结果
             ShowResult(flag);
+        }
+
+        private string[] RecModel()
+        {
+            switch (uiComboBox1.Text)
+            {
+                default:
+                    {
+                        return new string[] { };
+                    }
+                case "UK36":
+                    return ProducitonModelClassName.UK36classNames;
+
+                case "PA-1150-16VN":
+                    return ProducitonModelClassName.PA_1150_16VN;
+            }
         }
 
         /// <summary>
@@ -2018,7 +2033,7 @@ namespace NetAIVision
                 default:
                     break;
 
-                case 3: //IndoorUseOnly
+                case 4: //IndoorUseOnly
                     {
                         // 定义最小允许的宽度和高度（根据你的场景调整）
                         const int MinWidth = 78;
@@ -2038,7 +2053,7 @@ namespace NetAIVision
                         break;
                     }
 
-                case 4:
+                case 7: //Power
                     {
                         var img = getImageRec(roi.Rect);
 
@@ -2063,7 +2078,7 @@ namespace NetAIVision
                         {
                             result = result.Trim();
                             roi.msg = result;
-                            if (result == "5.0W")
+                            if (result == "15.0W")
                             {
                                 PowerCheckFlag = true;
                                 break;
@@ -2082,7 +2097,7 @@ namespace NetAIVision
                         break;
                     }
 
-                case 5:
+                case 8://QRCODE
                     {
                         QrcodeString = string.Empty;
                         txtSerialNumber.Text = string.Empty;
@@ -2119,7 +2134,7 @@ namespace NetAIVision
 
                         break;
                     }
-                case 6:
+                case 9://sn
                     {
                         var img = getImageRec(roi.Rect);
 
@@ -2154,7 +2169,7 @@ namespace NetAIVision
                         roi.msg = "OCR 失败";
                         break;
                     }
-                case 7:
+                case 10:
                     {
                         var img = getImageRec(roi.Rect);
                         if (img is null)
@@ -2182,7 +2197,7 @@ namespace NetAIVision
                         //    roi.msg = "文字絲印模糊或破損";
                         //    break;
                         //}
-                        if (resultStringCount.Length != 4)
+                        if (resultStringCount is null || resultStringCount.Length != 4)
                         {
                             roi.pen_color = Color.Red; // 红色表示不通过
                             roi.Brushes_color = Brushes.Red;
