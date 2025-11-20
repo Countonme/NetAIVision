@@ -216,6 +216,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BitmapProcessorServices.cs" />
+    <Compile Include="Services\ChartsPicService.cs" />
     <Compile Include="Services\ConsoleStyleLogHelper.cs" />
     <Compile Include="Services\FrameSaver.cs" />
     <Compile Include="Services\HikMVS\MyCamera.cs" />

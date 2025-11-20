@@ -131,6 +131,7 @@ namespace NetAIVision
         public FrmMaster()
         {
             InitializeComponent();
+
             //拼詞檢查Spell 初始化
             InitSpellChecker();
             //OCR 初始化
@@ -138,6 +139,7 @@ namespace NetAIVision
             //Init Model
             InitDetector();
             this.Load += FrmMaster_Load;
+            this.Resize += FrmMaster_Resize;
             //About
             this.aboutAToolStripMenuItem.Click += AboutAToolStripMenuItem_Click;
             this.editScriptsToolStripMenuItem.Click += EditScriptsToolStripMenuItem_Click;
@@ -199,12 +201,17 @@ namespace NetAIVision
             save = new FrameSaver(saveImgPath);
         }
 
+        private void FrmMaster_Resize(object sender, EventArgs e)
+        {
+            //resizeLayout();
+        }
+
         public void InitDetector()
         {
             //var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "UK5W.onnx");
             var modelPath = Path.Combine(Application.StartupPath, "Lib", "Model", "ASiModelV1.onnx");
 
-            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.32f);
+            detector = new OnnxDetector(modelPath, confidenceThreshold: 0.32f, true);
         }
 
         private void ClearROIToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1316,20 +1323,52 @@ namespace NetAIVision
         /// <param name="e"></param>
         private void FrmMaster_Shown(object sender, EventArgs e)
         {
+            resizeLayout();
+            //初始化 生产统计图表
+            ChartsPicService.Set_Production_BarChar(ref BarChart);
+            LoadControllerSetting();
+            //UIStyles.CultureInfo = CultureInfos.en_US;
+            // ch: 初始化 SDK | en: Initialize SDK
+            try
+            {
+                MyCamera.MV_CC_Initialize_NET();
+
+                // ch: 枚举设备 | en: Enum Device List
+                DeviceListAcq();
+            }
+            catch (Exception ex)
+            {
+                this.ShowErrorNotifier($"請安裝 HIK Vision MVS SDK");
+            }
+        }
+
+        private void resizeLayout()
+        {
             pictureBox1.Size = new System.Drawing.Size(1024, 768);
             //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox3.Size = new System.Drawing.Size(640, 480);
+
             //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 100);
+
             cbDeviceList.Width = 1024;
             cbDeviceList.Location = new System.Drawing.Point(this.Width - 1028, 70);
-            grouplogs.Height = this.Height - pictureBox1.Height - 200;
-            groupSetting.Height = this.Height - groupSetting.Height - 335;
-            groupSetting.Width = this.Width - pictureBox1.Width - 10;
+            //显示预测的结果区域
+            groupResult.Height = this.Height - groupResult.Height - 398;
+            groupResult.Width = this.Width - pictureBox1.Width - 10;
+            //
+            groupSetting.Width = groupResult.Width - 8;
             uiLine2.Width = groupSetting.Width - 10;
+            //相机像位元素位置
+            pictureBox3.Size = new System.Drawing.Size(groupResult.Width - 13, groupResult.Height - 36);
+            pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 420);
+            //日志位置
+            grouplogs.Height = 160;
+            grouplogs.Width = groupResult.Width;
+            grouplogs.Location = new System.Drawing.Point(groupResult.Location.X, groupResult.Location.Y + (grouplogs.Height * 4) + 13);
+            //UIpie
+            BarChart.Height = 275;
+            BarChart.Width = pictureBox1.Width;
+            BarChart.Location = new System.Drawing.Point(pictureBox1.Location.X, 100);
             logHelper.AppendLog("INFO: 初始化完成 程序启动");
-            LoadControllerSetting();
-            UIStyles.CultureInfo = CultureInfos.en_US;
         }
 
         /// <summary>
@@ -2205,13 +2244,13 @@ namespace NetAIVision
                         }
 
                         //锐化
-                        img = BitmapProcessorServices.EnhanceSharpness(img, 5);
+                        img = BitmapProcessorServices.EnhanceSharpness(img, 1);
                         //二值化
-                        img = BitmapProcessorServices.Threshold(img);
+                        // img = BitmapProcessorServices.Threshold(img);
                         //反色
                         //img = BitmapProcessorServices.Invert(img);
                         //灰度
-                        img = BitmapProcessorServices.ToGrayscale(img);
+                        //img = BitmapProcessorServices.ToGrayscale(img);
                         var resultString = PaddleOCRHelper.Recognize(img);
                         var resultStringCount = resultString.Split("\n");
                         //var result = BitmapProcessorServices.DetectStainsAndBlur(img, 160, 50, 100);
@@ -2222,6 +2261,7 @@ namespace NetAIVision
                         //    roi.msg = "文字絲印模糊或破損";
                         //    break;
                         //}
+                        resultStringCount?.ForEach(logHelper.AppendLog);
                         if (resultStringCount is null || resultStringCount.Length != 4)
                         {
                             roi.pen_color = Color.Red; // 红色表示不通过
@@ -2517,11 +2557,6 @@ namespace NetAIVision
             //var frm = new FrmResult(ResultEnum.Fail, 3); // 3 秒后关闭
             //frm.Show(); // 或 ShowDialog()
             //await frm.CloseMeAsync(); // 异步等待自动关闭
-            // ch: 初始化 SDK | en: Initialize SDK
-            MyCamera.MV_CC_Initialize_NET();
-
-            // ch: 枚举设备 | en: Enum Device List
-            DeviceListAcq();
         }
 
         /// <summary>

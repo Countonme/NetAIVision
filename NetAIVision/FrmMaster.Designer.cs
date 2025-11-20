@@ -92,9 +92,8 @@
             this.cbDeviceList = new System.Windows.Forms.ComboBox();
             this.grouplogs = new Sunny.UI.UIGroupBox();
             this.richboxLogs = new System.Windows.Forms.RichTextBox();
-            this.groupSetting = new Sunny.UI.UIGroupBox();
+            this.groupResult = new Sunny.UI.UIGroupBox();
             this.uiComboBox1 = new Sunny.UI.UIComboBox();
-            this.uiLine3 = new Sunny.UI.UILine();
             this.uiLedBulb1 = new Sunny.UI.UILedBulb();
             this.uiLedBulb2 = new Sunny.UI.UILedBulb();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -107,7 +106,7 @@
             this.txtSerialNumber = new Sunny.UI.UITextBox();
             this.uiLabel1 = new Sunny.UI.UILabel();
             this.uiLabel2 = new Sunny.UI.UILabel();
-            this.uiGroupBox2 = new Sunny.UI.UIGroupBox();
+            this.groupSetting = new Sunny.UI.UIGroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tbExposure = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -124,14 +123,15 @@
             this.mlabEmp = new Sunny.UI.UIMarkLabel();
             this.uiMarkLabel2 = new Sunny.UI.UIMarkLabel();
             this.StyleManager = new Sunny.UI.UIStyleManager(this.components);
-            this.uiGifAvatar1 = new Sunny.UI.UIGifAvatar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.uiAvatar1 = new Sunny.UI.UIAvatar();
+            this.BarChart = new Sunny.UI.UIBarChart();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.grouplogs.SuspendLayout();
-            this.groupSetting.SuspendLayout();
+            this.groupResult.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            this.uiGroupBox2.SuspendLayout();
+            this.groupSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -544,25 +544,12 @@
             resources.ApplyResources(this.richboxLogs, "richboxLogs");
             this.richboxLogs.Name = "richboxLogs";
             // 
-            // groupSetting
+            // groupResult
             // 
-            this.groupSetting.Controls.Add(this.uiComboBox1);
-            this.groupSetting.Controls.Add(this.uiLine3);
-            this.groupSetting.Controls.Add(this.uiLedBulb1);
-            this.groupSetting.Controls.Add(this.uiLedBulb2);
-            this.groupSetting.Controls.Add(this.pictureBox3);
-            this.groupSetting.Controls.Add(this.uiLabel6);
-            this.groupSetting.Controls.Add(this.txtscriptName);
-            this.groupSetting.Controls.Add(this.uiLabel5);
-            this.groupSetting.Controls.Add(this.txtLengthy);
-            this.groupSetting.Controls.Add(this.uiLabel4);
-            this.groupSetting.Controls.Add(this.uiLabel3);
-            this.groupSetting.Controls.Add(this.txtSerialNumber);
-            this.groupSetting.Controls.Add(this.uiLabel1);
-            this.groupSetting.Controls.Add(this.uiLabel2);
-            resources.ApplyResources(this.groupSetting, "groupSetting");
-            this.groupSetting.Name = "groupSetting";
-            this.groupSetting.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.groupResult.Controls.Add(this.pictureBox3);
+            resources.ApplyResources(this.groupResult, "groupResult");
+            this.groupResult.Name = "groupResult";
+            this.groupResult.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // uiComboBox1
             // 
@@ -581,20 +568,13 @@
             this.uiComboBox1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.uiComboBox1.Watermark = "";
             // 
-            // uiLine3
-            // 
-            this.uiLine3.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.uiLine3, "uiLine3");
-            this.uiLine3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.uiLine3.Name = "uiLine3";
-            this.uiLine3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // uiLedBulb1
             // 
             this.uiLedBulb1.Blink = true;
             this.uiLedBulb1.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb1, "uiLedBulb1");
             this.uiLedBulb1.Name = "uiLedBulb1";
+            this.uiLedBulb1.On = false;
             // 
             // uiLedBulb2
             // 
@@ -680,21 +660,33 @@
             this.uiLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.uiLabel2.Name = "uiLabel2";
             // 
-            // uiGroupBox2
+            // groupSetting
             // 
-            this.uiGroupBox2.Controls.Add(this.label1);
-            this.uiGroupBox2.Controls.Add(this.tbExposure);
-            this.uiGroupBox2.Controls.Add(this.label3);
-            this.uiGroupBox2.Controls.Add(this.tbGain);
-            this.uiGroupBox2.Controls.Add(this.label2);
-            this.uiGroupBox2.Controls.Add(this.tbFrameRate);
-            this.uiGroupBox2.Controls.Add(this.uiLabel7);
-            this.uiGroupBox2.Controls.Add(this.switchMES);
-            this.uiGroupBox2.Controls.Add(this.RadioDebugMode);
-            this.uiGroupBox2.Controls.Add(this.RadioBtnProductionMode);
-            resources.ApplyResources(this.uiGroupBox2, "uiGroupBox2");
-            this.uiGroupBox2.Name = "uiGroupBox2";
-            this.uiGroupBox2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.groupSetting.Controls.Add(this.uiComboBox1);
+            this.groupSetting.Controls.Add(this.tbFrameRate);
+            this.groupSetting.Controls.Add(this.label3);
+            this.groupSetting.Controls.Add(this.label1);
+            this.groupSetting.Controls.Add(this.uiLedBulb1);
+            this.groupSetting.Controls.Add(this.uiLabel3);
+            this.groupSetting.Controls.Add(this.uiLedBulb2);
+            this.groupSetting.Controls.Add(this.tbExposure);
+            this.groupSetting.Controls.Add(this.txtLengthy);
+            this.groupSetting.Controls.Add(this.uiLabel6);
+            this.groupSetting.Controls.Add(this.uiLabel4);
+            this.groupSetting.Controls.Add(this.txtscriptName);
+            this.groupSetting.Controls.Add(this.uiLabel5);
+            this.groupSetting.Controls.Add(this.txtSerialNumber);
+            this.groupSetting.Controls.Add(this.uiLabel1);
+            this.groupSetting.Controls.Add(this.tbGain);
+            this.groupSetting.Controls.Add(this.label2);
+            this.groupSetting.Controls.Add(this.uiLabel7);
+            this.groupSetting.Controls.Add(this.switchMES);
+            this.groupSetting.Controls.Add(this.uiLabel2);
+            this.groupSetting.Controls.Add(this.RadioDebugMode);
+            this.groupSetting.Controls.Add(this.RadioBtnProductionMode);
+            resources.ApplyResources(this.groupSetting, "groupSetting");
+            this.groupSetting.Name = "groupSetting";
+            this.groupSetting.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label1
             // 
@@ -736,7 +728,7 @@
             // 
             this.switchMES.ActiveColor = System.Drawing.Color.Blue;
             resources.ApplyResources(this.switchMES, "switchMES");
-            this.switchMES.InActiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.switchMES.InActiveColor = System.Drawing.SystemColors.ActiveBorder;
             this.switchMES.Name = "switchMES";
             this.switchMES.SwitchShape = Sunny.UI.UISwitch.UISwitchShape.Square;
             // 
@@ -796,16 +788,6 @@
             this.StyleManager.GlobalFontName = "Tahoma";
             this.StyleManager.MultiLanguageSupport = true;
             // 
-            // uiGifAvatar1
-            // 
-            this.uiGifAvatar1.AvatarSize = 60;
-            this.uiGifAvatar1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(242)))), ((int)(((byte)(251)))));
-            resources.ApplyResources(this.uiGifAvatar1, "uiGifAvatar1");
-            this.uiGifAvatar1.Image = global::NetAIVision.Properties.Resources.opred;
-            this.uiGifAvatar1.Name = "uiGifAvatar1";
-            this.uiGifAvatar1.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(242)))), ((int)(((byte)(251)))));
-            this.uiGifAvatar1.Style = Sunny.UI.UIStyle.Custom;
-            // 
             // pictureBox1
             // 
             resources.ApplyResources(this.pictureBox1, "pictureBox1");
@@ -813,18 +795,31 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // uiAvatar1
+            // 
+            resources.ApplyResources(this.uiAvatar1, "uiAvatar1");
+            this.uiAvatar1.Name = "uiAvatar1";
+            // 
+            // BarChart
+            // 
+            resources.ApplyResources(this.BarChart, "BarChart");
+            this.BarChart.LegendFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BarChart.Name = "BarChart";
+            this.BarChart.SubFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            // 
             // FrmMaster
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.BarChart);
+            this.Controls.Add(this.uiAvatar1);
             this.Controls.Add(this.uiMarkLabel2);
             this.Controls.Add(this.mlabEmp);
-            this.Controls.Add(this.uiGifAvatar1);
             this.Controls.Add(this.uiLine2);
-            this.Controls.Add(this.groupSetting);
+            this.Controls.Add(this.groupResult);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.uiLine1);
-            this.Controls.Add(this.uiGroupBox2);
+            this.Controls.Add(this.groupSetting);
             this.Controls.Add(this.grouplogs);
             this.Controls.Add(this.cbDeviceList);
             this.Controls.Add(this.pictureBox1);
@@ -840,11 +835,10 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.grouplogs.ResumeLayout(false);
+            this.groupResult.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.groupSetting.ResumeLayout(false);
             this.groupSetting.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            this.uiGroupBox2.ResumeLayout(false);
-            this.uiGroupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -888,7 +882,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutAToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private Sunny.UI.UIGroupBox grouplogs;
-        private Sunny.UI.UIGroupBox groupSetting;
+        private Sunny.UI.UIGroupBox groupResult;
         private Sunny.UI.UITextBox txtSerialNumber;
         private Sunny.UI.UILabel uiLabel1;
         private Sunny.UI.UILabel uiLabel2;
@@ -897,7 +891,7 @@
         private Sunny.UI.UILabel uiLabel3;
         private Sunny.UI.UILine uiLine1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private Sunny.UI.UIGroupBox uiGroupBox2;
+        private Sunny.UI.UIGroupBox groupSetting;
         private Sunny.UI.UILabel uiLabel7;
         private Sunny.UI.UISwitch switchMES;
         private Sunny.UI.UIRadioButton RadioDebugMode;
@@ -905,7 +899,6 @@
         private Sunny.UI.UILine uiLine2;
         private Sunny.UI.UIMarkLabel mlabEmp;
         private Sunny.UI.UIMarkLabel uiMarkLabel2;
-        private Sunny.UI.UIGifAvatar uiGifAvatar1;
         private Sunny.UI.UITextBox txtscriptName;
         private Sunny.UI.UILabel uiLabel5;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
@@ -947,9 +940,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbFrameRate;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private Sunny.UI.UILine uiLine3;
         private System.Windows.Forms.ToolStripMenuItem clearROIToolStripMenuItem;
         private Sunny.UI.UIComboBox uiComboBox1;
+        private Sunny.UI.UIAvatar uiAvatar1;
+        private Sunny.UI.UIBarChart BarChart;
     }
 }
 
