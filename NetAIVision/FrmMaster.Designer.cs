@@ -126,6 +126,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.uiAvatar1 = new Sunny.UI.UIAvatar();
             this.BarChart = new Sunny.UI.UIBarChart();
+            this.PieChart = new Sunny.UI.UIPieChart();
             this.StepMenuStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.grouplogs.SuspendLayout();
@@ -574,7 +575,6 @@
             this.uiLedBulb1.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb1, "uiLedBulb1");
             this.uiLedBulb1.Name = "uiLedBulb1";
-            this.uiLedBulb1.On = false;
             // 
             // uiLedBulb2
             // 
@@ -582,6 +582,7 @@
             this.uiLedBulb2.Color = System.Drawing.Color.Red;
             resources.ApplyResources(this.uiLedBulb2, "uiLedBulb2");
             this.uiLedBulb2.Name = "uiLedBulb2";
+            this.uiLedBulb2.On = false;
             // 
             // pictureBox3
             // 
@@ -662,26 +663,27 @@
             // 
             // groupSetting
             // 
+            this.groupSetting.Controls.Add(this.PieChart);
             this.groupSetting.Controls.Add(this.uiComboBox1);
             this.groupSetting.Controls.Add(this.tbFrameRate);
-            this.groupSetting.Controls.Add(this.label3);
-            this.groupSetting.Controls.Add(this.label1);
             this.groupSetting.Controls.Add(this.uiLedBulb1);
+            this.groupSetting.Controls.Add(this.label3);
             this.groupSetting.Controls.Add(this.uiLabel3);
             this.groupSetting.Controls.Add(this.uiLedBulb2);
-            this.groupSetting.Controls.Add(this.tbExposure);
             this.groupSetting.Controls.Add(this.txtLengthy);
+            this.groupSetting.Controls.Add(this.label1);
             this.groupSetting.Controls.Add(this.uiLabel6);
             this.groupSetting.Controls.Add(this.uiLabel4);
             this.groupSetting.Controls.Add(this.txtscriptName);
             this.groupSetting.Controls.Add(this.uiLabel5);
             this.groupSetting.Controls.Add(this.txtSerialNumber);
+            this.groupSetting.Controls.Add(this.tbExposure);
             this.groupSetting.Controls.Add(this.uiLabel1);
-            this.groupSetting.Controls.Add(this.tbGain);
-            this.groupSetting.Controls.Add(this.label2);
             this.groupSetting.Controls.Add(this.uiLabel7);
             this.groupSetting.Controls.Add(this.switchMES);
+            this.groupSetting.Controls.Add(this.label2);
             this.groupSetting.Controls.Add(this.uiLabel2);
+            this.groupSetting.Controls.Add(this.tbGain);
             this.groupSetting.Controls.Add(this.RadioDebugMode);
             this.groupSetting.Controls.Add(this.RadioBtnProductionMode);
             resources.ApplyResources(this.groupSetting, "groupSetting");
@@ -806,6 +808,14 @@
             this.BarChart.LegendFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BarChart.Name = "BarChart";
             this.BarChart.SubFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            // 
+            // PieChart
+            // 
+            resources.ApplyResources(this.PieChart, "PieChart");
+            this.PieChart.LegendFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.PieChart.Name = "PieChart";
+            this.PieChart.RectSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.None;
+            this.PieChart.SubFont = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             // 
             // FrmMaster
             // 
@@ -944,6 +954,7 @@
         private Sunny.UI.UIComboBox uiComboBox1;
         private Sunny.UI.UIAvatar uiAvatar1;
         private Sunny.UI.UIBarChart BarChart;
+        private Sunny.UI.UIPieChart PieChart;
     }
 }
 

@@ -7,6 +7,7 @@ using NetAIVision.Model.FrmResult;
 using NetAIVision.Model.ROI;
 using NetAIVision.Model.Scripts;
 using NetAIVision.Services;
+using NetAIVision.Services.FrmMasterServices;
 using NetAIVision.Services.MES;
 using NetAIVision.Services.OnnxServices;
 using Newtonsoft.Json;
@@ -128,10 +129,12 @@ namespace NetAIVision
         //AI Model
         private OnnxDetector detector;
 
+        private FMasterService service;
+
         public FrmMaster()
         {
             InitializeComponent();
-
+            service = new FMasterService(this);
             //拼詞檢查Spell 初始化
             InitSpellChecker();
             //OCR 初始化
@@ -1326,6 +1329,7 @@ namespace NetAIVision
             resizeLayout();
             //初始化 生产统计图表
             ChartsPicService.Set_Production_BarChar(ref BarChart);
+            ChartsPicService.Set_PieTestData(ref PieChart);
             LoadControllerSetting();
             //UIStyles.CultureInfo = CultureInfos.en_US;
             // ch: 初始化 SDK | en: Initialize SDK
@@ -1721,7 +1725,8 @@ namespace NetAIVision
                                 // Bitmap safeBitmap1 = new Bitmap(safeBitmap, new System.Drawing.Size(1024 * _zoomFactor, 768 * _zoomFactor));
                                 if (pictureBox1.Image != null)
                                     pictureBox1.Image.Dispose();
-                                safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
+                                //矯正圖像功能 暫時屏蔽
+                                //safeBitmap = ImageAlignment.AlignToTemplate(safeBitmap);
                                 pictureBox1.Image = safeBitmap;
                                 //int newWidth = (int)(_originalBitmap.Width * _zoomFactor);
                                 //int newHeight = (int)(_originalBitmap.Height * _zoomFactor);
@@ -1788,6 +1793,8 @@ namespace NetAIVision
             PowerCheckFlag = false;
             IndoorUseOnlyFlag = false;
             HasPrintDefect = false;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             // 执行检测
             var result = detector.Detect(safeBitmap);
             rois?.Clear();
@@ -1891,8 +1898,24 @@ namespace NetAIVision
             }
             var shosafeBitmap = new Bitmap(safeBitmap);
             pictureBox3.Image = shosafeBitmap;
+            timer.Stop();
+            logHelper.AppendLog($"INFO: 本次检测耗时: {timer.ElapsedMilliseconds}");
+            txtLengthy.Text = (timer.ElapsedMilliseconds / 1000f).ToString() + " s";
+
             //显示结果
             ShowResult(flag);
+            //写入记录
+            var data = new
+            {
+                version = Application.ProductVersion,
+                serial_number = OcrSNString,
+                test_result = flag ? "PASS" : "FAIL",
+                test_datetime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+
+            service.InsertTestRecord(data);
+            //刷新產出圖
+            service.getDayHoursTestRecord(ref BarChart, ref PieChart);
         }
 
         /// <summary>
