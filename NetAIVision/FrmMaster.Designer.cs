@@ -551,6 +551,7 @@
             resources.ApplyResources(this.groupResult, "groupResult");
             this.groupResult.Name = "groupResult";
             this.groupResult.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.groupResult.TitleTop = 5;
             // 
             // uiComboBox1
             // 

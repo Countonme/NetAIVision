@@ -1369,7 +1369,7 @@ namespace NetAIVision
             grouplogs.Width = groupResult.Width;
             grouplogs.Location = new System.Drawing.Point(groupResult.Location.X, groupResult.Location.Y + (grouplogs.Height * 4) + 13);
             //UIpie
-            BarChart.Height = 275;
+            BarChart.Height = 320;
             BarChart.Width = pictureBox1.Width;
             BarChart.Location = new System.Drawing.Point(pictureBox1.Location.X, 100);
             logHelper.AppendLog("INFO: 初始化完成 程序启动");
