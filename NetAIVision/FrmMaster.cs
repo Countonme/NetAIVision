@@ -1367,7 +1367,7 @@ namespace NetAIVision
             //日志位置
             grouplogs.Height = 110;
             grouplogs.Width = groupResult.Width;
-            grouplogs.Location = new System.Drawing.Point(groupResult.Location.X + 20, groupResult.Location.Y + (grouplogs.Height * 5));
+            grouplogs.Location = new System.Drawing.Point(groupResult.Location.X, groupResult.Location.Y + (grouplogs.Height * 5) - 16);
             //UIpie
             BarChart.Height = 200;
             BarChart.Width = pictureBox1.Width;
