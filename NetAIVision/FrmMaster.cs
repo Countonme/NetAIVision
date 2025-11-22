@@ -2267,7 +2267,7 @@ namespace NetAIVision
                         }
 
                         //锐化
-                        img = BitmapProcessorServices.EnhanceSharpness(img, 1);
+                        img = BitmapProcessorServices.EnhanceSharpness(img, 5);
                         //二值化
                         // img = BitmapProcessorServices.Threshold(img);
                         //反色
