@@ -1351,7 +1351,7 @@ namespace NetAIVision
             pictureBox1.Size = new System.Drawing.Size(1024, 768);
             //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
 
             cbDeviceList.Width = 1024;
             cbDeviceList.Location = new System.Drawing.Point(this.Width - 1028, 70);
