@@ -1363,13 +1363,13 @@ namespace NetAIVision
             uiLine2.Width = groupSetting.Width - 10;
             //相机像位元素位置
             pictureBox3.Size = new System.Drawing.Size(groupResult.Width - 13, groupResult.Height - 36);
-            pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 420);
+            pictureBox1.Location = new System.Drawing.Point(this.Width - 1028, 310);
             //日志位置
-            grouplogs.Height = 160;
+            grouplogs.Height = 110;
             grouplogs.Width = groupResult.Width;
-            grouplogs.Location = new System.Drawing.Point(groupResult.Location.X, groupResult.Location.Y + (grouplogs.Height * 4) + 13);
+            grouplogs.Location = new System.Drawing.Point(groupResult.Location.X + 20, groupResult.Location.Y + (grouplogs.Height * 5));
             //UIpie
-            BarChart.Height = 320;
+            BarChart.Height = 200;
             BarChart.Width = pictureBox1.Width;
             BarChart.Location = new System.Drawing.Point(pictureBox1.Location.X, 100);
             logHelper.AppendLog("INFO: 初始化完成 程序启动");
@@ -2289,7 +2289,7 @@ namespace NetAIVision
                         {
                             roi.pen_color = Color.Red; // 红色表示不通过
                             roi.Brushes_color = Brushes.Red;
-                            roi.msg = "文字提取失败";
+                            roi.msg = $"文字提取失败:{resultString}";
                             break;
                         }
                         //  "MODEL NO. LA36UK AMAZON.COM SERVICES LLC"
