@@ -1710,11 +1710,7 @@ namespace NetAIVision
                         BitmapData bitmapData = m_bitmap.LockBits(new Rectangle(0, 0, stConvertInfo.nWidth, stConvertInfo.nHeight), ImageLockMode.ReadWrite, m_bitmap.PixelFormat);
                         CopyMemory(bitmapData.Scan0, stConvertInfo.pDstBuffer, (UInt32)(bitmapData.Stride * m_bitmap.Height));
                         m_bitmap.UnlockBits(bitmapData);
-                        //绘制参考线
-                        if (guidelineToolStripMenuItem.Checked)
-                        {
-                            DrawCrossLine();
-                        }
+
                         // === 如需显示处理结果，可通过 Invoke 设置 UI ===
                         this.Invoke(new Action(() =>
                         {
@@ -2258,6 +2254,15 @@ namespace NetAIVision
                     }
                 case 10:
                     {
+                        string stdImgPath = Path.Combine(Application.StartupPath, $"{uiComboBox1.Text}.png");
+                        if (!File.Exists(stdImgPath))
+                        {
+                            roi.pen_color = Color.Red; // 红色表示不通过
+                            roi.Brushes_color = Brushes.Red;
+                            roi.msg = $"缺少标准图:{stdImgPath}";
+                            break;
+                        }
+                        //
                         var img = getImageRec(roi.Rect);
                         if (img is null)
                         {
@@ -2265,76 +2270,88 @@ namespace NetAIVision
                             roi.Brushes_color = Brushes.Red;
                             break;
                         }
-
-                        //锐化
-                        img = BitmapProcessorServices.EnhanceSharpness(img, 5);
-                        //二值化
-                        img = BitmapProcessorServices.Threshold(img);
-                        //反色
-                        //img = BitmapProcessorServices.Invert(img);
-                        //灰度
-                        //img = BitmapProcessorServices.ToGrayscale(img);
-                        var resultString = PaddleOCRHelper.Recognize(img);
-                        var resultStringCount = resultString.Split("\n");
-                        //var result = BitmapProcessorServices.DetectStainsAndBlur(img, 160, 50, 100);
-                        //if (result.HasBlurs)
-                        //{
-                        //    roi.pen_color = Color.Red; // 红色表示不通过
-                        //    roi.Brushes_color = Brushes.Red;
-                        //    roi.msg = "文字絲印模糊或破損";
-                        //    break;
-                        //}
-                        resultStringCount?.ForEach(logHelper.AppendLog);
-                        if (resultStringCount is null || resultStringCount.Length != 4)
+                        string stdImgPathTemp = Path.Combine(Application.StartupPath, $"{uiComboBox1.Text}Temp.png");
+                        img.Save(stdImgPathTemp);
+                        var similarity = BitmapProcessorServices.CompareWithSIFT(stdImgPath, stdImgPathTemp);
+                        File.Delete(stdImgPathTemp);
+                        if (similarity < 8.5)
                         {
                             roi.pen_color = Color.Red; // 红色表示不通过
                             roi.Brushes_color = Brushes.Red;
-                            roi.msg = $"文字提取失败:{resultString}";
-                            break;
-                        }
-                        //  "MODEL NO. LA36UK AMAZON.COM SERVICES LLC"
-                        string line1 = "MODEL NO. LA36UK AMAZON.COM SERVICES LLC";
-                        string line2 = "AC ADAPTER AMAZON EU(UK) LONDON EC2A 2FA";
-                        string line3 = "AMAZON EU L-1855 LUXEMBOURG MADE IN CHINA";
-                        string line4 = "INPUT: 100-240V~0.15A 50/60Hz OUTPUT: 5.0V⎓1.0A 5.0W";
-                        logHelper.AppendLog($"INFO: Line1 OCR String：{resultStringCount[0]}");
-                        if (resultStringCount[0].ToUpper() != line1)
-                        {
-                            roi.pen_color = Color.Red; // 红色表示不通过
-                            roi.Brushes_color = Brushes.Red;
-                            roi.msg = $"第1行内容错误 {resultStringCount[0]}";
-                            break;
-                        }
-                        logHelper.AppendLog($"INFO: Line2 OCR String：{resultStringCount[1]}");
-                        if (resultStringCount[1].ToUpper() != line2)
-                        {
-                            roi.pen_color = Color.Red; // 红色表示不通过
-                            roi.Brushes_color = Brushes.Red;
-                            roi.msg = $"第2行内容错误 {resultStringCount[1]}";
-                            break;
-                        }
-                        logHelper.AppendLog($"INFO: Line3 OCR String：{resultStringCount[2]}");
-                        if (resultStringCount[2].ToUpper() != line3)
-                        {
-                            roi.pen_color = Color.Red; // 红色表示不通过
-                            roi.Brushes_color = Brushes.Red;
-                            roi.msg = $"第3行内容错误 {resultStringCount[2]}";
-                            break;
-                        }
-                        //string pattern = @"(\d+\.\d+V)[=\-二日H]([0-9]\.[0-9]+A)";
-                        //string pattern = @"(\d+(?:\.\d+)?V)\s*[-=]{1,4}\s*(\d+(?:\.\d+)?A)";
-                        string pattern = @"(\d+(?:\.\d+)?V)\s*[-=]{1,4}:?\s*(\d+(?:\.\d+)?A)";
-                        resultStringCount[3] = Regex.Replace(resultStringCount[3], pattern, "$1⎓$2", RegexOptions.IgnoreCase);
-                        logHelper.AppendLog($"INFO: Line4 OCR String：{resultStringCount[3]}");
-                        if (resultStringCount[3] != line4)
-                        {
-                            roi.pen_color = Color.Red; // 红色表示不通过
-                            roi.Brushes_color = Brushes.Red;
-                            roi.msg = $"第4行内容错误 {resultStringCount[3]}";
+                            roi.msg = $"NG:相似度:{similarity:F2}";
                             break;
                         }
                         HasPrintDefect = true;
                         break;
+                        ////锐化
+                        //img = BitmapProcessorServices.EnhanceSharpness(img, 5);
+                        ////二值化
+                        //img = BitmapProcessorServices.Threshold(img);
+                        ////反色
+                        ////img = BitmapProcessorServices.Invert(img);
+                        ////灰度
+                        ////img = BitmapProcessorServices.ToGrayscale(img);
+                        //var resultString = PaddleOCRHelper.Recognize(img);
+                        //var resultStringCount = resultString.Split("\n");
+                        ////var result = BitmapProcessorServices.DetectStainsAndBlur(img, 160, 50, 100);
+                        ////if (result.HasBlurs)
+                        ////{
+                        ////    roi.pen_color = Color.Red; // 红色表示不通过
+                        ////    roi.Brushes_color = Brushes.Red;
+                        ////    roi.msg = "文字絲印模糊或破損";
+                        ////    break;
+                        ////}
+                        //resultStringCount?.ForEach(logHelper.AppendLog);
+                        //if (resultStringCount is null || resultStringCount.Length != 4)
+                        //{
+                        //    roi.pen_color = Color.Red; // 红色表示不通过
+                        //    roi.Brushes_color = Brushes.Red;
+                        //    roi.msg = $"文字提取失败:{resultString}";
+                        //    break;
+                        //}
+                        ////  "MODEL NO. LA36UK AMAZON.COM SERVICES LLC"
+                        //string line1 = "MODEL NO. LA36UK AMAZON.COM SERVICES LLC";
+                        //string line2 = "AC ADAPTER AMAZON EU(UK) LONDON EC2A 2FA";
+                        //string line3 = "AMAZON EU L-1855 LUXEMBOURG MADE IN CHINA";
+                        //string line4 = "INPUT: 100-240V~0.15A 50/60Hz OUTPUT: 5.0V⎓1.0A 5.0W";
+                        //logHelper.AppendLog($"INFO: Line1 OCR String：{resultStringCount[0]}");
+                        //if (resultStringCount[0].ToUpper() != line1)
+                        //{
+                        //    roi.pen_color = Color.Red; // 红色表示不通过
+                        //    roi.Brushes_color = Brushes.Red;
+                        //    roi.msg = $"第1行内容错误 {resultStringCount[0]}";
+                        //    break;
+                        //}
+                        //logHelper.AppendLog($"INFO: Line2 OCR String：{resultStringCount[1]}");
+                        //if (resultStringCount[1].ToUpper() != line2)
+                        //{
+                        //    roi.pen_color = Color.Red; // 红色表示不通过
+                        //    roi.Brushes_color = Brushes.Red;
+                        //    roi.msg = $"第2行内容错误 {resultStringCount[1]}";
+                        //    break;
+                        //}
+                        //logHelper.AppendLog($"INFO: Line3 OCR String：{resultStringCount[2]}");
+                        //if (resultStringCount[2].ToUpper() != line3)
+                        //{
+                        //    roi.pen_color = Color.Red; // 红色表示不通过
+                        //    roi.Brushes_color = Brushes.Red;
+                        //    roi.msg = $"第3行内容错误 {resultStringCount[2]}";
+                        //    break;
+                        //}
+                        ////string pattern = @"(\d+\.\d+V)[=\-二日H]([0-9]\.[0-9]+A)";
+                        ////string pattern = @"(\d+(?:\.\d+)?V)\s*[-=]{1,4}\s*(\d+(?:\.\d+)?A)";
+                        //string pattern = @"(\d+(?:\.\d+)?V)\s*[-=]{1,4}:?\s*(\d+(?:\.\d+)?A)";
+                        //resultStringCount[3] = Regex.Replace(resultStringCount[3], pattern, "$1⎓$2", RegexOptions.IgnoreCase);
+                        //logHelper.AppendLog($"INFO: Line4 OCR String：{resultStringCount[3]}");
+                        //if (resultStringCount[3] != line4)
+                        //{
+                        //    roi.pen_color = Color.Red; // 红色表示不通过
+                        //    roi.Brushes_color = Brushes.Red;
+                        //    roi.msg = $"第4行内容错误 {resultStringCount[3]}";
+                        //    break;
+                        //}
+                        //HasPrintDefect = true;
+                        //break;
                     }
             }
         }
@@ -2547,27 +2564,24 @@ namespace NetAIVision
 
         // 在缓冲上画十字参考线，直接用整数判断像素类型
         // 修改绘制函数，直接接受枚举类型
-        private void DrawCrossLine()
+        private void DrawCrossLine(PaintEventArgs e)
         {
-            // 在 Bitmap 上绘制参考线
-            using (Graphics g = Graphics.FromImage(m_bitmap))
+            int w = pictureBox1.Width;
+            int h = pictureBox1.Height;
+
+            // 抗锯齿
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            using (Pen pen = new Pen(Color.Blue, 2))
             {
-                int w = m_bitmap.Width;
-                int h = m_bitmap.Height;
+                // 竖线
+                e.Graphics.DrawLine(pen, w / 2, 0, w / 2, h);
 
-                // 设置抗锯齿绘图参数
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                // 横线
+                e.Graphics.DrawLine(pen, 0, h / 2, w, h / 2);
 
-                // 定义画笔
-                using (Pen pen = new Pen(Color.Lime, 2))
-                {
-                    // 绘制中心十字线
-                    g.DrawLine(pen, w / 2, 0, w / 2, h);
-                    g.DrawLine(pen, 0, h / 2, w, h / 2);
-
-                    // 例如可以再画外边框
-                    g.DrawRectangle(pen, 0, 0, w - 1, h - 1);
-                }
+                // 外框
+                e.Graphics.DrawRectangle(pen, 0, 0, w - 1, h - 1);
             }
         }
 
@@ -3098,6 +3112,11 @@ namespace NetAIVision
                         g.DrawRectangle(Pens.Black, handleRect);         // 黑边框
                     }
                 }
+            }
+            //绘制参考线
+            if (guidelineToolStripMenuItem.Checked)
+            {
+                DrawCrossLine(e);
             }
         }
 
